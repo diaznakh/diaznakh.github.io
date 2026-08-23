@@ -1,3 +1,4 @@
+
 :root { --ink:#0c0d0c; --paper:#f1f0e9; --muted:#a6a79f; --line:rgba(241,240,233,.18); --acid:#c9ff4a; }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; background:var(--ink); }
@@ -23,7 +24,8 @@ nav a:hover, footer a:hover, .contact-links a:hover { color:var(--acid); }
 em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight:400; }
 .hero-footer { display:flex; justify-content:space-between; align-items:flex-end; margin-top:3.5rem; padding-left:26%; }
 .hero-footer p { max-width:480px; margin:0; color:#c6c7c0; font-size:clamp(1rem,1.4vw,1.25rem); line-height:1.6; }
-.round-link { width:104px; height:104px; border:1px solid var(--line); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.5rem; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; transition:background 220ms ease,color 220ms ease,transform 220ms ease; }
+.round-link { width:128px; height:128px; flex:0 0 128px; border:1px solid var(--line); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.65rem; font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; text-align:center; transition:background 220ms ease,color 220ms ease,transform 220ms ease; }
+.round-link span { white-space:nowrap; }
 .round-link b { font-size:1.2rem; }
 .round-link:hover { transform:rotate(-6deg); background:var(--acid); color:var(--ink); }
 .hero-code { position:absolute; bottom:28px; left:4vw; right:4vw; display:flex; justify-content:space-between; color:#676a63; font:.62rem ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; }
