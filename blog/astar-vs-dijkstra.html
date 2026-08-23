@@ -11,7 +11,8 @@
   <meta property="og:image" content="https://diaznakh.github.io/assets/og.png">
   <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css?v=20260824-singlegrid1">
+  <script src="../maze-comparison.js?v=20260824-singlegrid1" defer></script>
 </head>
 <body>
   <main class="article-page">
@@ -27,6 +28,19 @@
       <h2>The result that surprised me</h2>
       <p>I built a C++ maze visualizer to compare Dijkstra’s algorithm with A*. Both algorithms found the same shortest path, exactly as expected. A* also explored fewer cells because its heuristic guided it toward the destination.</p>
       <p>But when I measured execution time, Dijkstra sometimes won by a few microseconds. The algorithm doing more searching was finishing first.</p>
+
+      <section class="single-grid-demo" aria-labelledby="single-grid-demo-title">
+        <div class="single-grid-heading">
+          <div><span>Live comparison / One shared grid</span><h2 id="single-grid-demo-title">Two searches. One maze.</h2></div>
+          <div class="single-grid-actions"><button id="single-grid-new" type="button">New maze</button><button class="primary" id="single-grid-run" type="button">Run both</button></div>
+        </div>
+        <canvas id="single-grid-canvas" class="single-grid-canvas" width="1140" height="480" aria-label="A star and Dijkstra running together on the same maze"></canvas>
+        <div class="single-grid-footer">
+          <div class="single-grid-legend"><span><i class="astar-visited"></i>A* explored</span><span><i class="dijkstra-visited"></i>Dijkstra explored</span><span><i class="astar-path"></i>A* path</span><span><i class="dijkstra-path"></i>Dijkstra path</span></div>
+          <div class="single-grid-stats" aria-live="polite"><span>A* <strong id="single-grid-astar">—</strong> explored</span><span>Dijkstra <strong id="single-grid-dijkstra">—</strong> explored</span><span>Path <strong id="single-grid-path">—</strong></span></div>
+        </div>
+      </section>
+
 
       <div class="article-callout"><span>The short version</span><strong>On a tiny input, the cost of being smarter can be larger than the work it saves.</strong></div>
 
