@@ -13,14 +13,14 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260824-connected1">
-  <script src="script.js?v=20260824-connected1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260824-articlelab1">
+  <script src="script.js?v=20260824-articlelab1" defer></script>
 </head>
 <body>
   <main>
     <header class="site-header">
       <a class="wordmark" href="#top" aria-label="Zaid Khan — home">ZK<span>.</span></a>
-      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#lab">Lab</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <a class="availability" href="https://github.com/diaznakh" target="_blank" rel="noreferrer"><span aria-hidden="true"></span> GitHub</a>
     </header>
 
@@ -53,59 +53,6 @@
     </section>
 
 
-
-    <section class="section live-lab" id="lab">
-      <div class="section-heading"><p class="eyebrow">Live demo / Browser sandbox</p><h2>Try the ideas, not just the screenshots.</h2></div>
-      <div class="lab-grid">
-        <div class="lab-copy">
-          <span class="lab-status"><i aria-hidden="true"></i> Interactive</span>
-          <h3>A Redis-style terminal in your browser</h3>
-          <p>This safe, local sandbox mirrors the core command behaviour of my minimal C++ Redis-compatible server. Try <code>SET</code>, <code>GET</code>, <code>DEL</code>, <code>EXISTS</code>, and <code>KEYS</code> without connecting to a real backend.</p>
-          <small>The native project uses POSIX sockets and RESP over TCP. Browsers cannot open raw TCP connections, so this demo keeps the interaction client-side and stores its small dataset on your device.</small>
-        </div>
-        <div class="terminal" aria-label="Interactive Redis-style terminal">
-          <div class="terminal-bar"><span>localhost:6379 / sandbox</span><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
-          <div class="terminal-output" id="terminal-output" aria-live="polite">
-            <p class="terminal-line note">ZaidDB browser sandbox · local session</p>
-            <p class="terminal-line note">Type HELP to see available commands.</p>
-          </div>
-          <form class="terminal-form" id="terminal-form">
-            <span aria-hidden="true">›</span>
-            <input id="terminal-input" aria-label="Terminal command" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Try GET maze:last">
-          </form>
-        </div>
-      </div>
-
-      <div class="maze-demo" aria-labelledby="maze-demo-title">
-        <div class="maze-demo-head">
-          <div>
-            <p class="eyebrow">Pathfinding + Redis / Shared browser sandbox</p>
-            <h3 id="maze-demo-title">Watch Dijkstra and A* search side by side.</h3>
-            <small class="maze-storage-status" id="maze-storage-status">Generating maze…</small>
-          </div>
-          <p>This matches the C++ project’s 19×8 cell bitmasks. Every new maze is serialized and auto-saved to <code>maze:last</code>, so the terminal above can retrieve the exact same data.</p>
-        </div>
-        <div class="maze-panels">
-          <article class="maze-panel">
-            <div class="maze-panel-title"><strong>Dijkstra</strong><span id="maze-dijkstra-stat">Ready</span></div>
-            <canvas id="maze-dijkstra" width="570" height="240" aria-label="Dijkstra maze visualization"></canvas>
-          </article>
-          <article class="maze-panel">
-            <div class="maze-panel-title"><strong>A*</strong><span id="maze-astar-stat">Ready</span></div>
-            <canvas id="maze-astar" width="570" height="240" aria-label="A star maze visualization"></canvas>
-          </article>
-        </div>
-        <div class="maze-demo-foot">
-          <div class="maze-controls">
-            <button id="maze-generate" type="button">New + auto-save</button>
-            <button id="maze-save" type="button">P · Save</button>
-            <button id="maze-load" type="button">L · Load</button>
-            <button id="maze-run" type="button">Run comparison</button>
-          </div>
-          <div class="maze-legend" aria-label="Maze legend"><span><i class="visited"></i>Explored</span><span><i class="path"></i>Shortest path</span><span><i class="target"></i>Start / goal</span></div>
-        </div>
-      </div>
-    </section>
 
     <section class="section writing" id="writing">
       <div class="section-heading"><p class="eyebrow">Writing / Field notes</p><div class="writing-title-row"><h2>What I learn while <em>building.</em></h2><a class="rss-link" href="rss.xml" aria-label="Subscribe to technical field notes via RSS" title="Subscribe via RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path></svg><span>RSS</span></a></div></div>
