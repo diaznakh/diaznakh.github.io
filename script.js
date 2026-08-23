@@ -63,6 +63,10 @@ function isMobileOrbit() {
   return window.innerWidth <= 560;
 }
 
+function isTouchNavigation() {
+  return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+}
+
 function activeOrbitSpeed() {
   return isMobileOrbit() ? MOBILE_ORBIT_SPEED : ORBIT_SPEED;
 }
@@ -77,7 +81,7 @@ function keepOrbitSpeed(body) {
 if (orbit && orbitLinks.length === 2) {
   orbitLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
-      if (!isMobileOrbit()) return;
+      if (!isTouchNavigation()) return;
       event.preventDefault();
       const selector = link.getAttribute("href");
       const target = selector ? document.querySelector(selector) : null;
