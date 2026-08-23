@@ -76,8 +76,13 @@ function keepOrbitSpeed(body) {
 
 if (orbit && orbitLinks.length === 2) {
   orbitLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      if (isMobileOrbit()) window.setTimeout(() => link.blur(), 0);
+    link.addEventListener("click", (event) => {
+      if (!isMobileOrbit()) return;
+      event.preventDefault();
+      const selector = link.getAttribute("href");
+      const target = selector ? document.querySelector(selector) : null;
+      link.blur();
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
 
