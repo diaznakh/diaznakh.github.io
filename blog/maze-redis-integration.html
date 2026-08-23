@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connecting My C++ Maze Visualizer to Redis | Zaid Khan</title>
+  <meta name="description" content="How I connected a C++ pathfinding visualizer to a separate Redis-compatible server using serialization, POSIX sockets, RESP, validation, and persistence.">
+  <meta property="og:title" content="Connecting My C++ Maze Visualizer to Redis">
+  <meta property="og:description" content="How two separate C++ projects became one useful system through TCP, RESP, and persistent storage.">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/favicon.png">
+  <link rel="stylesheet" href="../styles.css?v=20260829-blog1">
+</head>
+<body>
+  <main class="article-page">
+    <header class="article-header">
+      <a class="wordmark" href="../" aria-label="Zaid Khan — home">ZK<span>.</span></a>
+      <a href="../#writing">← All writing</a>
+    </header>
+    <article class="article-shell">
+      <div class="article-meta"><span>Systems</span><time datetime="2026-08-29">29 August 2026</time><span>7 min read</span></div>
+      <h1>Connecting My Maze Visualizer to <em>Redis</em></h1>
+      <p class="article-lede">I had two C++ projects that worked well on their own: one generated and solved mazes, while the other stored key-value data. Connecting them through TCP made both projects feel much more like parts of a real system.</p>
+
+      <h2>The problem was not the algorithm</h2>
+      <p>My maze visualizer generates random mazes using recursive backtracking, then runs A* and Dijkstra side by side. It shows how each algorithm explores the grid, which path it finds, and how their behaviour differs.</p>
+      <p>There was one limitation that kept bothering me: every maze existed only in memory. The moment I closed the visualizer, that maze was gone. I could generate another one, but I could not reopen the exact layout I had just tested.</p>
+      <p>I had also built a minimal Redis-compatible server in C++ some time earlier. It could receive commands over TCP, store key-value pairs, and persist its data to disk. The two projects seemed unrelated at first, but the missing persistence in the visualizer gave the server a practical job.</p>
+
+      <div class="article-callout"><span>The idea</span><strong>Let the visualizer behave like an ordinary Redis client instead of giving it direct access to the server’s code or memory.</strong></div>
+
+      <h2>Keeping both projects independent</h2>
+      <p>I did not want to merge the Redis server into the maze project. That would make the integration easier, but it would also create tight coupling: the visualizer would depend on internal server classes, data structures, and implementation details.</p>
+      <p>Instead, I added a small client to the visualizer using POSIX TCP sockets. The visualizer only knows an address, a port, and the Redis Serialization Protocol. The server does not know what a maze is. It simply receives a key and a string value, exactly as it would from any other client.</p>
+      <p>This boundary became my favourite part of the feature. I could stop either program, rebuild it, or change its internals without changing the contract between them.</p>
+
+      <h2>Turning a maze into a string</h2>
+      <p>A generated maze lives in memory as a grid of cells. Each cell stores bit flags describing information such as which walls are open. A pointer to that grid is meaningful only inside the running process, so saving it required a portable representation.</p>
+      <p>I chose a deliberately simple text format: the maze dimensions come first, followed by the numeric bitmask for every cell.</p>
+      <pre class="article-code"><code>19,8|18,26,10,12,...</code></pre>
+      <p>The comma separates numbers and the vertical bar separates metadata from cell data. It is not a sophisticated file format, but it is compact, easy to inspect, and straightforward to parse. More importantly, it contains everything needed to rebuild the original grid.</p>
+
+      <h2>Saving with SET</h2>
+      <p>When I press <strong>P</strong>, the visualizer serializes the current maze, opens a TCP connection to my server, and wraps the result in a RESP <code>SET</code> command under the key <code>maze:last</code>.</p>
+      <pre class="article-code"><code>*3&#13;&#10;$3&#13;&#10;SET&#13;&#10;$9&#13;&#10;maze:last&#13;&#10;$...&#13;&#10;19,8|18,26,10,12,...&#13;&#10;</code></pre>
+      <p>RESP includes the number of command elements and the exact byte length of each string. That length matters: the server does not need to guess where the serialized maze ends, and the value can safely contain punctuation used by my own format.</p>
+
+      <h2>Loading and rebuilding</h2>
+      <p>Pressing <strong>L</strong> follows the path in reverse. The client sends <code>GET maze:last</code>, reads the RESP bulk-string response, and passes the stored value to the deserializer.</p>
+      <p>I treat data from the server as untrusted input, even though both programs are mine. Before modifying the active maze, the visualizer checks the dimensions, confirms that every token is numeric, verifies the expected number of cells, and rejects values that do not fit the allowed cell representation.</p>
+      <p>Only after the full value passes validation does it replace the current grid. This avoids leaving the program with a half-loaded maze when a response is incomplete or malformed.</p>
+
+      <h2>Persistence across both programs</h2>
+      <p>The integration became more useful because the Redis-compatible server already saves its key-value data to disk. The maze therefore survives more than a visualizer restart. I can close the visualizer, restart the server, launch the visualizer again, press <strong>L</strong>, and recover the same layout.</p>
+      <p>That small interaction made persistence feel less abstract. It was no longer just a server feature verified by a test command; it preserved something visible that another program depended on.</p>
+
+      <h2>What connecting them taught me</h2>
+      <p>The amount of new code was not huge, but it forced several ideas to work together:</p>
+      <ul>
+        <li>Serialization turns an in-memory structure into a portable representation.</li>
+        <li>TCP provides the connection, while RESP defines how both programs understand the bytes.</li>
+        <li>Input validation protects the visualizer from corrupt or incomplete state.</li>
+        <li>Persistence becomes more meaningful when another application actually relies on it.</li>
+        <li>A stable protocol lets two systems remain independent while still being useful together.</li>
+      </ul>
+      <p>Individually, one project generated and solved mazes while the other stored key-value data. Connecting them gave the Redis server a real client and gave the visualizer memory beyond a single process. More than anything, it showed me why combining small systems can teach more than adding another isolated feature to either one.</p>
+
+      <div class="article-end">
+        <p>Both projects are available separately on GitHub.</p>
+        <a href="https://github.com/diaznakh/AStar-vs-Dijkstra-Maze-Visualizer" target="_blank" rel="noreferrer">Maze visualizer ↗</a><br>
+        <a href="https://github.com/diaznakh/Redis-Server" target="_blank" rel="noreferrer">Redis-compatible server ↗</a>
+      </div>
+    </article>
+    <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../">Back to portfolio ↑</a></footer>
+  </main>
+</body>
+</html>
