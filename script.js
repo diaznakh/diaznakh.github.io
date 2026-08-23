@@ -55,13 +55,19 @@ if (tracker) {
 const orbit = document.querySelector(".hero-orbit");
 const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
 const ORBIT_SPEED = 38;
+const MOBILE_ORBIT_SPEED = 26;
 const EDGE_GAP = 12;
 const COLLISION_GAP = 3;
 
+function activeOrbitSpeed() {
+  return window.innerWidth <= 560 ? MOBILE_ORBIT_SPEED : ORBIT_SPEED;
+}
+
 function keepOrbitSpeed(body) {
   const magnitude = Math.hypot(body.vx, body.vy) || 1;
-  body.vx = (body.vx / magnitude) * ORBIT_SPEED;
-  body.vy = (body.vy / magnitude) * ORBIT_SPEED;
+  const speed = activeOrbitSpeed();
+  body.vx = (body.vx / magnitude) * speed;
+  body.vy = (body.vy / magnitude) * speed;
 }
 
 if (orbit && orbitLinks.length === 2) {
@@ -165,10 +171,11 @@ if (orbit && orbitLinks.length === 2) {
     const ny = Math.sin(angle);
     const separation = radii[0] + radii[1] + 34;
     const center = size / 2;
+    const speed = activeOrbitSpeed();
 
     bodies = [
-      { x: center - nx * separation * 0.5, y: center - ny * separation * 0.5, vx: nx * ORBIT_SPEED, vy: ny * ORBIT_SPEED, radius: radii[0] },
-      { x: center + nx * separation * 0.5, y: center + ny * separation * 0.5, vx: -nx * ORBIT_SPEED, vy: -ny * ORBIT_SPEED, radius: radii[1] }
+      { x: center - nx * separation * 0.5, y: center - ny * separation * 0.5, vx: nx * speed, vy: ny * speed, radius: radii[0] },
+      { x: center + nx * separation * 0.5, y: center + ny * separation * 0.5, vx: -nx * speed, vy: -ny * speed, radius: radii[1] }
     ];
     bodies.forEach(constrainBody);
     renderOrbit();
