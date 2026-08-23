@@ -11,8 +11,8 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
-  <link rel="stylesheet" href="../styles.css?v=20260824-connected1">
-  <script src="../script.js?v=20260824-connected1" defer></script>
+  <link rel="stylesheet" href="../styles.css?v=20260824-articlelab1">
+  <script src="../script.js?v=20260824-articlelab1" defer></script>
 </head>
 <body>
   <main class="article-page">
@@ -48,22 +48,42 @@
       <pre class="article-code"><code>*3&#13;&#10;$3&#13;&#10;SET&#13;&#10;$9&#13;&#10;maze:last&#13;&#10;$...&#13;&#10;19,8|18,26,10,12,...&#13;&#10;</code></pre>
       <p>RESP includes the number of command elements and the exact byte length of each string. That length matters: the server does not need to guess where the serialized maze ends, and the value can safely contain punctuation used by my own format.</p>
 
-      <section class="bridge-demo" aria-labelledby="bridge-demo-title">
-        <div class="bridge-demo-heading"><span>Interactive system trace</span><h2 id="bridge-demo-title">See both C++ projects work together</h2><p>Generate a maze, save it through the simulated Redis client, clear the visualizer, then load the same cell data back.</p></div>
-        <div class="bridge-flow" aria-label="Maze visualizer to Redis data flow"><span>MazeVisualizer</span><b>TCP + RESP →</b><span>RedisClient</span><b>SET / GET →</b><span>Mini Redis</span></div>
-        <div class="bridge-grid">
-          <div class="bridge-visualizer">
-            <div class="bridge-bar"><span>maze.cpp / 19 × 8</span><strong id="bridge-status">Maze exists only in visualizer memory</strong></div>
-            <canvas id="bridge-maze" width="760" height="320" aria-label="Maze being saved to and loaded from Redis"></canvas>
-            <div class="bridge-actions"><button id="bridge-new" type="button">R · New</button><button id="bridge-save" type="button">P · Save</button><button id="bridge-restart" type="button">Restart app</button><button class="primary" id="bridge-load" type="button">L · Load</button></div>
+
+      <section class="article-live-lab" aria-labelledby="connected-demo-title">
+        <div class="article-live-lab-heading">
+          <span>Interactive demo / Shared browser sandbox</span>
+          <h2 id="connected-demo-title">Try the two projects working together</h2>
+          <p>The terminal and maze visualizer below share the same <code>maze:last</code> value. Generate a maze, inspect it with <code>GET maze:last</code>, replace it through the terminal, or use the visualizer’s save and load controls.</p>
+        </div>
+        <div class="lab-grid">
+          <div class="lab-copy">
+            <span class="lab-status"><i aria-hidden="true"></i> Mini Redis</span>
+            <h3>Inspect the stored maze</h3>
+            <p>Try <code>GET maze:last</code>, <code>KEYS</code>, or <code>DEL maze:last</code>. The terminal and visualization update the same browser-persisted key-value store.</p>
+            <small>The native projects communicate with POSIX TCP sockets and RESP. This browser version uses local storage because a static webpage cannot open raw TCP connections.</small>
           </div>
-          <div class="bridge-inspector">
-            <div><span>Serialized cell data</span><code id="bridge-serialized">(generating…)</code></div>
-            <div><span>Wire / server response</span><pre id="bridge-wire">Waiting for the client…</pre></div>
+          <div class="terminal" aria-label="Interactive Redis-style terminal">
+            <div class="terminal-bar"><span>localhost:6379 / sandbox</span><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+            <div class="terminal-output" id="terminal-output" aria-live="polite"><p class="terminal-line note">ZaidDB browser sandbox · local session</p><p class="terminal-line note">Type HELP to see available commands.</p></div>
+            <form class="terminal-form" id="terminal-form"><span aria-hidden="true">›</span><input id="terminal-input" aria-label="Terminal command" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Try GET maze:last"></form>
           </div>
         </div>
-        <p class="bridge-note">This browser version uses local storage because browsers cannot open raw POSIX TCP sockets. The serialization, key, RESP request shape, validation rules, and save/load flow mirror the code in the GitHub repositories.</p>
+        <div class="maze-demo" aria-labelledby="maze-demo-title">
+          <div class="maze-demo-head">
+            <div><p class="eyebrow">Pathfinding + Redis / Shared browser sandbox</p><h3 id="maze-demo-title">Watch Dijkstra and A* search side by side.</h3><small class="maze-storage-status" id="maze-storage-status">Generating maze…</small></div>
+            <p>This matches the C++ project’s 19×8 cell bitmasks. Every new maze is serialized and auto-saved to <code>maze:last</code>, so the terminal above can retrieve the exact same data.</p>
+          </div>
+          <div class="maze-panels">
+            <article class="maze-panel"><div class="maze-panel-title"><strong>Dijkstra</strong><span id="maze-dijkstra-stat">Ready</span></div><canvas id="maze-dijkstra" width="570" height="240" aria-label="Dijkstra maze visualization"></canvas></article>
+            <article class="maze-panel"><div class="maze-panel-title"><strong>A*</strong><span id="maze-astar-stat">Ready</span></div><canvas id="maze-astar" width="570" height="240" aria-label="A star maze visualization"></canvas></article>
+          </div>
+          <div class="maze-demo-foot">
+            <div class="maze-controls"><button id="maze-generate" type="button">New + auto-save</button><button id="maze-save" type="button">P · Save</button><button id="maze-load" type="button">L · Load</button><button id="maze-run" type="button">Run comparison</button></div>
+            <div class="maze-legend" aria-label="Maze legend"><span><i class="visited"></i>Explored</span><span><i class="path"></i>Shortest path</span><span><i class="target"></i>Start / goal</span></div>
+          </div>
+        </div>
       </section>
+
 
 
       <h2>Loading and rebuilding</h2>
