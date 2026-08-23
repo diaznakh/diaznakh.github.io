@@ -203,3 +203,38 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
   .hero-orbit .round-link span,.hero-orbit .round-link b { color:var(--paper)!important; opacity:1!important; visibility:visible!important; }
 }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
+
+
+/* Browser maze comparison */
+.maze-demo { margin-top:72px; padding-top:64px; border-top:1px solid var(--line); }
+.maze-demo-head { display:grid; grid-template-columns:1.2fr .8fr; gap:4vw; align-items:end; margin-bottom:32px; }
+.maze-demo-head h3 { max-width:760px; margin:16px 0 0; font-size:clamp(2rem,4.2vw,4.8rem); line-height:.96; letter-spacing:-.052em; }
+.maze-demo-head > p { margin:0; color:#aeb0a8; line-height:1.7; }
+.maze-panels { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.maze-panel { min-width:0; border:1px solid rgba(201,255,74,.2); background:#090a09; }
+.maze-panel-title { display:flex; justify-content:space-between; gap:16px; padding:13px 16px; border-bottom:1px solid var(--line); font:.67rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.12em; }
+.maze-panel-title strong { color:var(--paper); }
+.maze-panel-title span { color:var(--acid); text-align:right; }
+.maze-panel canvas { display:block; width:100%; height:auto; background:#0b0c0b; }
+.maze-demo-foot { display:flex; justify-content:space-between; align-items:center; gap:24px; margin-top:20px; }
+.maze-controls { display:flex; gap:10px; }
+.maze-controls button { border:1px solid rgba(201,255,74,.45); padding:12px 17px; background:transparent; color:var(--paper); font:.66rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.11em; cursor:pointer; }
+.maze-controls button:hover,.maze-controls button:focus-visible { background:var(--acid); color:var(--ink); outline:none; }
+.maze-controls button:disabled { cursor:wait; opacity:.55; }
+.maze-legend { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:16px; color:#858880; font:.62rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.08em; }
+.maze-legend span { display:flex; align-items:center; gap:7px; }
+.maze-legend i { width:9px; height:9px; display:inline-block; border-radius:2px; }
+.maze-legend .visited { background:#34402d; } .maze-legend .path { background:var(--acid); } .maze-legend .target { border-radius:50%; background:#f1f0e9; }
+@media (max-width:800px) {
+  .maze-demo-head,.maze-panels { grid-template-columns:1fr; }
+  .maze-demo-head { align-items:start; }
+  .maze-demo-foot { align-items:flex-start; flex-direction:column; }
+  .maze-legend { justify-content:flex-start; }
+}
+@media (max-width:560px) {
+  .maze-demo { margin-top:54px; padding-top:48px; }
+  .maze-demo-head h3 { font-size:2.25rem; }
+  .maze-panel-title { font-size:.59rem; }
+  .maze-controls { width:100%; }
+  .maze-controls button { flex:1; padding-inline:10px; }
+}
