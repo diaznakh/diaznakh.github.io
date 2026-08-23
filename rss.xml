@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zaid Khan — Technical Field Notes</title>
+    <link>https://diaznakh.github.io/#writing</link>
+    <description>Notes on C++, systems programming, algorithms, networking, and learning by building.</description>
+    <language>en</language>
+    <atom:link href="https://diaznakh.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Connecting My Maze Visualizer to Redis</title>
+      <link>https://diaznakh.github.io/blog/maze-redis-integration.html</link>
+      <guid isPermaLink="true">https://diaznakh.github.io/blog/maze-redis-integration.html</guid>
+      <pubDate>Mon, 24 Aug 2026 00:00:00 +0530</pubDate>
+      <description>How two separate C++ projects became one useful system through serialization, POSIX sockets, RESP, validation, and persistent storage.</description>
+    </item>
+    <item>
+      <title>Why Dijkstra Beat A* in My Tiny Maze</title>
+      <link>https://diaznakh.github.io/blog/astar-vs-dijkstra.html</link>
+      <guid isPermaLink="true">https://diaznakh.github.io/blog/astar-vs-dijkstra.html</guid>
+      <pubDate>Sun, 23 Aug 2026 00:00:00 +0530</pubDate>
+      <description>A practical look at why Dijkstra can benchmark faster than A* on a tiny maze despite exploring more nodes.</description>
+    </item>
+  </channel>
+</rss>
