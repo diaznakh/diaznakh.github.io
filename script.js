@@ -52,6 +52,69 @@ if (tracker) {
 }
 
 
+
+const terminalForm = document.querySelector("#terminal-form");
+const terminalInput = document.querySelector("#terminal-input");
+const terminalOutput = document.querySelector("#terminal-output");
+const terminalStorageKey = "zaid-redis-sandbox-v1";
+let terminalStore = { "maze:last": "19,8|18,26,10,12,..." };
+
+try {
+  const savedTerminalStore = localStorage.getItem(terminalStorageKey);
+  if (savedTerminalStore) terminalStore = JSON.parse(savedTerminalStore);
+} catch {}
+
+function saveTerminalStore() {
+  try { localStorage.setItem(terminalStorageKey, JSON.stringify(terminalStore)); } catch {}
+}
+
+function terminalTokens(value) {
+  return [...value.matchAll(/"([^"]*)"|'([^']*)'|([^\s]+)/g)].map((match) => match[1] ?? match[2] ?? match[3]);
+}
+
+function addTerminalLine(kind, value) {
+  const line = document.createElement("p");
+  line.className = "terminal-line " + kind;
+  line.textContent = value;
+  terminalOutput.append(line);
+  terminalOutput.scrollTo({ top: terminalOutput.scrollHeight, behavior: "smooth" });
+}
+
+if (terminalForm && terminalInput && terminalOutput) {
+  terminalForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const raw = terminalInput.value.trim();
+    terminalInput.value = "";
+    const parts = terminalTokens(raw);
+    const command = (parts.shift() || "").toUpperCase();
+    if (!command) return;
+
+    let response = "(error) unknown command — type HELP";
+    if (command === "HELP") response = "PING · SET key value · GET key · DEL key [key...] · EXISTS key · KEYS · RESET · CLEAR";
+    else if (command === "PING") response = "PONG";
+    else if (command === "SET") {
+      const key = parts.shift();
+      if (!key || !parts.length) response = "(error) usage: SET key value";
+      else { terminalStore[key] = parts.join(" "); saveTerminalStore(); response = "OK"; }
+    } else if (command === "GET") response = parts[0] ? (terminalStore[parts[0]] ?? "(nil)") : "(error) usage: GET key";
+    else if (command === "DEL") {
+      if (!parts.length) response = "(error) usage: DEL key [key...]";
+      else {
+        let removed = 0;
+        parts.forEach((key) => { if (key in terminalStore) { delete terminalStore[key]; removed += 1; } });
+        saveTerminalStore();
+        response = String(removed);
+      }
+    } else if (command === "EXISTS") response = parts[0] ? (parts[0] in terminalStore ? "1" : "0") : "(error) usage: EXISTS key";
+    else if (command === "KEYS") response = Object.keys(terminalStore).sort().join("\n") || "(empty list)";
+    else if (command === "RESET") { terminalStore = { "maze:last": "19,8|18,26,10,12,..." }; saveTerminalStore(); response = "OK — sample dataset restored"; }
+    else if (command === "CLEAR") { terminalOutput.replaceChildren(); return; }
+
+    addTerminalLine("command", "> " + raw);
+    addTerminalLine("response", response);
+  });
+}
+
 const orbit = document.querySelector(".hero-orbit");
 const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
 const ORBIT_SPEED = 38;
