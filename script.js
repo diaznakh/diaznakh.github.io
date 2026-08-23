@@ -75,6 +75,12 @@ function keepOrbitSpeed(body) {
 }
 
 if (orbit && orbitLinks.length === 2) {
+  orbitLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (isMobileOrbit()) window.setTimeout(() => link.blur(), 0);
+    });
+  });
+
   let bodies = null;
   let obstacles = [];
   let previousTime = performance.now();
