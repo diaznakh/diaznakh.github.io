@@ -499,16 +499,3 @@ const MazeBridgeCore = (() => {
   function run(){stop();runButton.disabled=true;generateButton.disabled=true;const maximum=Math.max(...solutions.map(solution=>solution.explored.length));if(matchMedia("(prefers-reduced-motion: reduce)").matches){render(maximum,true);stats.forEach((stat,index)=>stat.textContent=solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps");stop();return;}let shown=0,last=performance.now();const frame=now=>{if(now-last>24){shown+=2;last=now;render(shown,shown>=maximum);stats.forEach((stat,index)=>stat.textContent=shown>=maximum?solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps":Math.min(shown,solutions[index].explored.length)+" explored");}if(shown<maximum)timer=requestAnimationFrame(frame);else stop();};timer=requestAnimationFrame(frame);}
   generateButton.addEventListener("click",generate);saveButton?.addEventListener("click",save);loadButton?.addEventListener("click",load);runButton.addEventListener("click",run);generate();
 })();
-
-(() => {
-  const canvas=document.querySelector("#bridge-maze");
-  if(!canvas)return;
-  const status=document.querySelector("#bridge-status"),serialized=document.querySelector("#bridge-serialized"),wire=document.querySelector("#bridge-wire");
-  let cells=MazeBridgeCore.generate();
-  const render=()=>{MazeBridgeCore.draw(canvas,cells);serialized.textContent=cells.length?MazeBridgeCore.serialize(cells):"(visualizer memory is empty)";};
-  const generate=()=>{cells=MazeBridgeCore.generate();status.textContent="New maze generated in memory";wire.textContent="Not saved yet — press P · Save";render();};
-  const save=()=>{if(!cells.length){status.textContent="Generate a maze first";return;}const value=MazeBridgeCore.save(cells);wire.textContent="*3\\r\\n$3\\r\\nSET\\r\\n$9\\r\\nmaze:last\\r\\n$"+value.length+"\\r\\n"+value.slice(0,48)+"…\\r\\n\n← +OK";status.textContent="Persisted "+value.length+" bytes under maze:last";};
-  const restart=()=>{cells=[];status.textContent="Visualizer restarted — in-memory maze is gone";wire.textContent="The Redis sandbox still holds maze:last";render();};
-  const load=()=>{const value=terminalStore["maze:last"];wire.textContent="*2\\r\\n$3\\r\\nGET\\r\\n$9\\r\\nmaze:last\\r\\n\n← "+(value?"$"+value.length+"\\r\\n"+value.slice(0,48)+"…":"$-1");const loaded=MazeBridgeCore.load();if(!loaded){status.textContent=value?"Rejected invalid stored maze":"GET maze:last returned nil";return;}cells=loaded;status.textContent="Reconstructed the same 19×8 maze from Redis";render();};
-  document.querySelector("#bridge-new").addEventListener("click",generate);document.querySelector("#bridge-save").addEventListener("click",save);document.querySelector("#bridge-restart").addEventListener("click",restart);document.querySelector("#bridge-load").addEventListener("click",load);render();
-})();
