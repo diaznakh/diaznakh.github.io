@@ -13,8 +13,8 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260824-maze1">
-  <script src="script.js?v=20260824-maze1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260824-connected1">
+  <script src="script.js?v=20260824-connected1" defer></script>
 </head>
 <body>
   <main>
@@ -79,24 +79,27 @@
       <div class="maze-demo" aria-labelledby="maze-demo-title">
         <div class="maze-demo-head">
           <div>
-            <p class="eyebrow">Pathfinding lab / Same maze</p>
+            <p class="eyebrow">Pathfinding + Redis / Shared browser sandbox</p>
             <h3 id="maze-demo-title">Watch Dijkstra and A* search side by side.</h3>
+            <small class="maze-storage-status" id="maze-storage-status">Generating maze…</small>
           </div>
-          <p>A recursive-backtracking generator builds one perfect maze. Both algorithms then solve that exact maze so their explored-node counts are directly comparable.</p>
+          <p>This matches the C++ project’s 19×8 cell bitmasks. Every new maze is serialized and auto-saved to <code>maze:last</code>, so the terminal above can retrieve the exact same data.</p>
         </div>
         <div class="maze-panels">
           <article class="maze-panel">
             <div class="maze-panel-title"><strong>Dijkstra</strong><span id="maze-dijkstra-stat">Ready</span></div>
-            <canvas id="maze-dijkstra" width="570" height="330" aria-label="Dijkstra maze visualization"></canvas>
+            <canvas id="maze-dijkstra" width="570" height="240" aria-label="Dijkstra maze visualization"></canvas>
           </article>
           <article class="maze-panel">
             <div class="maze-panel-title"><strong>A*</strong><span id="maze-astar-stat">Ready</span></div>
-            <canvas id="maze-astar" width="570" height="330" aria-label="A star maze visualization"></canvas>
+            <canvas id="maze-astar" width="570" height="240" aria-label="A star maze visualization"></canvas>
           </article>
         </div>
         <div class="maze-demo-foot">
           <div class="maze-controls">
-            <button id="maze-generate" type="button">New maze</button>
+            <button id="maze-generate" type="button">New + auto-save</button>
+            <button id="maze-save" type="button">P · Save</button>
+            <button id="maze-load" type="button">L · Load</button>
             <button id="maze-run" type="button">Run comparison</button>
           </div>
           <div class="maze-legend" aria-label="Maze legend"><span><i class="visited"></i>Explored</span><span><i class="path"></i>Shortest path</span><span><i class="target"></i>Start / goal</span></div>
