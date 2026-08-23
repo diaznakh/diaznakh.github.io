@@ -67,6 +67,7 @@ em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight
 .linkedin-heading h3 { margin:.3rem 0 0; font-size:1.35rem; }
 .linkedin-mark { display:grid; place-items:center; width:42px; height:42px; background:#0a66c2; color:white; border-radius:3px; font-size:1.1rem; font-weight:800; }
 .linkedin-posts { margin:auto 0; padding:2.2rem 0; }
+.tracker-message { margin:auto 0; padding:4rem 0; color:#969890; line-height:1.65; }
 .linkedin-post { position:relative; display:block; padding:22px 42px 22px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .linkedin-post>div { display:flex; justify-content:space-between; gap:1rem; color:#7f8179; font:.6rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.1em; }
 .linkedin-post h4 { margin:2rem 0 .7rem; font-size:1.45rem; line-height:1.08; letter-spacing:-.035em; }
