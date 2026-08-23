@@ -258,3 +258,33 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
 @media (max-width:560px) {
   .article-live-lab { width:100vw; margin-block:4rem; padding:32px 5vw; }
 }
+
+
+/* Single-grid A* vs Dijkstra article demo */
+.single-grid-demo { width:min(1180px,94vw); margin:5rem 50% 4rem; transform:translateX(-50%); padding:36px; background:#111310; color:#f1f0e9; border:1px solid #30332d; }
+.single-grid-heading { display:flex; justify-content:space-between; align-items:end; gap:2rem; margin-bottom:26px; }
+.single-grid-heading span { color:#777a72; font:.64rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.12em; }
+.single-grid-heading h2 { margin:.7rem 0 0!important; color:#f1f0e9; font-size:clamp(2rem,4vw,4.2rem)!important; line-height:.95; }
+.single-grid-actions { display:flex; gap:.7rem; }
+.single-grid-actions button { padding:11px 16px; border:1px solid #4b4e47; background:transparent; color:#d7d8d1; font:.64rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.1em; cursor:pointer; }
+.single-grid-actions button:hover,.single-grid-actions button:focus-visible { border-color:#c9ff4a; color:#c9ff4a; outline:0; }
+.single-grid-actions button.primary { border-color:#c9ff4a; background:#c9ff4a; color:#0c0d0c; }
+.single-grid-actions button:disabled { opacity:.55; cursor:not-allowed; }
+.single-grid-canvas { display:block; width:100%; aspect-ratio:19 / 8; background:#0b0c0b; border:1px solid rgba(241,240,233,.14); }
+.single-grid-footer { display:flex; justify-content:space-between; align-items:flex-start; gap:2rem; margin-top:20px; }
+.single-grid-legend,.single-grid-stats { display:flex; flex-wrap:wrap; gap:.75rem 1.35rem; color:#898c84; font:.61rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.08em; }
+.single-grid-legend span { display:flex; align-items:center; gap:.45rem; }
+.single-grid-legend i { width:9px; height:9px; border-radius:50%; }
+.single-grid-legend .astar-visited { background:#48b5ff; } .single-grid-legend .dijkstra-visited { background:#ff54c4; }
+.single-grid-legend .astar-path { border-radius:1px; background:#57d9ff; } .single-grid-legend .dijkstra-path { border-radius:1px; background:#ffd35c; }
+.single-grid-stats { justify-content:flex-end; }
+.single-grid-stats strong { color:#f1f0e9; font-weight:500; }
+@media (max-width:820px) {
+  .single-grid-heading,.single-grid-footer { align-items:flex-start; flex-direction:column; }
+  .single-grid-stats { justify-content:flex-start; }
+}
+@media (max-width:560px) {
+  .single-grid-demo { width:100vw; margin-block:4rem; padding:24px 5vw; }
+  .single-grid-actions { width:100%; }
+  .single-grid-actions button { flex:1; }
+}
