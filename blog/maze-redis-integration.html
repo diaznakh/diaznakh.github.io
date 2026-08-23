@@ -11,7 +11,8 @@
   <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
-  <link rel="stylesheet" href="../styles.css?v=20260829-blog1">
+  <link rel="stylesheet" href="../styles.css?v=20260824-connected1">
+  <script src="../script.js?v=20260824-connected1" defer></script>
 </head>
 <body>
   <main class="article-page">
@@ -46,6 +47,24 @@
       <p>When I press <strong>P</strong>, the visualizer serializes the current maze, opens a TCP connection to my server, and wraps the result in a RESP <code>SET</code> command under the key <code>maze:last</code>.</p>
       <pre class="article-code"><code>*3&#13;&#10;$3&#13;&#10;SET&#13;&#10;$9&#13;&#10;maze:last&#13;&#10;$...&#13;&#10;19,8|18,26,10,12,...&#13;&#10;</code></pre>
       <p>RESP includes the number of command elements and the exact byte length of each string. That length matters: the server does not need to guess where the serialized maze ends, and the value can safely contain punctuation used by my own format.</p>
+
+      <section class="bridge-demo" aria-labelledby="bridge-demo-title">
+        <div class="bridge-demo-heading"><span>Interactive system trace</span><h2 id="bridge-demo-title">See both C++ projects work together</h2><p>Generate a maze, save it through the simulated Redis client, clear the visualizer, then load the same cell data back.</p></div>
+        <div class="bridge-flow" aria-label="Maze visualizer to Redis data flow"><span>MazeVisualizer</span><b>TCP + RESP →</b><span>RedisClient</span><b>SET / GET →</b><span>Mini Redis</span></div>
+        <div class="bridge-grid">
+          <div class="bridge-visualizer">
+            <div class="bridge-bar"><span>maze.cpp / 19 × 8</span><strong id="bridge-status">Maze exists only in visualizer memory</strong></div>
+            <canvas id="bridge-maze" width="760" height="320" aria-label="Maze being saved to and loaded from Redis"></canvas>
+            <div class="bridge-actions"><button id="bridge-new" type="button">R · New</button><button id="bridge-save" type="button">P · Save</button><button id="bridge-restart" type="button">Restart app</button><button class="primary" id="bridge-load" type="button">L · Load</button></div>
+          </div>
+          <div class="bridge-inspector">
+            <div><span>Serialized cell data</span><code id="bridge-serialized">(generating…)</code></div>
+            <div><span>Wire / server response</span><pre id="bridge-wire">Waiting for the client…</pre></div>
+          </div>
+        </div>
+        <p class="bridge-note">This browser version uses local storage because browsers cannot open raw POSIX TCP sockets. The serialization, key, RESP request shape, validation rules, and save/load flow mirror the code in the GitHub repositories.</p>
+      </section>
+
 
       <h2>Loading and rebuilding</h2>
       <p>Pressing <strong>L</strong> follows the path in reverse. The client sends <code>GET maze:last</code>, reads the RESP bulk-string response, and passes the stored value to the deserializer.</p>
