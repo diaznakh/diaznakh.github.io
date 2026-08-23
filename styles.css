@@ -139,8 +139,11 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
 @media (max-width:560px) {
   .site-header { height:74px; padding:0 5vw; } .availability { font-size:.64rem; } .hero { min-height:auto; padding:120px 5vw 70px; }
   .hero-kicker span:last-child { display:none; } .hero h1 { max-width:100%; font-size:16vw; line-height:.93; text-shadow:none; }
-  .hero-footer { width:100%; margin-top:2rem; } .hero-footer p { max-width:92%; font-size:.98rem; } .hero-orbit { display:none; }
-  .hero-code { position:relative; bottom:auto; left:auto; right:auto; margin-top:3rem; }
+  .hero-footer { width:100%; margin-top:2rem; } .hero-footer p { max-width:92%; font-size:.98rem; }
+  .hero-orbit { display:block; position:relative; width:min(90vw,360px); right:auto; top:auto; margin:2.75rem auto 0; }
+  .hero-orbit .round-link { width:92px; height:92px; flex-basis:92px; font-size:.54rem; gap:.45rem; }
+  .hero-orbit .round-link b { font-size:1rem; }
+  .hero-code { position:relative; bottom:auto; left:auto; right:auto; margin-top:2.5rem; }
   .about-grid { grid-template-columns:1fr; } .about-copy,.education-card,.about-portrait { grid-column:1; } .about-portrait { height:480px; } .education-card { order:3; }
   .project-card { grid-template-columns:42px 1fr 24px; padding:30px 0; } .project-card:hover { padding-left:10px; padding-right:10px; }
   .project-copy h3 { font-size:1.65rem; } .contact { padding:90px 5vw 70px; } .contact h2 { margin:36px 0 56px; font-size:16vw; }
