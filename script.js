@@ -415,178 +415,100 @@ if (orbit && orbitLinks.length === 2) {
 }
 
 
-// Interactive A* vs Dijkstra maze comparison
-(() => {
-  const canvases = [document.querySelector("#maze-dijkstra"), document.querySelector("#maze-astar")];
-  const stats = [document.querySelector("#maze-dijkstra-stat"), document.querySelector("#maze-astar-stat")];
-  const generateButton = document.querySelector("#maze-generate");
-  const runButton = document.querySelector("#maze-run");
-  if (canvases.some((canvas) => !canvas) || !generateButton || !runButton) return;
-
-  const COLS = 19, ROWS = 11, N = 1, E = 2, S = 4, W = 8;
-  const directions = [
-    { dx: 0, dy: -1, bit: N, opposite: S },
-    { dx: 1, dy: 0, bit: E, opposite: W },
-    { dx: 0, dy: 1, bit: S, opposite: N },
-    { dx: -1, dy: 0, bit: W, opposite: E }
+// Connected 19x8 maze, Redis sandbox, and article trace
+const MazeBridgeCore = (() => {
+  const COLS=19, ROWS=8, TOTAL=COLS*ROWS, N=1, E=2, S=4, W=8, VISITED=16;
+  const directions=[
+    {dx:0,dy:-1,path:N,opposite:S},{dx:1,dy:0,path:E,opposite:W},
+    {dx:0,dy:1,path:S,opposite:N},{dx:-1,dy:0,path:W,opposite:E}
   ];
-  let walls, solutions, timer = null;
-
-  const indexOf = (x, y) => y * COLS + x;
-  const pointOf = (index) => ({ x: index % COLS, y: Math.floor(index / COLS) });
-
-  function makeMaze() {
-    walls = new Uint8Array(COLS * ROWS).fill(N | E | S | W);
-    const seen = new Uint8Array(walls.length);
-    const stack = [0];
-    seen[0] = 1;
-    while (stack.length) {
-      const current = stack[stack.length - 1];
-      const { x, y } = pointOf(current);
-      const options = directions.filter(({ dx, dy }) => {
-        const nx = x + dx, ny = y + dy;
-        return nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && !seen[indexOf(nx, ny)];
-      });
-      if (!options.length) { stack.pop(); continue; }
-      const direction = options[Math.floor(Math.random() * options.length)];
-      const next = indexOf(x + direction.dx, y + direction.dy);
-      walls[current] &= ~direction.bit;
-      walls[next] &= ~direction.opposite;
-      seen[next] = 1;
+  const point=(index)=>({x:index%COLS,y:Math.floor(index/COLS)});
+  const indexOf=(x,y)=>y*COLS+x;
+  function generate(){
+    const cells=new Uint8Array(TOTAL);
+    const stack=[Math.floor(Math.random()*TOTAL)];
+    cells[stack[0]]|=VISITED;
+    while(stack.length){
+      const current=stack[stack.length-1], {x,y}=point(current);
+      const options=directions.filter(({dx,dy})=>{const nx=x+dx,ny=y+dy;return nx>=0&&nx<COLS&&ny>=0&&ny<ROWS&&!(cells[indexOf(nx,ny)]&VISITED);});
+      if(!options.length){stack.pop();continue;}
+      const direction=options[Math.floor(Math.random()*options.length)];
+      const next=indexOf(x+direction.dx,y+direction.dy);
+      cells[current]|=direction.path;
+      cells[next]|=direction.opposite|VISITED;
       stack.push(next);
     }
-    solutions = [solve(false), solve(true)];
-    stopAnimation();
-    renderBoth(0, false);
-    stats[0].textContent = "Ready";
-    stats[1].textContent = "Ready";
-  }
-
-  function neighbours(node) {
-    const { x, y } = pointOf(node);
-    return directions.flatMap(({ dx, dy, bit }) => {
-      if (walls[node] & bit) return [];
-      const nx = x + dx, ny = y + dy;
-      return nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS ? [indexOf(nx, ny)] : [];
-    });
-  }
-
-  function solve(useHeuristic) {
-    const start = 0, goal = walls.length - 1;
-    const distance = new Float64Array(walls.length).fill(Infinity);
-    const previous = new Int32Array(walls.length).fill(-1);
-    const closed = new Uint8Array(walls.length);
-    const queue = [{ node: start, score: 0 }];
-    const explored = [];
-    distance[start] = 0;
-    while (queue.length) {
-      queue.sort((a, b) => a.score - b.score);
-      const current = queue.shift().node;
-      if (closed[current]) continue;
-      closed[current] = 1;
-      explored.push(current);
-      if (current === goal) break;
-      for (const next of neighbours(current)) {
-        if (closed[next]) continue;
-        const candidate = distance[current] + 1;
-        if (candidate < distance[next]) {
-          distance[next] = candidate;
-          previous[next] = current;
-          const p = pointOf(next), g = pointOf(goal);
-          const heuristic = useHeuristic ? Math.abs(p.x - g.x) + Math.abs(p.y - g.y) : 0;
-          queue.push({ node: next, score: candidate + heuristic });
-        }
-      }
+    for(let count=0;count<Math.floor(TOTAL/8);count+=1){
+      if(Math.random()<.5){const x=Math.floor(Math.random()*(COLS-1)),y=Math.floor(Math.random()*ROWS);cells[indexOf(x,y)]|=E;cells[indexOf(x+1,y)]|=W;}
+      else{const x=Math.floor(Math.random()*COLS),y=Math.floor(Math.random()*(ROWS-1));cells[indexOf(x,y)]|=S;cells[indexOf(x,y+1)]|=N;}
     }
-    const path = [];
-    for (let node = goal; node !== -1; node = previous[node]) path.push(node);
-    path.reverse();
-    return { explored, path };
+    return Array.from(cells);
   }
-
-  function draw(canvas, solution, shown, finished) {
-    const ctx = canvas.getContext("2d");
-    const width = canvas.width, height = canvas.height;
-    const cellW = width / COLS, cellH = height / ROWS;
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#0b0c0b";
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = "#34402d";
-    solution.explored.slice(0, shown).forEach((node) => {
-      const { x, y } = pointOf(node);
-      ctx.fillRect(x * cellW + 1, y * cellH + 1, cellW - 2, cellH - 2);
-    });
-    if (finished) {
-      ctx.fillStyle = "#c9ff4a";
-      solution.path.forEach((node) => {
-        const { x, y } = pointOf(node);
-        ctx.fillRect(x * cellW + cellW * .27, y * cellH + cellH * .27, cellW * .46, cellH * .46);
-      });
+  const serialize=(cells)=>COLS+","+ROWS+"|"+cells.join(",");
+  function deserialize(value){
+    const separator=value.indexOf("|");
+    if(separator<0)return null;
+    const dimensions=value.slice(0,separator).split(",").map(Number);
+    const cells=value.slice(separator+1).split(",").map(Number),valid=N|E|S|W|VISITED;
+    return dimensions[0]===COLS&&dimensions[1]===ROWS&&cells.length===TOTAL&&cells.every(cell=>Number.isInteger(cell)&&cell>=0&&(cell&~valid)===0)?cells:null;
+  }
+  function save(cells){const value=serialize(cells);terminalStore={...terminalStore,"maze:last":value};saveTerminalStore();return value;}
+  function load(){const value=terminalStore["maze:last"];return value?deserialize(value):null;}
+  function neighbours(cells,node){
+    const {x,y}=point(node),result=[];
+    if((cells[node]&N)&&y>0)result.push(node-COLS);
+    if((cells[node]&E)&&x<COLS-1)result.push(node+1);
+    if((cells[node]&S)&&y<ROWS-1)result.push(node+COLS);
+    if((cells[node]&W)&&x>0)result.push(node-1);
+    return result;
+  }
+  function solve(cells,heuristic){
+    const goal=TOTAL-1,distance=new Float64Array(TOTAL).fill(Infinity),previous=new Int32Array(TOTAL).fill(-1),closed=new Uint8Array(TOTAL),queue=[{node:0,score:0}],explored=[];
+    distance[0]=0;
+    while(queue.length){
+      queue.sort((a,b)=>a.score-b.score);const current=queue.shift().node;
+      if(closed[current])continue;closed[current]=1;explored.push(current);if(current===goal)break;
+      for(const next of neighbours(cells,current)){const candidate=distance[current]+1;if(candidate>=distance[next])continue;distance[next]=candidate;previous[next]=current;const p=point(next),g=point(goal);queue.push({node:next,score:candidate+(heuristic?Math.abs(p.x-g.x)+Math.abs(p.y-g.y):0)});}
     }
-
-    ctx.strokeStyle = "rgba(241,240,233,.65)";
-    ctx.lineWidth = 1.35;
-    ctx.beginPath();
-    for (let node = 0; node < walls.length; node += 1) {
-      const { x, y } = pointOf(node);
-      const left = x * cellW, top = y * cellH, right = left + cellW, bottom = top + cellH;
-      if (walls[node] & N) { ctx.moveTo(left, top); ctx.lineTo(right, top); }
-      if (walls[node] & W) { ctx.moveTo(left, top); ctx.lineTo(left, bottom); }
-      if (y === ROWS - 1 && walls[node] & S) { ctx.moveTo(left, bottom); ctx.lineTo(right, bottom); }
-      if (x === COLS - 1 && walls[node] & E) { ctx.moveTo(right, top); ctx.lineTo(right, bottom); }
-    }
-    ctx.stroke();
-
-    [0, walls.length - 1].forEach((node, index) => {
-      const { x, y } = pointOf(node);
-      ctx.beginPath();
-      ctx.fillStyle = index ? "#f1f0e9" : "#c9ff4a";
-      ctx.arc(x * cellW + cellW / 2, y * cellH + cellH / 2, Math.min(cellW, cellH) * .22, 0, Math.PI * 2);
-      ctx.fill();
-    });
+    const path=[];for(let node=goal;node!==-1;node=previous[node])path.push(node);path.reverse();return{explored,path};
   }
-
-  function renderBoth(shown, finished) {
-    canvases.forEach((canvas, index) => draw(canvas, solutions[index], shown, finished));
+  function draw(canvas,cells,result,shown=0,finished=false){
+    const ctx=canvas.getContext("2d"),width=canvas.width,height=canvas.height,cellW=width/COLS,cellH=height/ROWS;
+    ctx.fillStyle="#0b0c0b";ctx.fillRect(0,0,width,height);
+    if(!cells.length){ctx.fillStyle="#777a72";ctx.font="14px ui-monospace, monospace";ctx.textAlign="center";ctx.fillText("Visualizer memory cleared",width/2,height/2);return;}
+    if(result){ctx.fillStyle="#34402d";result.explored.slice(0,shown).forEach(node=>{const{x,y}=point(node);ctx.fillRect(x*cellW+1,y*cellH+1,cellW-2,cellH-2);});if(finished){ctx.fillStyle="#c9ff4a";result.path.forEach(node=>{const{x,y}=point(node);ctx.fillRect(x*cellW+cellW*.27,y*cellH+cellH*.27,cellW*.46,cellH*.46);});}}
+    ctx.strokeStyle="rgba(241,240,233,.65)";ctx.lineWidth=1.25;ctx.beginPath();
+    cells.forEach((paths,node)=>{const{x,y}=point(node),left=x*cellW,top=y*cellH,right=left+cellW,bottom=top+cellH;if(!(paths&N)){ctx.moveTo(left,top);ctx.lineTo(right,top);}if(!(paths&W)){ctx.moveTo(left,top);ctx.lineTo(left,bottom);}if(!(paths&S)){ctx.moveTo(left,bottom);ctx.lineTo(right,bottom);}if(!(paths&E)){ctx.moveTo(right,top);ctx.lineTo(right,bottom);}});ctx.stroke();
+    [0,TOTAL-1].forEach((node,i)=>{const{x,y}=point(node);ctx.beginPath();ctx.fillStyle=i?"#f1f0e9":"#c9ff4a";ctx.arc(x*cellW+cellW/2,y*cellH+cellH/2,Math.min(cellW,cellH)*.22,0,Math.PI*2);ctx.fill();});
   }
+  return{COLS,ROWS,TOTAL,generate,serialize,deserialize,save,load,solve,draw};
+})();
 
-  function stopAnimation() {
-    if (timer) cancelAnimationFrame(timer);
-    timer = null;
-    runButton.disabled = false;
-    generateButton.disabled = false;
-  }
+(() => {
+  const canvases=[document.querySelector("#maze-dijkstra"),document.querySelector("#maze-astar")];
+  const stats=[document.querySelector("#maze-dijkstra-stat"),document.querySelector("#maze-astar-stat")];
+  const generateButton=document.querySelector("#maze-generate"),saveButton=document.querySelector("#maze-save"),loadButton=document.querySelector("#maze-load"),runButton=document.querySelector("#maze-run"),status=document.querySelector("#maze-storage-status");
+  if(canvases.some(canvas=>!canvas)||!generateButton||!runButton)return;
+  let cells=[],solutions=[],timer=null;
+  const stop=()=>{if(timer)cancelAnimationFrame(timer);timer=null;runButton.disabled=false;generateButton.disabled=false;};
+  const render=(shown=0,finished=false)=>canvases.forEach((canvas,index)=>MazeBridgeCore.draw(canvas,cells,solutions[index],shown,finished));
+  function prepare(next){cells=next;solutions=[MazeBridgeCore.solve(cells,false),MazeBridgeCore.solve(cells,true)];stop();render();stats[0].textContent="Ready";stats[1].textContent="Ready";}
+  function generate(){prepare(MazeBridgeCore.generate());const value=MazeBridgeCore.save(cells);status.textContent="Saved automatically as maze:last · "+value.length+" bytes";}
+  function save(){if(!cells.length)return;const value=MazeBridgeCore.save(cells);status.textContent="SET maze:last → OK · "+value.length+" bytes";}
+  function load(){const loaded=MazeBridgeCore.load();if(!loaded){status.textContent=terminalStore["maze:last"]?"Stored maze data is invalid":"GET maze:last → (nil)";return;}prepare(loaded);status.textContent="GET maze:last → loaded "+loaded.length+" cells";}
+  function run(){stop();runButton.disabled=true;generateButton.disabled=true;const maximum=Math.max(...solutions.map(solution=>solution.explored.length));if(matchMedia("(prefers-reduced-motion: reduce)").matches){render(maximum,true);stats.forEach((stat,index)=>stat.textContent=solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps");stop();return;}let shown=0,last=performance.now();const frame=now=>{if(now-last>24){shown+=2;last=now;render(shown,shown>=maximum);stats.forEach((stat,index)=>stat.textContent=shown>=maximum?solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps":Math.min(shown,solutions[index].explored.length)+" explored");}if(shown<maximum)timer=requestAnimationFrame(frame);else stop();};timer=requestAnimationFrame(frame);}
+  generateButton.addEventListener("click",generate);saveButton?.addEventListener("click",save);loadButton?.addEventListener("click",load);runButton.addEventListener("click",run);generate();
+})();
 
-  function run() {
-    stopAnimation();
-    runButton.disabled = true;
-    generateButton.disabled = true;
-    const maxSteps = Math.max(solutions[0].explored.length, solutions[1].explored.length);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      renderBoth(maxSteps, true);
-      stats.forEach((stat, index) => stat.textContent = solutions[index].explored.length + " explored · " + (solutions[index].path.length - 1) + " steps");
-      stopAnimation();
-      return;
-    }
-    let shown = 0, last = performance.now();
-    const frame = (now) => {
-      if (now - last > 24) {
-        shown += 2;
-        last = now;
-        renderBoth(shown, shown >= maxSteps);
-        stats.forEach((stat, index) => {
-          const count = Math.min(shown, solutions[index].explored.length);
-          stat.textContent = shown >= maxSteps ? solutions[index].explored.length + " explored · " + (solutions[index].path.length - 1) + " steps" : count + " explored";
-        });
-      }
-      if (shown < maxSteps) timer = requestAnimationFrame(frame);
-      else stopAnimation();
-    };
-    timer = requestAnimationFrame(frame);
-  }
-
-  generateButton.addEventListener("click", makeMaze);
-  runButton.addEventListener("click", run);
-  makeMaze();
+(() => {
+  const canvas=document.querySelector("#bridge-maze");
+  if(!canvas)return;
+  const status=document.querySelector("#bridge-status"),serialized=document.querySelector("#bridge-serialized"),wire=document.querySelector("#bridge-wire");
+  let cells=MazeBridgeCore.generate();
+  const render=()=>{MazeBridgeCore.draw(canvas,cells);serialized.textContent=cells.length?MazeBridgeCore.serialize(cells):"(visualizer memory is empty)";};
+  const generate=()=>{cells=MazeBridgeCore.generate();status.textContent="New maze generated in memory";wire.textContent="Not saved yet — press P · Save";render();};
+  const save=()=>{if(!cells.length){status.textContent="Generate a maze first";return;}const value=MazeBridgeCore.save(cells);wire.textContent="*3\\r\\n$3\\r\\nSET\\r\\n$9\\r\\nmaze:last\\r\\n$"+value.length+"\\r\\n"+value.slice(0,48)+"…\\r\\n\n← +OK";status.textContent="Persisted "+value.length+" bytes under maze:last";};
+  const restart=()=>{cells=[];status.textContent="Visualizer restarted — in-memory maze is gone";wire.textContent="The Redis sandbox still holds maze:last";render();};
+  const load=()=>{const value=terminalStore["maze:last"];wire.textContent="*2\\r\\n$3\\r\\nGET\\r\\n$9\\r\\nmaze:last\\r\\n\n← "+(value?"$"+value.length+"\\r\\n"+value.slice(0,48)+"…":"$-1");const loaded=MazeBridgeCore.load();if(!loaded){status.textContent=value?"Rejected invalid stored maze":"GET maze:last returned nil";return;}cells=loaded;status.textContent="Reconstructed the same 19×8 maze from Redis";render();};
+  document.querySelector("#bridge-new").addEventListener("click",generate);document.querySelector("#bridge-save").addEventListener("click",save);document.querySelector("#bridge-restart").addEventListener("click",restart);document.querySelector("#bridge-load").addEventListener("click",load);render();
 })();
