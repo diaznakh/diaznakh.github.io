@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why Dijkstra Beat A* in My Tiny Maze | Zaid Khan</title>
+  <meta name="description" content="A practical look at why Dijkstra can benchmark faster than A* on a tiny maze despite exploring more nodes.">
+  <meta property="og:title" content="Why Dijkstra Beat A* in My Tiny Maze">
+  <meta property="og:description" content="The cost of being smarter can be larger than the work it saves.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://diaznakh.github.io/assets/og.png">
+  <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/favicon.png">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <main class="article-page">
+    <header class="article-header">
+      <a class="wordmark" href="../" aria-label="Zaid Khan — home">ZK<span>.</span></a>
+      <a href="../#writing">← All writing</a>
+    </header>
+    <article class="article-shell">
+      <div class="article-meta"><span>Algorithms</span><time datetime="2026-08-23">23 August 2026</time><span>5 min read</span></div>
+      <h1>Why Dijkstra Beat A* in My <em>Tiny Maze</em></h1>
+      <p class="article-lede">A* explored fewer nodes. Dijkstra still finished faster. That result looked wrong—until I stopped thinking only about Big-O notation and started thinking about the actual work done by the CPU.</p>
+
+      <h2>The result that surprised me</h2>
+      <p>I built a C++ maze visualizer to compare Dijkstra’s algorithm with A*. Both algorithms found the same shortest path, exactly as expected. A* also explored fewer cells because its heuristic guided it toward the destination.</p>
+      <p>But when I measured execution time, Dijkstra sometimes won by a few microseconds. The algorithm doing more searching was finishing first.</p>
+
+      <div class="article-callout"><span>The short version</span><strong>On a tiny input, the cost of being smarter can be larger than the work it saves.</strong></div>
+
+      <h2>Why this happens</h2>
+      <p>My maze is small enough that both algorithms finish almost immediately. At that scale, A*’s extra bookkeeping matters. For every candidate cell, it calculates a heuristic, combines it with the known path cost, and compares a more complex priority value.</p>
+      <p>Dijkstra has no heuristic. It expands nodes using only the distance already travelled. It may visit more of them, but each visit is slightly simpler.</p>
+
+      <h2>The hardware does not read the textbook</h2>
+      <p>Algorithm analysis tells us how performance grows as the input becomes large. It does not promise that the algorithm with the better growth pattern wins every tiny benchmark. Cache behaviour, branch prediction, priority-queue operations, compiler optimizations, clock precision, and normal system noise can dominate a measurement this small.</p>
+      <p>On larger mazes, or maps with expensive exploration, A*’s ability to avoid irrelevant regions becomes much more valuable. The saved search work eventually outweighs the heuristic overhead.</p>
+
+      <h2>What I learned</h2>
+      <p>The useful lesson was not that Dijkstra is better than A*. It was that theory and measurement answer different questions. Theory helps predict how a system scales. Profiling shows what this implementation is doing on this machine, with this input, right now.</p>
+      <p>Good engineering needs both.</p>
+
+      <div class="article-end"><p>Built as part of my C++ Maze Solver and pathfinding visualizer.</p><a href="https://github.com/diaznakh/AStar-vs-Dijkstra-Maze-Visualizer" target="_blank" rel="noreferrer">Explore the project on GitHub ↗</a></div>
+    </article>
+    <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../">Back to portfolio ↑</a></footer>
+  </main>
+</body>
+</html>
