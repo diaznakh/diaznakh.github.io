@@ -13,6 +13,7 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <main>
@@ -59,14 +60,7 @@
         </article>
         <aside class="linkedin-panel" aria-labelledby="linkedin-title">
           <div class="linkedin-heading"><span class="linkedin-mark" aria-hidden="true">in</span><div><p class="eyebrow">LinkedIn tracker</p><h3 id="linkedin-title">Posts &amp; progress</h3></div></div>
-          <div class="linkedin-posts">
-            <a class="linkedin-post" href="https://lnkd.in/p/dtx8KZRR" target="_blank" rel="noreferrer">
-              <div><span>01 · Project launch</span><time datetime="2026-08-22">22 Aug 2026</time></div>
-              <h4>A* vs Dijkstra Maze Visualizer</h4>
-              <p>C++ · Algorithms · Pathfinding</p>
-              <b aria-hidden="true">↗</b>
-            </a>
-          </div>
+          <div id="linkedin-posts" class="linkedin-posts" aria-live="polite"><div class="tracker-message">Loading posts…</div></div>
           <a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">View LinkedIn profile ↗</a>
         </aside>
       </div>
