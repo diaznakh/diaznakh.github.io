@@ -12,14 +12,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
-  <link rel="stylesheet" href="styles.css?v=20260829-blog2">
-  <script src="script.js?v=20260823-tablet1" defer></script>
+  <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">\n  <link rel="stylesheet" href="styles.css?v=20260824-interactive1">
+  <script src="script.js?v=20260824-interactive1" defer></script>
 </head>
 <body>
   <main>
     <header class="site-header">
       <a class="wordmark" href="#top" aria-label="Zaid Khan — home">ZK<span>.</span></a>
-      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#lab">Lab</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <a class="availability" href="https://github.com/diaznakh" target="_blank" rel="noreferrer"><span aria-hidden="true"></span> GitHub</a>
     </header>
 
@@ -52,8 +52,32 @@
     </section>
 
 
+
+    <section class="section live-lab" id="lab">
+      <div class="section-heading"><p class="eyebrow">Live demo / Browser sandbox</p><h2>Try the ideas, not just the screenshots.</h2></div>
+      <div class="lab-grid">
+        <div class="lab-copy">
+          <span class="lab-status"><i aria-hidden="true"></i> Interactive</span>
+          <h3>A Redis-style terminal in your browser</h3>
+          <p>This safe, local sandbox mirrors the core command behaviour of my minimal C++ Redis-compatible server. Try <code>SET</code>, <code>GET</code>, <code>DEL</code>, <code>EXISTS</code>, and <code>KEYS</code> without connecting to a real backend.</p>
+          <small>The native project uses POSIX sockets and RESP over TCP. Browsers cannot open raw TCP connections, so this demo keeps the interaction client-side and stores its small dataset on your device.</small>
+        </div>
+        <div class="terminal" aria-label="Interactive Redis-style terminal">
+          <div class="terminal-bar"><span>localhost:6379 / sandbox</span><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+          <div class="terminal-output" id="terminal-output" aria-live="polite">
+            <p class="terminal-line note">ZaidDB browser sandbox · local session</p>
+            <p class="terminal-line note">Type HELP to see available commands.</p>
+          </div>
+          <form class="terminal-form" id="terminal-form">
+            <span aria-hidden="true">›</span>
+            <input id="terminal-input" aria-label="Terminal command" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Try GET maze:last">
+          </form>
+        </div>
+      </div>
+    </section>
+
     <section class="section writing" id="writing">
-      <div class="section-heading"><p class="eyebrow">Writing / Field notes</p><h2>What I learn while <em>building.</em></h2></div>
+      <div class="section-heading"><p class="eyebrow">Writing / Field notes</p><div class="writing-title-row"><h2>What I learn while <em>building.</em></h2><a class="rss-link" href="rss.xml" aria-label="Subscribe to technical field notes via RSS" title="Subscribe via RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path></svg><span>RSS</span></a></div></div>
       <div class="writing-grid">
         <div class="blog-list">
           <article class="featured-post">
