@@ -50,3 +50,34 @@ if (tracker) {
       tracker.innerHTML = '<div class="tracker-message">Posts could not be loaded.</div>';
     });
 }
+
+
+const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
+
+function randomOrbitPoint() {
+  const angle = Math.random() * Math.PI * 2;
+  const radius = Math.sqrt(Math.random()) * 29;
+  return { x: Math.cos(angle) * radius, y: Math.sin(angle) * radius };
+}
+
+function moveOrbitLinks() {
+  if (orbitLinks.length !== 2) return;
+
+  const first = randomOrbitPoint();
+  let second = randomOrbitPoint();
+  let attempts = 0;
+
+  while (Math.hypot(first.x - second.x, first.y - second.y) < 25 && attempts < 20) {
+    second = randomOrbitPoint();
+    attempts += 1;
+  }
+
+  [first, second].forEach((point, index) => {
+    orbitLinks[index].style.left = `${50 + point.x}%`;
+    orbitLinks[index].style.top = `${50 + point.y}%`;
+  });
+}
+
+if (orbitLinks.length === 2 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  window.setInterval(moveOrbitLinks, 6400);
+}
