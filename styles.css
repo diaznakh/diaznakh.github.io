@@ -122,6 +122,9 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
 .article-callout { margin:4rem 0; padding:32px; border-left:4px solid var(--acid); background:#151714; color:#f1f0e9; }
 .article-callout span { display:block; margin-bottom:1rem; color:var(--acid); font:.65rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.13em; }
 .article-callout strong { font-size:clamp(1.5rem,3vw,2.25rem); line-height:1.25; }
+.article-code { margin:2.2rem 0; padding:24px; overflow-x:auto; background:#151714; color:#c9ff4a; border:1px solid #2b2d29; font:.82rem/1.75 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.article-shell>ul { max-width:720px; margin:1.5rem 0 0; padding-left:1.35rem; color:#484941; font:1.08rem/1.75 Georgia,"Times New Roman",serif; }
+.article-shell>ul li { margin:.65rem 0; padding-left:.35rem; }
 .article-end { margin-top:5rem; padding-top:2rem; border-top:1px solid #cac9c1; }
 .article-end p { color:#6b6c65; }
 .article-end a { display:inline-block; margin-top:1rem; font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; }
