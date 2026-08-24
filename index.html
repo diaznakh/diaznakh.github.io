@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-4Bfj/t0mDgdtCWbsL/31VSxRENamac2Zg4Q0i74FsFI='; connect-src 'self'; upgrade-insecure-requests">
   <title>Zaid Khan | Software Engineer</title>
   <meta name="description" content="Portfolio of Zaid Khan — a software engineer focused on C++, systems programming, emulation, networking, and algorithms.">
   <link rel="canonical" href="https://diaznakh.github.io/">
@@ -26,14 +26,15 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260824-resume-metrics1">
+  <link rel="stylesheet" href="styles.css?v=20260824-case-studies1">
   <script src="script.js?v=20260824-security1" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Zaid Khan","url":"https://diaznakh.github.io/","image":"https://diaznakh.github.io/assets/zaid-khan-portrait-2903-v2.webp","jobTitle":"Software Engineer","alumniOf":{"@type":"CollegeOrUniversity","name":"National Institute of Technology Srinagar"},"sameAs":["https://github.com/diaznakh","https://www.linkedin.com/in/zaid-khan-0873591ba/"],"knowsAbout":["C++","Systems programming","Backend development","Computer architecture","Algorithms"]}</script>
 </head>
 <body>
   <main>
     <header class="site-header">
       <a class="wordmark" href="#top" aria-label="Zaid Khan — home">ZK<span>.</span></a>
-      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#now">Now</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
       <a class="availability" href="https://github.com/diaznakh" target="_blank" rel="noreferrer"><span aria-hidden="true"></span> GitHub</a>
     </header>
 
@@ -50,22 +51,33 @@
       <div class="hero-code" aria-hidden="true"><span>01</span><span>CPU · MEMORY · SOCKET · GRAPH</span><span>34°N / 74°E</span></div>
     </section>
 
+    <aside class="recruiter-strip" aria-label="Current availability"><span>Open to software engineering internships</span><span>C / C++</span><span>Systems + backend</span><span>Srinagar · Open to relocation</span></aside>
+
     <section class="section work" id="work">
       <div class="section-heading" data-reveal><p class="eyebrow">Selected work / 2024–25</p><h2>Projects built to understand the system.</h2></div>
       <div class="project-list">
-        <a class="project-card lime" data-reveal data-reveal-delay="0" href="https://github.com/diaznakh/NES-Emu" target="_blank" rel="noreferrer">
-          <span class="project-number">01</span><div class="project-copy"><h3>6502 Microprocessor Emulator</h3><p>A cycle-accurate 6502 emulator implementing CPU registers, memory interaction, instruction execution, addressing modes, status flags, stack operations, branching, and arithmetic logic.</p><dl class="project-outcomes" aria-label="6502 Microprocessor Emulator outcomes"><div><dt>01</dt><dd>Full instruction set</dd></div><div><dt>02</dt><dd>Cycle-aware execution</dd></div><div><dt>03</dt><dd>NMI + IRQ</dd></div></dl><ul aria-label="6502 technologies"><li>C++</li><li>6502</li><li>CPU Emulation</li><li>Computer Architecture</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
+        <a class="project-card lime" data-reveal data-reveal-delay="0" href="projects/6502-emulator/">
+          <span class="project-number">01</span><div class="project-copy"><span class="project-status">Complete core</span><h3>6502 Microprocessor Emulator</h3><p>A cycle-accurate 6502 emulator implementing CPU registers, memory interaction, instruction execution, addressing modes, status flags, stack operations, branching, and arithmetic logic.</p><dl class="project-outcomes" aria-label="6502 Microprocessor Emulator outcomes"><div><dt>01</dt><dd>Full instruction set</dd></div><div><dt>02</dt><dd>Cycle-aware execution</dd></div><div><dt>03</dt><dd>NMI + IRQ</dd></div></dl><ol class="project-flow" aria-label="6502 architecture"><li>Fetch</li><li>Decode</li><li>Address</li><li>Execute</li><li>State</li></ol><ul aria-label="6502 technologies"><li>C++</li><li>6502</li><li>CPU Emulation</li><li>Computer Architecture</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="project-card amber" data-reveal data-reveal-delay="55" href="https://github.com/diaznakh/Redis-Server" target="_blank" rel="noreferrer">
-          <span class="project-number">02</span><div class="project-copy"><h3>Redis Server</h3><p>A minimal Redis server built to understand in-memory databases and client-server architecture, with RESP parsing, command execution, basic persistence, multithreading, and STL containers.</p><dl class="project-outcomes" aria-label="Redis Server outcomes"><div><dt>01</dt><dd>6 Redis commands</dd></div><div><dt>02</dt><dd>Thread per client</dd></div><div><dt>03</dt><dd>Disk persistence</dd></div></dl><ul aria-label="Redis technologies"><li>C++</li><li>RESP</li><li>Multithreading</li><li>Networking</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
+        <a class="project-card amber" data-reveal data-reveal-delay="55" href="projects/redis-server/">
+          <span class="project-number">02</span><div class="project-copy"><span class="project-status">Maintained</span><h3>Mini Redis Server</h3><p>A minimal Redis server built to understand in-memory databases and client-server architecture, with RESP parsing, command execution, basic persistence, multithreading, and STL containers.</p><dl class="project-outcomes" aria-label="Redis Server outcomes"><div><dt>01</dt><dd>6 Redis commands</dd></div><div><dt>02</dt><dd>Thread per client</dd></div><div><dt>03</dt><dd>Disk persistence</dd></div></dl><ol class="project-flow" aria-label="Redis architecture"><li>TCP client</li><li>RESP</li><li>Command</li><li>Database</li><li>Disk</li></ol><ul aria-label="Redis technologies"><li>C++</li><li>RESP</li><li>Multithreading</li><li>Networking</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="project-card blue" data-reveal data-reveal-delay="110" href="https://github.com/diaznakh/AStar-vs-Dijkstra-Maze-Visualizer" target="_blank" rel="noreferrer">
-          <span class="project-number">03</span><div class="project-copy"><h3>Maze Solver</h3><p>A grid-based visualizer that models maze cells as a graph, finds optimal paths with Dijkstra and A*, and compares nodes explored, path length, and execution time across mazes.</p><dl class="project-outcomes" aria-label="Maze Solver outcomes"><div><dt>01</dt><dd>2 algorithms</dd></div><div><dt>02</dt><dd>4 runtime metrics</dd></div><div><dt>03</dt><dd>Redis save / load</dd></div></dl><ul aria-label="Maze technologies"><li>C++</li><li>A*</li><li>Dijkstra</li><li>Graph Algorithms</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
+        <a class="project-card blue" data-reveal data-reveal-delay="110" href="projects/maze-solver/">
+          <span class="project-number">03</span><div class="project-copy"><span class="project-status">Actively refining</span><h3>A* vs Dijkstra Maze Visualizer</h3><p>A grid-based visualizer that models maze cells as a graph, finds optimal paths with Dijkstra and A*, and compares nodes explored, path length, and execution time across mazes.</p><dl class="project-outcomes" aria-label="Maze Solver outcomes"><div><dt>01</dt><dd>2 algorithms</dd></div><div><dt>02</dt><dd>4 runtime metrics</dd></div><div><dt>03</dt><dd>Redis save / load</dd></div></dl><ol class="project-flow" aria-label="Maze architecture"><li>Generate</li><li>Bitmask grid</li><li>A* + Dijkstra</li><li>Metrics</li><li>RESP store</li></ol><ul aria-label="Maze technologies"><li>C++</li><li>A*</li><li>Dijkstra</li><li>Graph Algorithms</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
 
 
+
+    <section class="section now-section" id="now">
+      <div class="section-heading" data-reveal><p class="eyebrow">Now / Currently building</p><h2>Connecting independent systems.</h2></div>
+      <article class="now-card" data-reveal>
+        <div class="now-card-head"><div><span class="project-status">Refining</span><h3>Maze Visualizer × Mini Redis</h3></div><time datetime="2026-08-24">Updated 24 Aug 2026</time></div>
+        <p class="now-summary">I am tightening the boundary between two independent C++ programs: a pathfinding visualizer that serializes mazes and a Redis-compatible server that stores them through TCP and RESP.</p>
+        <div class="now-card-grid"><div><p class="eyebrow">Working now</p><ul><li>Save and load through SET and GET</li><li>Disk-backed recovery after restart</li><li>Validation before maze reconstruction</li></ul></div><div><p class="eyebrow">Next checkpoint</p><p>Broaden malformed-input tests and document performance across larger mazes.</p><a href="projects/maze-solver/">Open case study ↗</a></div></div>
+      </article>
+    </section>
 
     <section class="section writing" id="writing">
       <div class="section-heading" data-reveal><p class="eyebrow">Writing / Field notes</p><div class="writing-title-row"><h2>What I learn while <em>building.</em></h2><a class="rss-link" href="rss.xml" aria-label="Subscribe to technical field notes via RSS" title="Subscribe via RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path></svg><span>RSS</span></a></div></div>
@@ -97,7 +109,7 @@
       <div class="about-grid" data-reveal>
         <div class="about-copy"><p>I’m an engineering student at NIT Srinagar moving deliberately into software. My best learning happens below the surface: tracing an instruction, opening a socket, profiling an algorithm, or finding the exact abstraction that makes a backend easier to reason about.</p><p>Outside code, I’ve led teams and organized a two-day national hackathon in Kashmir with more than 600 attendees—experience that sharpened how I communicate, coordinate, and ship under pressure.</p></div>
         <div class="education-card"><span>Education</span><strong>National Institute of Technology Srinagar</strong><p>B.Tech · Chemical Engineering</p><small>Engineering fundamentals + self-directed computer science</small></div>
-        <figure class="about-portrait"><img src="assets/zaid-khan-portrait-2903-v2.webp" alt="Portrait of Zaid Khan" width="941" height="1672"><figcaption><span>Portrait / 2026</span><span>Zaid Khan</span></figcaption></figure>
+        <figure class="about-portrait"><img src="assets/zaid-khan-portrait-2903-v2.webp" alt="Portrait of Zaid Khan" width="941" height="1672" loading="lazy" decoding="async"><figcaption><span>Portrait / 2026</span><span>Zaid Khan</span></figcaption></figure>
       </div>
       <div class="capability-grid">
         <article data-reveal data-reveal-delay="0"><span>01</span><h3>Languages</h3><p>C, C++, and Python—with C++ as the foundation for my systems and algorithmic projects.</p></article>

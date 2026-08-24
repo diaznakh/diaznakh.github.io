@@ -1,0 +1,13 @@
+{
+  "title": "Maze Visualizer × Mini Redis",
+  "status": "Refining",
+  "summary": "I am tightening the boundary between two independent C++ programs: a pathfinding visualizer that serializes mazes and a Redis-compatible server that stores them through TCP and RESP.",
+  "completed": [
+    "Save and load through SET and GET",
+    "Disk-backed recovery after restart",
+    "Validation before maze reconstruction"
+  ],
+  "next": "Broaden malformed-input tests and document performance across larger mazes.",
+  "updated": "24 Aug 2026",
+  "href": "/projects/maze-solver/"
+}
