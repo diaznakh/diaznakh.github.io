@@ -156,6 +156,10 @@ if (orbit && orbitLinks.length === 2) {
   let bodies = null;
   let obstacles = [];
   let previousTime = performance.now();
+  let orbitFrame = 0;
+  let orbitVisible = true;
+  let pageVisible = !document.hidden;
+  const ORBIT_FRAME_INTERVAL = 1000 / 45;
 
   function collectTextObstacles() {
     if (!isMobileOrbit()) return [];
@@ -387,31 +391,58 @@ if (orbit && orbitLinks.length === 2) {
   }
 
   function animateOrbit(time) {
-    if (bodies) {
-      const delta = Math.min((time - previousTime) / 1000, 1);
-      bodies.forEach((body) => {
-        body.x += body.vx * delta;
-        body.y += body.vy * delta;
-      });
-      resolveOrbitCollision(bodies[0], bodies[1]);
-      bodies.forEach((body) => {
-        if (isMobileOrbit()) resolveTextCollisions(body);
-        constrainBody(body);
-      });
-      resolveOrbitCollision(bodies[0], bodies[1]);
-      renderOrbit();
+    orbitFrame = 0;
+    if (!bodies || !orbitVisible || !pageVisible) return;
+    if (time - previousTime < ORBIT_FRAME_INTERVAL) {
+      orbitFrame = requestAnimationFrame(animateOrbit);
+      return;
     }
+
+    const delta = Math.min((time - previousTime) / 1000, 1);
     previousTime = time;
-    requestAnimationFrame(animateOrbit);
+    bodies.forEach((body) => {
+      body.x += body.vx * delta;
+      body.y += body.vy * delta;
+    });
+    resolveOrbitCollision(bodies[0], bodies[1]);
+    bodies.forEach((body) => {
+      if (isMobileOrbit()) resolveTextCollisions(body);
+      constrainBody(body);
+    });
+    resolveOrbitCollision(bodies[0], bodies[1]);
+    renderOrbit();
+    orbitFrame = requestAnimationFrame(animateOrbit);
+  }
+
+  const reducedOrbitMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function stopOrbit() {
+    if (!orbitFrame) return;
+    cancelAnimationFrame(orbitFrame);
+    orbitFrame = 0;
+  }
+  function startOrbit() {
+    if (reducedOrbitMotion.matches || orbitFrame || !orbitVisible || !pageVisible) return;
+    previousTime = performance.now();
+    orbitFrame = requestAnimationFrame(animateOrbit);
   }
 
   initializeOrbit();
   const orbitResizeObserver = new ResizeObserver(initializeOrbit);
   orbitResizeObserver.observe(orbit);
 
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    requestAnimationFrame(animateOrbit);
-  }
+  const orbitVisibilityObserver = new IntersectionObserver(([entry]) => {
+    orbitVisible = entry.isIntersecting;
+    if (orbitVisible) startOrbit();
+    else stopOrbit();
+  });
+  orbitVisibilityObserver.observe(orbit);
+
+  document.addEventListener("visibilitychange", () => {
+    pageVisible = !document.hidden;
+    if (pageVisible) startOrbit();
+    else stopOrbit();
+  });
+  startOrbit();
 }
 
 
@@ -525,12 +556,22 @@ const MazeBridgeCore = (() => {
 
   if(!window.matchMedia("(hover: hover) and (pointer: fine)").matches)return;
   document.querySelectorAll("[data-spotlight]").forEach(card=>{
+    let pendingFrame=0,pointerX=0,pointerY=0;
     card.addEventListener("pointermove",event=>{
-      const bounds=card.getBoundingClientRect();
-      card.style.setProperty("--spot-x",(event.clientX-bounds.left)+"px");
-      card.style.setProperty("--spot-y",(event.clientY-bounds.top)+"px");
+      pointerX=event.clientX;
+      pointerY=event.clientY;
+      if(pendingFrame)return;
+      pendingFrame=requestAnimationFrame(()=>{
+        const bounds=card.getBoundingClientRect();
+        card.style.setProperty("--spot-x",(pointerX-bounds.left)+"px");
+        card.style.setProperty("--spot-y",(pointerY-bounds.top)+"px");
+        pendingFrame=0;
+      });
     });
     card.addEventListener("pointerenter",()=>card.classList.add("spotlight-active"));
-    card.addEventListener("pointerleave",()=>card.classList.remove("spotlight-active"));
+    card.addEventListener("pointerleave",()=>{
+      card.classList.remove("spotlight-active");
+      if(pendingFrame){cancelAnimationFrame(pendingFrame);pendingFrame=0;}
+    });
   });
 })();
