@@ -121,13 +121,14 @@ const ORBIT_SPEED = 38;
 const MOBILE_ORBIT_SPEED = 24;
 const EDGE_GAP = 12;
 const COLLISION_GAP = 3;
+const MOBILE_ORBIT_QUERY = "(max-width: 820px) and (hover: none) and (pointer: coarse)";
 
 function isMobileOrbit() {
-  return window.innerWidth <= 560;
+  return window.innerWidth <= 560 || window.matchMedia(MOBILE_ORBIT_QUERY).matches;
 }
 
 function isTouchNavigation() {
-  return window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  return isMobileOrbit();
 }
 
 function activeOrbitSpeed() {
@@ -150,6 +151,7 @@ if (orbit && orbitLinks.length === 2) {
       const target = selector ? document.querySelector(selector) : null;
       link.blur();
       target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => link.blur());
     });
   });
 
@@ -323,8 +325,8 @@ if (orbit && orbitLinks.length === 2) {
   function renderOrbit() {
     if (!bodies) return;
     bodies.forEach((body, index) => {
-      orbitLinks[index].style.left = `${body.x}px`;
-      orbitLinks[index].style.top = `${body.y}px`;
+      orbitLinks[index].style.setProperty("--bubble-x", `${body.x}px`);
+      orbitLinks[index].style.setProperty("--bubble-y", `${body.y}px`);
     });
   }
 
@@ -398,18 +400,22 @@ if (orbit && orbitLinks.length === 2) {
       return;
     }
 
-    const delta = Math.min((time - previousTime) / 1000, 1);
+    const delta = Math.min((time - previousTime) / 1000, 0.05);
     previousTime = time;
-    bodies.forEach((body) => {
-      body.x += body.vx * delta;
-      body.y += body.vy * delta;
-    });
-    resolveOrbitCollision(bodies[0], bodies[1]);
-    bodies.forEach((body) => {
-      if (isMobileOrbit()) resolveTextCollisions(body);
-      constrainBody(body);
-    });
-    resolveOrbitCollision(bodies[0], bodies[1]);
+    const steps = Math.max(1, Math.ceil(delta / (1 / 60)));
+    const step = delta / steps;
+    for (let index = 0; index < steps; index += 1) {
+      bodies.forEach((body) => {
+        body.x += body.vx * step;
+        body.y += body.vy * step;
+      });
+      resolveOrbitCollision(bodies[0], bodies[1]);
+      bodies.forEach((body) => {
+        if (isMobileOrbit()) resolveTextCollisions(body);
+        constrainBody(body);
+      });
+      resolveOrbitCollision(bodies[0], bodies[1]);
+    }
     renderOrbit();
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
