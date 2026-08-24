@@ -44,7 +44,7 @@ em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight
 .eyebrow { margin:0; font:.7rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.15em; color:#75766f; }
 .section-heading h2,.about-intro h2 { max-width:850px; margin:0; font-size:clamp(2.4rem,5vw,5.6rem); line-height:.98; letter-spacing:-.055em; }
 .project-list { border-top:1px solid #cac9c1; }
-.project-card { position:relative; display:grid; grid-template-columns:90px 1fr 50px; gap:1rem; padding:42px 0; border-bottom:1px solid #cac9c1; transition:transform 240ms cubic-bezier(.2,.8,.2,1),background-color 240ms ease,box-shadow 240ms ease,border-color 240ms ease; }
+.project-card { position:relative; display:grid; grid-template-columns:90px 1fr 50px; gap:1rem; padding:42px 24px; border-bottom:1px solid #cac9c1; transition:transform 240ms cubic-bezier(.2,.8,.2,1),background-color 240ms ease,box-shadow 240ms ease,border-color 240ms ease; }
 .project-card.lime:hover { background:#d9ff80; } .project-card.amber:hover { background:#ffd37c; } .project-card.blue:hover { background:#a8d8ff; } .project-card.coral:hover { background:#ffb3a3; }
 .project-number { color:#84847e; font:.75rem ui-monospace,SFMono-Regular,Menlo,monospace; }
 .project-copy { display:grid; grid-template-columns:minmax(230px,.7fr) 1fr; column-gap:3rem; align-items:start; }
