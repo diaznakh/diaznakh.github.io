@@ -1,5 +1,15 @@
 const tracker = document.querySelector("#linkedin-posts");
 
+function isSafeLinkedInPost(post) {
+  if (!post || typeof post !== "object" || typeof post.url !== "string") return false;
+  try {
+    if (new URL(post.url).protocol !== "https:") return false;
+  } catch { return false; }
+  return typeof post.title === "string" && typeof post.date === "string" &&
+    typeof post.displayDate === "string" && typeof post.type === "string" &&
+    Array.isArray(post.topics) && post.topics.every((topic) => typeof topic === "string");
+}
+
 function createPost(post, index) {
   const link = document.createElement("a");
   link.className = "linkedin-post";
@@ -33,7 +43,9 @@ if (tracker) {
       if (!response.ok) throw new Error("Could not load LinkedIn posts");
       return response.json();
     })
-    .then((posts) => {
+    .then((data) => {
+      if (!Array.isArray(data)) throw new Error("Invalid LinkedIn post data");
+      const posts = data.filter(isSafeLinkedInPost);
       tracker.replaceChildren();
       posts
         .sort((a, b) => b.date.localeCompare(a.date))
@@ -47,7 +59,10 @@ if (tracker) {
       }
     })
     .catch(() => {
-      tracker.innerHTML = '<div class="tracker-message">Posts could not be loaded.</div>';
+      const message = document.createElement("div");
+      message.className = "tracker-message";
+      message.textContent = "Posts could not be loaded.";
+      tracker.replaceChildren(message);
     });
 }
 
@@ -57,14 +72,35 @@ const terminalForm = document.querySelector("#terminal-form");
 const terminalInput = document.querySelector("#terminal-input");
 const terminalOutput = document.querySelector("#terminal-output");
 const terminalStorageKey = "zaid-redis-sandbox-v1";
-let terminalStore = { "maze:last": "19,8|18,26,10,12,..." };
+const MAX_TERMINAL_COMMAND_LENGTH = 4096;
+const MAX_TERMINAL_KEY_LENGTH = 64;
+const MAX_TERMINAL_VALUE_LENGTH = 2048;
+const MAX_TERMINAL_KEYS = 64;
+const MAX_TERMINAL_LINES = 200;
+
+function emptyTerminalStore() { return Object.create(null); }
+
+function normalizeTerminalStore(value) {
+  const normalized = emptyTerminalStore();
+  if (!value || typeof value !== "object" || Array.isArray(value)) return normalized;
+  for (const [key, entry] of Object.entries(value)) {
+    if (Object.keys(normalized).length >= MAX_TERMINAL_KEYS) break;
+    if (!key || key.length > MAX_TERMINAL_KEY_LENGTH) continue;
+    if (typeof entry !== "string" || entry.length > MAX_TERMINAL_VALUE_LENGTH) continue;
+    normalized[key] = entry;
+  }
+  return normalized;
+}
+
+let terminalStore = emptyTerminalStore();
 
 try {
   const savedTerminalStore = localStorage.getItem(terminalStorageKey);
-  if (savedTerminalStore) terminalStore = JSON.parse(savedTerminalStore);
+  if (savedTerminalStore) terminalStore = normalizeTerminalStore(JSON.parse(savedTerminalStore));
 } catch {}
 
 function saveTerminalStore() {
+  terminalStore = normalizeTerminalStore(terminalStore);
   try { localStorage.setItem(terminalStorageKey, JSON.stringify(terminalStore)); } catch {}
 }
 
@@ -77,6 +113,7 @@ function addTerminalLine(kind, value) {
   line.className = "terminal-line " + kind;
   line.textContent = value;
   terminalOutput.append(line);
+  while (terminalOutput.childElementCount > MAX_TERMINAL_LINES) terminalOutput.firstElementChild?.remove();
   terminalOutput.scrollTo({ top: terminalOutput.scrollHeight, behavior: "smooth" });
 }
 
@@ -85,6 +122,10 @@ if (terminalForm && terminalInput && terminalOutput) {
     event.preventDefault();
     const raw = terminalInput.value.trim();
     terminalInput.value = "";
+    if (raw.length > MAX_TERMINAL_COMMAND_LENGTH) {
+      addTerminalLine("response", `(error) command exceeds ${MAX_TERMINAL_COMMAND_LENGTH} characters`);
+      return;
+    }
     const parts = terminalTokens(raw);
     const command = (parts.shift() || "").toUpperCase();
     if (!command) return;
@@ -95,19 +136,25 @@ if (terminalForm && terminalInput && terminalOutput) {
     else if (command === "SET") {
       const key = parts.shift();
       if (!key || !parts.length) response = "(error) usage: SET key value";
-      else { terminalStore[key] = parts.join(" "); saveTerminalStore(); response = "OK"; }
-    } else if (command === "GET") response = parts[0] ? (terminalStore[parts[0]] ?? "(nil)") : "(error) usage: GET key";
+      else if (key.length > MAX_TERMINAL_KEY_LENGTH) response = `(error) key exceeds ${MAX_TERMINAL_KEY_LENGTH} characters`;
+      else if (!Object.hasOwn(terminalStore, key) && Object.keys(terminalStore).length >= MAX_TERMINAL_KEYS) response = `(error) sandbox is limited to ${MAX_TERMINAL_KEYS} keys`;
+      else {
+        const value = parts.join(" ");
+        if (value.length > MAX_TERMINAL_VALUE_LENGTH) response = `(error) value exceeds ${MAX_TERMINAL_VALUE_LENGTH} characters`;
+        else { terminalStore[key] = value; saveTerminalStore(); response = "OK"; }
+      }
+    } else if (command === "GET") response = parts[0] ? (Object.hasOwn(terminalStore, parts[0]) ? terminalStore[parts[0]] : "(nil)") : "(error) usage: GET key";
     else if (command === "DEL") {
       if (!parts.length) response = "(error) usage: DEL key [key...]";
       else {
         let removed = 0;
-        parts.forEach((key) => { if (key in terminalStore) { delete terminalStore[key]; removed += 1; } });
+        parts.forEach((key) => { if (Object.hasOwn(terminalStore, key)) { delete terminalStore[key]; removed += 1; } });
         saveTerminalStore();
         response = String(removed);
       }
-    } else if (command === "EXISTS") response = parts[0] ? (parts[0] in terminalStore ? "1" : "0") : "(error) usage: EXISTS key";
+    } else if (command === "EXISTS") response = parts[0] ? (Object.hasOwn(terminalStore, parts[0]) ? "1" : "0") : "(error) usage: EXISTS key";
     else if (command === "KEYS") response = Object.keys(terminalStore).sort().join("\n") || "(empty list)";
-    else if (command === "RESET") { terminalStore = { "maze:last": "19,8|18,26,10,12,..." }; saveTerminalStore(); response = "OK — sample dataset restored"; }
+    else if (command === "RESET") { terminalStore = emptyTerminalStore(); saveTerminalStore(); response = "OK — sandbox cleared"; }
     else if (command === "CLEAR") { terminalOutput.replaceChildren(); return; }
 
     addTerminalLine("command", "> " + raw);
@@ -448,7 +495,7 @@ if (orbit && orbitLinks.length === 2) {
 
 // Connected 19x8 maze, Redis sandbox, and article trace
 const MazeBridgeCore = (() => {
-  const COLS=19, ROWS=8, TOTAL=COLS*ROWS, N=1, E=2, S=4, W=8, VISITED=16;
+  const COLS=19, ROWS=8, TOTAL=COLS*ROWS, N=1, E=2, S=4, W=8, VISITED=16, MAX_SERIALIZED_LENGTH=1024;
   const directions=[
     {dx:0,dy:-1,path:N,opposite:S},{dx:1,dy:0,path:E,opposite:W},
     {dx:0,dy:1,path:S,opposite:N},{dx:-1,dy:0,path:W,opposite:E}
@@ -477,11 +524,12 @@ const MazeBridgeCore = (() => {
   }
   const serialize=(cells)=>COLS+","+ROWS+"|"+cells.join(",");
   function deserialize(value){
-    const separator=value.indexOf("|");
-    if(separator<0)return null;
-    const dimensions=value.slice(0,separator).split(",").map(Number);
-    const cells=value.slice(separator+1).split(",").map(Number),valid=N|E|S|W|VISITED;
-    return dimensions[0]===COLS&&dimensions[1]===ROWS&&cells.length===TOTAL&&cells.every(cell=>Number.isInteger(cell)&&cell>=0&&(cell&~valid)===0)?cells:null;
+    if(typeof value!=="string"||value.length>MAX_SERIALIZED_LENGTH)return null;
+    const prefix=COLS+","+ROWS+"|";
+    if(!value.startsWith(prefix))return null;
+    const tokens=value.slice(prefix.length).split(",");
+    if(tokens.length!==TOTAL||tokens.some(token=>!/^(?:[0-9]|[12][0-9]|3[01])$/.test(token)))return null;
+    return tokens.map(Number);
   }
   function save(cells){const value=serialize(cells);terminalStore={...terminalStore,"maze:last":value};saveTerminalStore();return value;}
   function load(){const value=terminalStore["maze:last"];return value?deserialize(value):null;}

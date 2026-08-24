@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests">
   <title>Connecting My C++ Maze Visualizer to Redis | Zaid Khan</title>
   <meta name="description" content="How I connected a C++ pathfinding visualizer to a separate Redis-compatible server using serialization, POSIX sockets, RESP, validation, and persistence.">
   <link rel="canonical" href="https://diaznakh.github.io/blog/maze-redis-integration.html">
@@ -26,7 +27,7 @@
   <link rel="icon" type="image/png" sizes="256x256" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/favicon.png">
   <link rel="stylesheet" href="../styles.css?v=20260824-ogmotion1">
-  <script src="../script.js?v=20260824-articlelab1" defer></script>
+  <script src="../script.js?v=20260824-security1" defer></script>
 </head>
 <body>
   <main class="article-page">
@@ -79,7 +80,7 @@
           <div class="terminal" aria-label="Interactive Redis-style terminal">
             <div class="terminal-bar"><span>localhost:6379 / sandbox</span><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
             <div class="terminal-output" id="terminal-output" aria-live="polite"><p class="terminal-line note">ZaidDB browser sandbox · local session</p><p class="terminal-line note">Type HELP to see available commands.</p></div>
-            <form class="terminal-form" id="terminal-form"><span aria-hidden="true">›</span><input id="terminal-input" aria-label="Terminal command" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Try GET maze:last"></form>
+            <form class="terminal-form" id="terminal-form"><span aria-hidden="true">›</span><input id="terminal-input" maxlength="4096" aria-label="Terminal command" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Try GET maze:last"></form>
           </div>
         </div>
         <div class="maze-demo" aria-labelledby="maze-demo-title">
