@@ -499,3 +499,38 @@ const MazeBridgeCore = (() => {
   function run(){stop();runButton.disabled=true;generateButton.disabled=true;const maximum=Math.max(...solutions.map(solution=>solution.explored.length));if(matchMedia("(prefers-reduced-motion: reduce)").matches){render(maximum,true);stats.forEach((stat,index)=>stat.textContent=solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps");stop();return;}let shown=0,last=performance.now();const frame=now=>{if(now-last>24){shown+=2;last=now;render(shown,shown>=maximum);stats.forEach((stat,index)=>stat.textContent=shown>=maximum?solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps":Math.min(shown,solutions[index].explored.length)+" explored");}if(shown<maximum)timer=requestAnimationFrame(frame);else stop();};timer=requestAnimationFrame(frame);}
   generateButton.addEventListener("click",generate);saveButton?.addEventListener("click",save);loadButton?.addEventListener("click",load);runButton.addEventListener("click",run);generate();
 })();
+
+
+// Portfolio motion effects: one-time reveals and desktop writing-card spotlight.
+(() => {
+  const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+  if(reducedMotion.matches)return;
+
+  const revealTargets=Array.from(document.querySelectorAll("[data-reveal]"));
+  document.documentElement.classList.add("motion-ready");
+  revealTargets.forEach(element=>element.style.setProperty("--reveal-delay",(element.dataset.revealDelay||0)+"ms"));
+
+  if("IntersectionObserver" in window){
+    const observer=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting)return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    },{threshold:.12,rootMargin:"0px 0px -10%"});
+    revealTargets.forEach(element=>observer.observe(element));
+  }else{
+    revealTargets.forEach(element=>element.classList.add("is-visible"));
+  }
+
+  if(!window.matchMedia("(hover: hover) and (pointer: fine)").matches)return;
+  document.querySelectorAll("[data-spotlight]").forEach(card=>{
+    card.addEventListener("pointermove",event=>{
+      const bounds=card.getBoundingClientRect();
+      card.style.setProperty("--spot-x",(event.clientX-bounds.left)+"px");
+      card.style.setProperty("--spot-y",(event.clientY-bounds.top)+"px");
+    });
+    card.addEventListener("pointerenter",()=>card.classList.add("spotlight-active"));
+    card.addEventListener("pointerleave",()=>card.classList.remove("spotlight-active"));
+  });
+})();
