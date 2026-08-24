@@ -83,6 +83,7 @@ em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight
 .now-card-head { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--line); color:#777a72; font:.62rem ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.11em; }
 .now-pulse { display:flex; align-items:center; gap:.65rem; color:var(--acid); }
 .now-pulse i { width:7px; height:7px; border-radius:50%; background:var(--acid); box-shadow:0 0 16px rgba(201,255,74,.55); }
+.now-summary { max-width:980px; margin:0; padding:48px 48px 0; color:#aeb0a8; font-size:1.05rem; line-height:1.7; }
 .now-card-grid { display:grid; grid-template-columns:1.1fr .9fr; }
 .now-card-grid>div { padding:48px; }
 .now-card-grid>div+div { border-left:1px solid var(--line); }
@@ -334,7 +335,7 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
   .hero-orbit .round-link span,.hero-orbit .round-link b { color:var(--paper)!important; opacity:1!important; visibility:visible!important; }
   .hero-code { position:relative; bottom:auto; left:auto; right:auto; margin-top:2.5rem; }
   .about-grid { grid-template-columns:1fr; } .about-copy,.education-card,.about-portrait { grid-column:1; } .about-portrait { height:480px; } .education-card { order:3; }
-  .project-card { grid-template-columns:42px 1fr 24px; padding:30px 0; } .recruiter-strip { grid-template-columns:1fr; } .recruiter-strip span,.recruiter-strip span:nth-child(2) { padding:14px 5vw; border-right:0; border-bottom:1px solid var(--line); } .recruiter-strip span:last-child { border-bottom:0; } .now-card-grid>div { padding:28px; }
+  .project-card { grid-template-columns:42px 1fr 24px; padding:30px 0; } .recruiter-strip { grid-template-columns:1fr; } .recruiter-strip span,.recruiter-strip span:nth-child(2) { padding:14px 5vw; border-right:0; border-bottom:1px solid var(--line); } .recruiter-strip span:last-child { border-bottom:0; } .now-summary { padding:28px 28px 0; } .now-card-grid>div { padding:28px; }
   .project-outcomes { grid-template-columns:1fr; }
   .project-copy h3 { font-size:1.65rem; } .contact { padding:90px 5vw 70px; } .contact h2 { margin:36px 0 56px; font-size:16vw; }
   .featured-post,.linkedin-panel { padding:26px; } .featured-post { min-height:420px; } .featured-post h3 { margin-top:4rem; }
