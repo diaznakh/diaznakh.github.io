@@ -25,8 +25,8 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260824-cardspacing1">
-  <script src="script.js?v=20260824-articlelab1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260824-motion1">
+  <script src="script.js?v=20260824-motion1" defer></script>
 </head>
 <body>
   <main>
@@ -50,15 +50,15 @@
     </section>
 
     <section class="section work" id="work">
-      <div class="section-heading"><p class="eyebrow">Selected work / 2024–25</p><h2>Projects built to understand the system.</h2></div>
+      <div class="section-heading" data-reveal><p class="eyebrow">Selected work / 2024–25</p><h2>Projects built to understand the system.</h2></div>
       <div class="project-list">
-        <a class="project-card lime" href="https://github.com/diaznakh/NES-Emu" target="_blank" rel="noreferrer">
+        <a class="project-card lime" data-reveal data-reveal-delay="0" href="https://github.com/diaznakh/NES-Emu" target="_blank" rel="noreferrer">
           <span class="project-number">01</span><div class="project-copy"><h3>6502 Microprocessor Emulator</h3><p>A cycle-accurate 6502 emulator implementing CPU registers, memory interaction, instruction execution, addressing modes, status flags, stack operations, branching, and arithmetic logic.</p><ul aria-label="6502 technologies"><li>C++</li><li>6502</li><li>CPU Emulation</li><li>Computer Architecture</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="project-card amber" href="https://github.com/diaznakh/Redis-Server" target="_blank" rel="noreferrer">
+        <a class="project-card amber" data-reveal data-reveal-delay="80" href="https://github.com/diaznakh/Redis-Server" target="_blank" rel="noreferrer">
           <span class="project-number">02</span><div class="project-copy"><h3>Redis Server</h3><p>A minimal Redis server built to understand in-memory databases and client-server architecture, with RESP parsing, command execution, basic persistence, multithreading, and STL containers.</p><ul aria-label="Redis technologies"><li>C++</li><li>RESP</li><li>Multithreading</li><li>Networking</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
-        <a class="project-card blue" href="https://github.com/diaznakh/AStar-vs-Dijkstra-Maze-Visualizer" target="_blank" rel="noreferrer">
+        <a class="project-card blue" data-reveal data-reveal-delay="160" href="https://github.com/diaznakh/AStar-vs-Dijkstra-Maze-Visualizer" target="_blank" rel="noreferrer">
           <span class="project-number">03</span><div class="project-copy"><h3>Maze Solver</h3><p>A grid-based visualizer that models maze cells as a graph, finds optimal paths with Dijkstra and A*, and compares nodes explored, path length, and execution time across mazes.</p><ul aria-label="Maze technologies"><li>C++</li><li>A*</li><li>Dijkstra</li><li>Graph Algorithms</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
@@ -70,20 +70,20 @@
       <div class="section-heading"><p class="eyebrow">Writing / Field notes</p><div class="writing-title-row"><h2>What I learn while <em>building.</em></h2><a class="rss-link" href="rss.xml" aria-label="Subscribe to technical field notes via RSS" title="Subscribe via RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path></svg><span>RSS</span></a></div></div>
       <div class="writing-grid">
         <div class="blog-list">
-          <article class="featured-post">
+          <article class="featured-post" data-reveal data-spotlight>
             <div class="post-meta"><span>Systems</span><time datetime="2026-08-24">24 Aug 2026</time><span>7 min read</span></div>
             <h3>Connecting My Maze Visualizer to Redis</h3>
             <p>How two separate C++ projects became one useful system through serialization, POSIX sockets, RESP, validation, and persistent storage.</p>
             <a href="blog/maze-redis-integration.html" aria-label="Read Connecting My Maze Visualizer to Redis">Read article <span aria-hidden="true">↗</span></a>
           </article>
-          <article class="featured-post secondary-post">
+          <article class="featured-post secondary-post" data-reveal data-reveal-delay="90" data-spotlight>
             <div class="post-meta"><span>Algorithms</span><time datetime="2026-08-23">23 Aug 2026</time><span>5 min read</span></div>
             <h3>Why Dijkstra Beat A* in My Tiny Maze</h3>
             <p>A practical look at why the theoretically smarter algorithm can lose on a small grid—and what profiling taught me about heuristics, overhead, and hardware reality.</p>
             <a href="blog/astar-vs-dijkstra.html" aria-label="Read Why Dijkstra Beat A star in My Tiny Maze">Read article <span aria-hidden="true">↗</span></a>
           </article>
         </div>
-        <aside class="linkedin-panel" aria-labelledby="linkedin-title">
+        <aside class="linkedin-panel" aria-labelledby="linkedin-title" data-reveal data-reveal-delay="140">
           <div class="linkedin-heading"><span class="linkedin-mark" aria-hidden="true">in</span><div><p class="eyebrow">LinkedIn tracker</p><h3 id="linkedin-title">Posts &amp; progress</h3></div></div>
           <div id="linkedin-posts" class="linkedin-posts" aria-live="polite"><div class="tracker-message">Loading posts…</div></div>
           <a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">View LinkedIn profile ↗</a>
@@ -92,21 +92,21 @@
     </section>
 
     <section class="section about" id="about">
-      <div class="about-intro"><p class="eyebrow">About / Approach</p><h2>Chemical engineering taught me to think in systems. Code gave me a way to <em>build them.</em></h2></div>
-      <div class="about-grid">
+      <div class="about-intro" data-reveal><p class="eyebrow">About / Approach</p><h2>Chemical engineering taught me to think in systems. Code gave me a way to <em>build them.</em></h2></div>
+      <div class="about-grid" data-reveal>
         <div class="about-copy"><p>I’m an engineering student at NIT Srinagar moving deliberately into software. My best learning happens below the surface: tracing an instruction, opening a socket, profiling an algorithm, or finding the exact abstraction that makes a backend easier to reason about.</p><p>Outside code, I’ve led teams and organized a two-day national hackathon in Kashmir with more than 600 attendees—experience that sharpened how I communicate, coordinate, and ship under pressure.</p></div>
         <div class="education-card"><span>Education</span><strong>National Institute of Technology Srinagar</strong><p>B.Tech · Chemical Engineering</p><small>Engineering fundamentals + self-directed computer science</small></div>
         <figure class="about-portrait"><img src="assets/zaid-khan.jpg" alt="Portrait of Zaid Khan" width="960" height="1280"><figcaption><span>Portrait / 2026</span><span>Zaid Khan</span></figcaption></figure>
       </div>
       <div class="capability-grid">
-        <article><span>01</span><h3>Languages</h3><p>C, C++, and Python—with C++ as the foundation for my systems and algorithmic projects.</p></article>
-        <article><span>02</span><h3>Core concepts</h3><p>Object-oriented programming, data structures, algorithms, multithreading, networking, operating systems, and system design.</p></article>
-        <article><span>03</span><h3>Tools &amp; data</h3><p>Linux, Git, STL, Redis, and MySQL—used to build, inspect, test, and reason about working software.</p></article>
+        <article data-reveal data-reveal-delay="0"><span>01</span><h3>Languages</h3><p>C, C++, and Python—with C++ as the foundation for my systems and algorithmic projects.</p></article>
+        <article data-reveal data-reveal-delay="80"><span>02</span><h3>Core concepts</h3><p>Object-oriented programming, data structures, algorithms, multithreading, networking, operating systems, and system design.</p></article>
+        <article data-reveal data-reveal-delay="160"><span>03</span><h3>Tools &amp; data</h3><p>Linux, Git, STL, Redis, and MySQL—used to build, inspect, test, and reason about working software.</p></article>
       </div>
     </section>
 
-    <section class="stack-strip" aria-label="Technical toolkit"><span>Toolkit</span><p>C · C++ · Python · Redis · MySQL · Linux · Git · STL</p></section>
-    <section class="contact" id="contact"><p class="eyebrow">Contact / Let’s talk</p><h2>Have an interesting<br>problem? <em>Let’s build.</em></h2><div class="contact-links"><a href="mailto:diaznakh@gmail.com">diaznakh@gmail.com ↗</a><a href="https://github.com/diaznakh" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div></section>
+    <section class="stack-strip" aria-label="Technical toolkit" data-reveal><span>Toolkit</span><p>C · C++ · Python · Redis · MySQL · Linux · Git · STL</p></section>
+    <section class="contact" id="contact" data-reveal><p class="eyebrow">Contact / Let’s talk</p><h2>Have an interesting<br>problem? <em>Let’s build.</em></h2><div class="contact-links"><a href="mailto:diaznakh@gmail.com">diaznakh@gmail.com ↗</a><a href="https://github.com/diaznakh" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div></section>
     <footer><a class="wordmark" href="#top" aria-label="Back to top">ZK<span>.</span></a><p>Designed and built with intent.</p><a href="#top">Back to top ↑</a></footer>
   </main>
 </body>
