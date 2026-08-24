@@ -58,7 +58,7 @@ em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight
 .project-copy p { max-width:580px; margin:0 0 1.5rem; color:#55564f; line-height:1.65; }
 .project-outcomes { grid-column:2; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; margin:0 0 1.35rem; background:#bbbcb3; border:1px solid #bbbcb3; }
 .project-outcomes div { min-width:0; padding:12px; background:var(--paper); }
-.project-outcomes dt { margin:0 0:.6rem; color:#888981; font:.58rem ui-monospace,SFMono-Regular,Menlo,monospace; }
+.project-outcomes dt { margin:0 0 .6rem; color:#888981; font:.58rem ui-monospace,SFMono-Regular,Menlo,monospace; }
 .project-outcomes dd { margin:0; font:.65rem/1.35 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.06em; }
 .project-copy ul { grid-column:2; display:flex; flex-wrap:wrap; gap:.5rem; margin:0; padding:0; list-style:none; }
 .project-copy li { padding:7px 10px; border:1px solid #aaa9a0; border-radius:100px; font-size:.67rem; text-transform:uppercase; letter-spacing:.08em; }
