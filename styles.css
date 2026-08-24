@@ -38,7 +38,7 @@ em { color:var(--acid); font-family:Georgia,"Times New Roman",serif; font-weight
 .hero-orbit::after { content:""; position:absolute; inset:9%; border:1px solid rgba(241,240,233,.035); border-radius:50%; pointer-events:none; }
 .hero-orbit .round-link { position:absolute; z-index:4; left:0; top:0; pointer-events:auto; transform:translate3d(calc(var(--bubble-x,50%) - 50%),calc(var(--bubble-y,50%) - 50%),0); background:rgba(12,13,12,.86); backdrop-filter:blur(6px); backface-visibility:hidden; contain:layout paint style; }
 .hero-orbit .round-link:hover { transform:translate3d(calc(var(--bubble-x,50%) - 50%),calc(var(--bubble-y,50%) - 50%),0) rotate(-6deg); }
-.moving-link { will-change:transform; transition:background 220ms ease,color 220ms ease,transform 220ms ease; }
+.moving-link { will-change:transform; transition:background 220ms ease,color 220ms ease; }
 .hero-code { position:absolute; bottom:28px; left:4vw; right:4vw; display:flex; justify-content:space-between; color:#676a63; font:.62rem ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; }
 .reveal { animation:enter 800ms cubic-bezier(.2,.8,.2,1) both; }
 .reveal-delay-1 { animation-delay:100ms; } .reveal-delay-2 { animation-delay:220ms; }
