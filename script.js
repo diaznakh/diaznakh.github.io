@@ -621,3 +621,46 @@ const MazeBridgeCore = (() => {
     });
   });
 })();
+
+// Horizontal blog carousel: one article per view with buttons, swipe, and keyboard support.
+(() => {
+  const root=document.querySelector("[data-blog-carousel]");
+  if(!root)return;
+  const list=root.querySelector(".blog-list");
+  const cards=Array.from(list?.querySelectorAll(".featured-post")||[]);
+  const previous=root.querySelector("[data-blog-prev]");
+  const next=root.querySelector("[data-blog-next]");
+  const count=root.querySelector("[data-blog-count]");
+  if(!list||!previous||!next||!count||!cards.length)return;
+
+  let active=0,scrollFrame=0;
+  const format=value=>String(value).padStart(2,"0");
+  const update=()=>{
+    count.textContent=format(active+1)+" / "+format(cards.length);
+    previous.disabled=active===0;
+    next.disabled=active===cards.length-1;
+  };
+  const goTo=(index,smooth=true)=>{
+    active=Math.max(0,Math.min(cards.length-1,index));
+    list.scrollTo({left:active*list.clientWidth,behavior:smooth&&!matchMedia("(prefers-reduced-motion: reduce)").matches?"smooth":"auto"});
+    update();
+  };
+
+  previous.addEventListener("click",()=>goTo(active-1));
+  next.addEventListener("click",()=>goTo(active+1));
+  list.addEventListener("keydown",event=>{
+    if(event.key==="ArrowLeft"){event.preventDefault();goTo(active-1);}
+    if(event.key==="ArrowRight"){event.preventDefault();goTo(active+1);}
+  });
+  list.addEventListener("scroll",()=>{
+    if(scrollFrame)return;
+    scrollFrame=requestAnimationFrame(()=>{
+      const width=Math.max(1,list.clientWidth);
+      active=Math.max(0,Math.min(cards.length-1,Math.round(list.scrollLeft/width)));
+      update();
+      scrollFrame=0;
+    });
+  },{passive:true});
+  window.addEventListener("resize",()=>goTo(active,false),{passive:true});
+  update();
+})();
