@@ -26,8 +26,8 @@
   <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/favicon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260825-writing-scroll1">
-  <script src="script.js?v=20260824-security1" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20260825-blog-carousel1">
+  <script src="script.js?v=20260825-blog-carousel1" defer></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Zaid Khan","url":"https://diaznakh.github.io/","image":"https://diaznakh.github.io/assets/zaid-khan-portrait-2903-v2.webp","jobTitle":"Software Engineer","alumniOf":{"@type":"CollegeOrUniversity","name":"National Institute of Technology Srinagar"},"sameAs":["https://github.com/diaznakh","https://www.linkedin.com/in/zaid-khan-0873591ba/"],"knowsAbout":["C++","Systems programming","Backend development","Computer architecture","Algorithms"]}</script>
 </head>
 <body>
@@ -82,7 +82,9 @@
     <section class="section writing" id="writing">
       <div class="section-heading" data-reveal><p class="eyebrow">Writing / Field notes</p><div class="writing-title-row"><h2>What I learn while <em>building.</em></h2><a class="rss-link" href="rss.xml" aria-label="Subscribe to technical field notes via RSS" title="Subscribe via RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2"></circle><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path></svg><span>RSS</span></a></div></div>
       <div class="writing-grid">
-        <div class="blog-list" tabindex="0" aria-label="Technical blog posts">
+        <div class="blog-carousel" data-blog-carousel>
+          <div class="blog-carousel-nav" aria-label="Blog navigation"><span class="blog-carousel-count" data-blog-count>01 / 02</span><div class="blog-carousel-controls"><button type="button" data-blog-prev aria-label="Show previous blog">← Previous</button><button type="button" data-blog-next aria-label="Show next blog">Next →</button></div></div>
+          <div class="blog-list" tabindex="0" aria-label="Technical blog posts">
           <article class="featured-post" data-reveal data-spotlight>
             <div class="post-meta"><span>Systems</span><time datetime="2026-08-24">24 Aug 2026</time><span>7 min read</span></div>
             <h3>Connecting My Maze Visualizer to Redis</h3>
@@ -95,6 +97,7 @@
             <p>A practical look at why the theoretically smarter algorithm can lose on a small grid—and what profiling taught me about heuristics, overhead, and hardware reality.</p>
             <a href="blog/astar-vs-dijkstra.html" aria-label="Read Why Dijkstra Beat A star in My Tiny Maze">Read article <span aria-hidden="true">↗</span></a>
           </article>
+          </div>
         </div>
         <aside class="linkedin-panel" aria-labelledby="linkedin-title" data-reveal data-reveal-delay="90">
           <div class="linkedin-heading"><span class="linkedin-mark" aria-hidden="true">in</span><div><p class="eyebrow">LinkedIn tracker</p><h3 id="linkedin-title">Posts &amp; progress</h3></div></div>
