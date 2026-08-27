@@ -1,12 +1,20 @@
 [
   {
-  "title": "Conway's Game of Life",
-  "url": "https://lnkd.in/p/d4wgsdam",
-  "date": "2026-08-25",
-  "displayDate": "25 Aug 2026",
-  "type": "Learning",
-  "topics": ["C++", "Systems", "Learning"]
-},
+    "title": "Completing Amazon’s SDE Online Assessment",
+    "url": "https://lnkd.in/p/dr_NfG_N",
+    "date": "2026-08-27",
+    "displayDate": "27 Aug 2026",
+    "type": "Learning",
+    "topics": ["Amazon", "Software Engineering", "Online Assessment"]
+  },
+  {
+    "title": "Conway's Game of Life",
+    "url": "https://lnkd.in/p/d4wgsdam",
+    "date": "2026-08-25",
+    "displayDate": "25 Aug 2026",
+    "type": "Learning",
+    "topics": ["C++", "Systems", "Learning"]
+  },
   {
     "title": "Looking for Software Engineering Opportunities",
     "url": "https://lnkd.in/p/d-zZuXts",
@@ -16,13 +24,13 @@
     "topics": ["Open to Work", "Software Engineering", "C++"]
   },
   {
-  "title": "Connected two C++ projects",
-  "url": "https://lnkd.in/p/dDjdV93T",
-  "date": "2026-08-24",
-  "displayDate": "24 Aug 2026",
-  "type": "Project",
-  "topics": ["LLD", "C++"]
-},
+    "title": "Connected two C++ projects",
+    "url": "https://lnkd.in/p/dDjdV93T",
+    "date": "2026-08-24",
+    "displayDate": "24 Aug 2026",
+    "type": "Project",
+    "topics": ["LLD", "C++"]
+  },
   {
     "title": "A* vs Dijkstra Maze Visualizer",
     "url": "https://lnkd.in/p/dtx8KZRR",
