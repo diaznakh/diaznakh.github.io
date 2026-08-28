@@ -8,6 +8,13 @@
     <language>en</language>
     <atom:link href="https://diaznakh.github.io/rss.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>What The Imitation Game Taught Me About System Design</title>
+      <link>https://diaznakh.github.io/blog/imitation-game-system-design.html</link>
+      <guid isPermaLink="true">https://diaznakh.github.io/blog/imitation-game-system-design.html</guid>
+      <pubDate>Fri, 28 Aug 2026 00:00:00 +0530</pubDate>
+      <description>How a repeated phrase connects to known inputs, invariants, protocol design, observability, debugging, and secure systems.</description>
+    </item>
+    <item>
       <title>Connecting My Maze Visualizer to Redis</title>
       <link>https://diaznakh.github.io/blog/maze-redis-integration.html</link>
       <guid isPermaLink="true">https://diaznakh.github.io/blog/maze-redis-integration.html</guid>
