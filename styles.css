@@ -234,6 +234,7 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
 .article-header>a:last-child { font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; }
 .article-shell { width:min(860px,90vw); margin:0 auto; padding:110px 0 120px; }
 .article-shell h1 { margin:2.2rem 0 3rem; font-size:clamp(3.4rem,7vw,7.5rem); line-height:.9; letter-spacing:-.065em; }
+.article-shell h1 em { color:var(--ink); text-decoration-line:underline; text-decoration-color:var(--acid); text-decoration-thickness:.1em; text-underline-offset:.06em; }
 .article-lede { margin:0 0 5rem; font-size:clamp(1.3rem,2.2vw,1.75rem); line-height:1.5; color:#45463f; }
 .article-shell h2 { margin:4.5rem 0 1.2rem; font-size:clamp(1.8rem,3.2vw,2.7rem); letter-spacing:-.04em; }
 .article-shell>p:not(.article-lede) { max-width:720px; margin:0 0 1.4rem; color:#484941; font:1.08rem/1.8 Georgia,"Times New Roman",serif; }
