@@ -273,9 +273,6 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
 .article-nav strong { font-size:1rem; line-height:1.35; }
 .article-nav a:hover strong { text-decoration:underline; text-decoration-color:var(--acid); text-decoration-thickness:3px; text-underline-offset:4px; }
 
-.motion-toggle { position:fixed; z-index:30; right:18px; bottom:18px; padding:10px 13px; border:1px solid rgba(241,240,233,.24); background:rgba(12,13,12,.88); color:var(--paper); font:600 .62rem/1 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform:uppercase; letter-spacing:.09em; cursor:pointer; backdrop-filter:blur(8px); }
-.motion-toggle:hover,.motion-toggle[aria-pressed="true"] { border-color:var(--acid); color:var(--acid); }
-
 .writing-index { min-height:100vh; background:var(--ink); color:var(--paper); }
 .writing-shell { width:min(1180px,92vw); margin:0 auto; padding:150px 0 120px; }
 .writing-shell>h1 { max-width:950px; margin:1rem 0 2rem; font-size:clamp(4rem,9vw,9rem); line-height:.86; letter-spacing:-.07em; }
@@ -403,7 +400,6 @@ footer p { margin:0; } footer>a:last-child { justify-self:end; }
   .article-live-lab { width:100vw; margin-block:4rem; padding:32px 5vw; }
   .single-grid-demo { width:100vw; margin-block:4rem; padding:24px 5vw; } .single-grid-actions { width:100%; } .single-grid-actions button { flex:1; }
   .article-header { height:74px; padding:0 5vw; } .article-shell { padding:80px 0; } .article-shell h1 { font-size:15vw; } .article-nav { margin:-35px auto 70px; grid-template-columns:1fr; } .article-nav a+a { border-left:0; border-top:1px solid rgba(12,13,12,.14); text-align:left; } .project-shell { padding:70px 0 90px; } .project-shell>h1 { font-size:16vw; } .case-architecture { margin:70px 0; padding:26px; } .case-story-grid section { padding:28px; } .case-detail-section { margin:70px 0; } .case-implementation li { grid-template-columns:42px 1fr; } .case-results { margin:70px 0; } .case-next { padding:32px; }
-  .motion-toggle { right:10px; bottom:10px; }
   .writing-shell { padding:110px 0 80px; } .writing-archive article { grid-template-columns:1fr; gap:12px; } .writing-archive a { white-space:normal; }
   .contact-links { flex-direction:column; } footer { grid-template-columns:1fr 1fr; padding:28px 5vw; } footer p { display:none; }
 }

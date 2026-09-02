@@ -111,35 +111,12 @@ if (nowCard) {
     });
 }
 
-const motionToggle = document.querySelector("[data-motion-toggle]");
-let motionPaused = false;
-try {
-  motionPaused = localStorage.getItem("portfolio-motion-paused") === "true";
-} catch {}
-document.documentElement.dataset.motion = motionPaused ? "paused" : "running";
-
-function renderMotionPreference() {
-  if (!motionToggle) return;
-  motionToggle.setAttribute("aria-pressed", String(motionPaused));
-  motionToggle.textContent = motionPaused ? "Resume motion" : "Pause motion";
-}
-
-renderMotionPreference();
-motionToggle?.addEventListener("click", () => {
-  motionPaused = !motionPaused;
-  document.documentElement.dataset.motion = motionPaused ? "paused" : "running";
-  try { localStorage.setItem("portfolio-motion-paused", String(motionPaused)); } catch {}
-  renderMotionPreference();
-  document.dispatchEvent(new CustomEvent("portfolio:motion", { detail: { paused: motionPaused } }));
-});
-
 const orbit = document.querySelector(".hero-orbit");
 const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
 const ORBIT_SPEED = 38;
 const MOBILE_ORBIT_SPEED = 24;
 const EDGE_GAP = 12;
 const COLLISION_GAP = 3;
-let orbitMotionPaused = document.documentElement.dataset.motion === "paused";
 
 function isMobileOrbit() {
   return window.innerWidth <= 560;
@@ -440,7 +417,7 @@ if (orbit && orbitLinks.length === 2) {
     orbitFrame = 0;
   }
   function startOrbit() {
-    if (reducedOrbitMotion.matches || orbitMotionPaused || orbitFrame || !orbitVisible || !pageVisible) return;
+    if (reducedOrbitMotion.matches || orbitFrame || !orbitVisible || !pageVisible) return;
     previousTime = performance.now();
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
@@ -460,11 +437,6 @@ if (orbit && orbitLinks.length === 2) {
     pageVisible = !document.hidden;
     if (pageVisible) startOrbit();
     else stopOrbit();
-  });
-  document.addEventListener("portfolio:motion", (event) => {
-    orbitMotionPaused = Boolean(event.detail?.paused);
-    if (orbitMotionPaused) stopOrbit();
-    else startOrbit();
   });
   startOrbit();
 }
