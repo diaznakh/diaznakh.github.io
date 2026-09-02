@@ -10,6 +10,7 @@ Static engineering portfolio deployed through GitHub Pages.
 - `writing/` — complete writing archive
 - `data/linkedin-posts.json` — manually maintained LinkedIn tracker
 - `data/currently-building.json` — source for the homepage “Currently Building” card
+- `data/resume.json` — résumé path and review date used by freshness checks
 
 ## Scripts
 
@@ -27,3 +28,8 @@ Run the same checks used by GitHub Actions:
 node tests/site-quality.cjs
 node --test tests/*.test.cjs
 ```
+
+GitHub Actions also checks external links, validates OG images, and runs
+Lighthouse against the landing page, 6502 case study, and interactive
+Maze/Redis article. The build fails when Currently Building is older than 45
+days or the résumé review date is older than 180 days.

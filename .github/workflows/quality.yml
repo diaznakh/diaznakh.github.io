@@ -25,6 +25,8 @@ jobs:
         run: |
           python -m json.tool data/linkedin-posts.json >/dev/null
           python -m json.tool data/currently-building.json >/dev/null
+          python -m json.tool data/resume.json >/dev/null
+          python -m json.tool lighthouserc.json >/dev/null
       - name: Validate XML
         run: |
           python - <<'PY'
@@ -33,3 +35,39 @@ jobs:
               ET.parse(file)
               print(f"validated {file}")
           PY
+
+  external-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check external links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --max-retries 2 --timeout 20 --accept 200,204,301,302,307,308,403,429 './**/*.html' './**/*.md'
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/portfolio-server.log 2>&1 &
+          for attempt in {1..20}; do
+            curl --fail --silent http://127.0.0.1:4173/ >/dev/null && exit 0
+            sleep 0.5
+          done
+          cat /tmp/portfolio-server.log
+          exit 1
+      - name: Audit representative pages
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://127.0.0.1:4173/
+            http://127.0.0.1:4173/projects/6502-emulator/
+            http://127.0.0.1:4173/blog/maze-redis-integration.html
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
