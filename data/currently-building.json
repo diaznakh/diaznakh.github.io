@@ -1,13 +1,14 @@
 {
-  "title": "Maze Visualizer × Mini Redis",
-  "status": "Refining",
-  "summary": "I am tightening the boundary between two independent C++ programs: a pathfinding visualizer that serializes mazes and a Redis-compatible server that stores them through TCP and RESP.",
+  "title": "6502 Developer Console",
+  "status": "Building",
+  "summary": "I’m turning my MOS 6502 CPU core into an interactive console for loading programs, stepping instructions, and inspecting registers and memory.",
   "completed": [
-    "Save and load through SET and GET",
-    "Disk-backed recovery after restart",
-    "Validation before maze reconstruction"
+    "Step and run instructions with visible CPU state",
+    "Parse and load machine-code text files",
+    "Keep the CPU, memory bus, and interface separated"
   ],
-  "next": "Broaden malformed-input tests and document performance across larger mazes.",
-  "updated": "24 Aug 2026",
-  "href": "/projects/maze-solver/"
+  "next": "Connect the ncurses console, add bounded file loading, and run a small 6502 assembly program end to end.",
+  "updated": "2 Sep 2026",
+  "updatedISO": "2026-09-02",
+  "href": "/projects/6502-emulator/"
 }

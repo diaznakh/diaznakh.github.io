@@ -1,0 +1,35 @@
+name: Portfolio quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate website files
+        run: node tests/site-quality.cjs
+      - name: Run JavaScript tests
+        run: node --test tests/*.test.cjs
+      - name: Validate JSON
+        run: |
+          python -m json.tool data/linkedin-posts.json >/dev/null
+          python -m json.tool data/currently-building.json >/dev/null
+      - name: Validate XML
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          for file in ("rss.xml", "rss.xsl", "sitemap.xml"):
+              ET.parse(file)
+              print(f"validated {file}")
+          PY

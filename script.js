@@ -68,99 +68,70 @@ if (tracker) {
 
 
 
-const terminalForm = document.querySelector("#terminal-form");
-const terminalInput = document.querySelector("#terminal-input");
-const terminalOutput = document.querySelector("#terminal-output");
-const terminalStorageKey = "zaid-redis-sandbox-v1";
-const MAX_TERMINAL_COMMAND_LENGTH = 4096;
-const MAX_TERMINAL_KEY_LENGTH = 64;
-const MAX_TERMINAL_VALUE_LENGTH = 2048;
-const MAX_TERMINAL_KEYS = 64;
-const MAX_TERMINAL_LINES = 200;
 
-function emptyTerminalStore() { return Object.create(null); }
+const nowCard = document.querySelector("[data-currently-building]");
 
-function normalizeTerminalStore(value) {
-  const normalized = emptyTerminalStore();
-  if (!value || typeof value !== "object" || Array.isArray(value)) return normalized;
-  for (const [key, entry] of Object.entries(value)) {
-    if (Object.keys(normalized).length >= MAX_TERMINAL_KEYS) break;
-    if (!key || key.length > MAX_TERMINAL_KEY_LENGTH) continue;
-    if (typeof entry !== "string" || entry.length > MAX_TERMINAL_VALUE_LENGTH) continue;
-    normalized[key] = entry;
+function isSafeCurrentlyBuilding(data) {
+  if (!data || typeof data !== "object") return false;
+  if (![data.title, data.status, data.summary, data.next, data.updated, data.updatedISO, data.href].every((value) => typeof value === "string")) return false;
+  if (!Array.isArray(data.completed) || !data.completed.length || data.completed.some((item) => typeof item !== "string")) return false;
+  try {
+    const url = new URL(data.href, window.location.origin);
+    return url.origin === window.location.origin;
+  } catch {
+    return false;
   }
-  return normalized;
 }
 
-let terminalStore = emptyTerminalStore();
+if (nowCard) {
+  fetch("data/currently-building.json", { cache: "no-store" })
+    .then((response) => {
+      if (!response.ok) throw new Error("Could not load current project");
+      return response.json();
+    })
+    .then((data) => {
+      if (!isSafeCurrentlyBuilding(data)) throw new Error("Invalid current project data");
+      nowCard.querySelector("[data-now-status]").textContent = data.status;
+      nowCard.querySelector("[data-now-title]").textContent = data.title;
+      nowCard.querySelector("[data-now-summary]").textContent = data.summary;
+      const time = nowCard.querySelector("[data-now-updated]");
+      time.dateTime = data.updatedISO;
+      time.textContent = "Updated " + data.updated;
+      const list = nowCard.querySelector("[data-now-list]");
+      list.replaceChildren(...data.completed.map((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        return li;
+      }));
+      nowCard.querySelector("[data-now-next]").textContent = data.next;
+      nowCard.querySelector("[data-now-link]").href = new URL(data.href, window.location.origin).pathname;
+    })
+    .catch(() => {
+      nowCard.dataset.source = "fallback";
+    });
+}
 
+const motionToggle = document.querySelector("[data-motion-toggle]");
+let motionPaused = false;
 try {
-  const savedTerminalStore = localStorage.getItem(terminalStorageKey);
-  if (savedTerminalStore) terminalStore = normalizeTerminalStore(JSON.parse(savedTerminalStore));
+  motionPaused = localStorage.getItem("portfolio-motion-paused") === "true";
 } catch {}
+document.documentElement.dataset.motion = motionPaused ? "paused" : "running";
 
-function saveTerminalStore() {
-  terminalStore = normalizeTerminalStore(terminalStore);
-  try { localStorage.setItem(terminalStorageKey, JSON.stringify(terminalStore)); } catch {}
+function renderMotionPreference() {
+  if (!motionToggle) return;
+  motionToggle.setAttribute("aria-pressed", String(motionPaused));
+  motionToggle.textContent = motionPaused ? "Resume motion" : "Pause motion";
 }
 
-function terminalTokens(value) {
-  return [...value.matchAll(/"([^"]*)"|'([^']*)'|([^\s]+)/g)].map((match) => match[1] ?? match[2] ?? match[3]);
-}
-
-function addTerminalLine(kind, value) {
-  const line = document.createElement("p");
-  line.className = "terminal-line " + kind;
-  line.textContent = value;
-  terminalOutput.append(line);
-  while (terminalOutput.childElementCount > MAX_TERMINAL_LINES) terminalOutput.firstElementChild?.remove();
-  terminalOutput.scrollTo({ top: terminalOutput.scrollHeight, behavior: "smooth" });
-}
-
-if (terminalForm && terminalInput && terminalOutput) {
-  terminalForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const raw = terminalInput.value.trim();
-    terminalInput.value = "";
-    if (raw.length > MAX_TERMINAL_COMMAND_LENGTH) {
-      addTerminalLine("response", `(error) command exceeds ${MAX_TERMINAL_COMMAND_LENGTH} characters`);
-      return;
-    }
-    const parts = terminalTokens(raw);
-    const command = (parts.shift() || "").toUpperCase();
-    if (!command) return;
-
-    let response = "(error) unknown command — type HELP";
-    if (command === "HELP") response = "PING · SET key value · GET key · DEL key [key...] · EXISTS key · KEYS · RESET · CLEAR";
-    else if (command === "PING") response = "PONG";
-    else if (command === "SET") {
-      const key = parts.shift();
-      if (!key || !parts.length) response = "(error) usage: SET key value";
-      else if (key.length > MAX_TERMINAL_KEY_LENGTH) response = `(error) key exceeds ${MAX_TERMINAL_KEY_LENGTH} characters`;
-      else if (!Object.hasOwn(terminalStore, key) && Object.keys(terminalStore).length >= MAX_TERMINAL_KEYS) response = `(error) sandbox is limited to ${MAX_TERMINAL_KEYS} keys`;
-      else {
-        const value = parts.join(" ");
-        if (value.length > MAX_TERMINAL_VALUE_LENGTH) response = `(error) value exceeds ${MAX_TERMINAL_VALUE_LENGTH} characters`;
-        else { terminalStore[key] = value; saveTerminalStore(); response = "OK"; }
-      }
-    } else if (command === "GET") response = parts[0] ? (Object.hasOwn(terminalStore, parts[0]) ? terminalStore[parts[0]] : "(nil)") : "(error) usage: GET key";
-    else if (command === "DEL") {
-      if (!parts.length) response = "(error) usage: DEL key [key...]";
-      else {
-        let removed = 0;
-        parts.forEach((key) => { if (Object.hasOwn(terminalStore, key)) { delete terminalStore[key]; removed += 1; } });
-        saveTerminalStore();
-        response = String(removed);
-      }
-    } else if (command === "EXISTS") response = parts[0] ? (Object.hasOwn(terminalStore, parts[0]) ? "1" : "0") : "(error) usage: EXISTS key";
-    else if (command === "KEYS") response = Object.keys(terminalStore).sort().join("\n") || "(empty list)";
-    else if (command === "RESET") { terminalStore = emptyTerminalStore(); saveTerminalStore(); response = "OK — sandbox cleared"; }
-    else if (command === "CLEAR") { terminalOutput.replaceChildren(); return; }
-
-    addTerminalLine("command", "> " + raw);
-    addTerminalLine("response", response);
-  });
-}
+renderMotionPreference();
+motionToggle?.addEventListener("click", () => {
+  motionPaused = !motionPaused;
+  document.documentElement.dataset.motion = motionPaused ? "paused" : "running";
+  try { localStorage.setItem("portfolio-motion-paused", String(motionPaused)); } catch {}
+  renderMotionPreference();
+  document.dispatchEvent(new CustomEvent("portfolio:motion", { detail: { paused: motionPaused } }));
+});
 
 const orbit = document.querySelector(".hero-orbit");
 const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
@@ -168,6 +139,7 @@ const ORBIT_SPEED = 38;
 const MOBILE_ORBIT_SPEED = 24;
 const EDGE_GAP = 12;
 const COLLISION_GAP = 3;
+let orbitMotionPaused = document.documentElement.dataset.motion === "paused";
 
 function isMobileOrbit() {
   return window.innerWidth <= 560;
@@ -468,7 +440,7 @@ if (orbit && orbitLinks.length === 2) {
     orbitFrame = 0;
   }
   function startOrbit() {
-    if (reducedOrbitMotion.matches || orbitFrame || !orbitVisible || !pageVisible) return;
+    if (reducedOrbitMotion.matches || orbitMotionPaused || orbitFrame || !orbitVisible || !pageVisible) return;
     previousTime = performance.now();
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
@@ -489,95 +461,13 @@ if (orbit && orbitLinks.length === 2) {
     if (pageVisible) startOrbit();
     else stopOrbit();
   });
+  document.addEventListener("portfolio:motion", (event) => {
+    orbitMotionPaused = Boolean(event.detail?.paused);
+    if (orbitMotionPaused) stopOrbit();
+    else startOrbit();
+  });
   startOrbit();
 }
-
-
-// Connected 19x8 maze, Redis sandbox, and article trace
-const MazeBridgeCore = (() => {
-  const COLS=19, ROWS=8, TOTAL=COLS*ROWS, N=1, E=2, S=4, W=8, VISITED=16, MAX_SERIALIZED_LENGTH=1024;
-  const directions=[
-    {dx:0,dy:-1,path:N,opposite:S},{dx:1,dy:0,path:E,opposite:W},
-    {dx:0,dy:1,path:S,opposite:N},{dx:-1,dy:0,path:W,opposite:E}
-  ];
-  const point=(index)=>({x:index%COLS,y:Math.floor(index/COLS)});
-  const indexOf=(x,y)=>y*COLS+x;
-  function generate(){
-    const cells=new Uint8Array(TOTAL);
-    const stack=[Math.floor(Math.random()*TOTAL)];
-    cells[stack[0]]|=VISITED;
-    while(stack.length){
-      const current=stack[stack.length-1], {x,y}=point(current);
-      const options=directions.filter(({dx,dy})=>{const nx=x+dx,ny=y+dy;return nx>=0&&nx<COLS&&ny>=0&&ny<ROWS&&!(cells[indexOf(nx,ny)]&VISITED);});
-      if(!options.length){stack.pop();continue;}
-      const direction=options[Math.floor(Math.random()*options.length)];
-      const next=indexOf(x+direction.dx,y+direction.dy);
-      cells[current]|=direction.path;
-      cells[next]|=direction.opposite|VISITED;
-      stack.push(next);
-    }
-    for(let count=0;count<Math.floor(TOTAL/8);count+=1){
-      if(Math.random()<.5){const x=Math.floor(Math.random()*(COLS-1)),y=Math.floor(Math.random()*ROWS);cells[indexOf(x,y)]|=E;cells[indexOf(x+1,y)]|=W;}
-      else{const x=Math.floor(Math.random()*COLS),y=Math.floor(Math.random()*(ROWS-1));cells[indexOf(x,y)]|=S;cells[indexOf(x,y+1)]|=N;}
-    }
-    return Array.from(cells);
-  }
-  const serialize=(cells)=>COLS+","+ROWS+"|"+cells.join(",");
-  function deserialize(value){
-    if(typeof value!=="string"||value.length>MAX_SERIALIZED_LENGTH)return null;
-    const prefix=COLS+","+ROWS+"|";
-    if(!value.startsWith(prefix))return null;
-    const tokens=value.slice(prefix.length).split(",");
-    if(tokens.length!==TOTAL||tokens.some(token=>!/^(?:[0-9]|[12][0-9]|3[01])$/.test(token)))return null;
-    return tokens.map(Number);
-  }
-  function save(cells){const value=serialize(cells);terminalStore={...terminalStore,"maze:last":value};saveTerminalStore();return value;}
-  function load(){const value=terminalStore["maze:last"];return value?deserialize(value):null;}
-  function neighbours(cells,node){
-    const {x,y}=point(node),result=[];
-    if((cells[node]&N)&&y>0)result.push(node-COLS);
-    if((cells[node]&E)&&x<COLS-1)result.push(node+1);
-    if((cells[node]&S)&&y<ROWS-1)result.push(node+COLS);
-    if((cells[node]&W)&&x>0)result.push(node-1);
-    return result;
-  }
-  function solve(cells,heuristic){
-    const goal=TOTAL-1,distance=new Float64Array(TOTAL).fill(Infinity),previous=new Int32Array(TOTAL).fill(-1),closed=new Uint8Array(TOTAL),queue=[{node:0,score:0}],explored=[];
-    distance[0]=0;
-    while(queue.length){
-      queue.sort((a,b)=>a.score-b.score);const current=queue.shift().node;
-      if(closed[current])continue;closed[current]=1;explored.push(current);if(current===goal)break;
-      for(const next of neighbours(cells,current)){const candidate=distance[current]+1;if(candidate>=distance[next])continue;distance[next]=candidate;previous[next]=current;const p=point(next),g=point(goal);queue.push({node:next,score:candidate+(heuristic?Math.abs(p.x-g.x)+Math.abs(p.y-g.y):0)});}
-    }
-    const path=[];for(let node=goal;node!==-1;node=previous[node])path.push(node);path.reverse();return{explored,path};
-  }
-  function draw(canvas,cells,result,shown=0,finished=false){
-    const ctx=canvas.getContext("2d"),width=canvas.width,height=canvas.height,cellW=width/COLS,cellH=height/ROWS;
-    ctx.fillStyle="#0b0c0b";ctx.fillRect(0,0,width,height);
-    if(!cells.length){ctx.fillStyle="#777a72";ctx.font="14px ui-monospace, monospace";ctx.textAlign="center";ctx.fillText("Visualizer memory cleared",width/2,height/2);return;}
-    if(result){ctx.fillStyle="#34402d";result.explored.slice(0,shown).forEach(node=>{const{x,y}=point(node);ctx.fillRect(x*cellW+1,y*cellH+1,cellW-2,cellH-2);});if(finished){ctx.fillStyle="#c9ff4a";result.path.forEach(node=>{const{x,y}=point(node);ctx.fillRect(x*cellW+cellW*.27,y*cellH+cellH*.27,cellW*.46,cellH*.46);});}}
-    ctx.strokeStyle="rgba(241,240,233,.65)";ctx.lineWidth=1.25;ctx.beginPath();
-    cells.forEach((paths,node)=>{const{x,y}=point(node),left=x*cellW,top=y*cellH,right=left+cellW,bottom=top+cellH;if(!(paths&N)){ctx.moveTo(left,top);ctx.lineTo(right,top);}if(!(paths&W)){ctx.moveTo(left,top);ctx.lineTo(left,bottom);}if(!(paths&S)){ctx.moveTo(left,bottom);ctx.lineTo(right,bottom);}if(!(paths&E)){ctx.moveTo(right,top);ctx.lineTo(right,bottom);}});ctx.stroke();
-    [0,TOTAL-1].forEach((node,i)=>{const{x,y}=point(node);ctx.beginPath();ctx.fillStyle=i?"#f1f0e9":"#c9ff4a";ctx.arc(x*cellW+cellW/2,y*cellH+cellH/2,Math.min(cellW,cellH)*.22,0,Math.PI*2);ctx.fill();});
-  }
-  return{COLS,ROWS,TOTAL,generate,serialize,deserialize,save,load,solve,draw};
-})();
-
-(() => {
-  const canvases=[document.querySelector("#maze-dijkstra"),document.querySelector("#maze-astar")];
-  const stats=[document.querySelector("#maze-dijkstra-stat"),document.querySelector("#maze-astar-stat")];
-  const generateButton=document.querySelector("#maze-generate"),saveButton=document.querySelector("#maze-save"),loadButton=document.querySelector("#maze-load"),runButton=document.querySelector("#maze-run"),status=document.querySelector("#maze-storage-status");
-  if(canvases.some(canvas=>!canvas)||!generateButton||!runButton)return;
-  let cells=[],solutions=[],timer=null;
-  const stop=()=>{if(timer)cancelAnimationFrame(timer);timer=null;runButton.disabled=false;generateButton.disabled=false;};
-  const render=(shown=0,finished=false)=>canvases.forEach((canvas,index)=>MazeBridgeCore.draw(canvas,cells,solutions[index],shown,finished));
-  function prepare(next){cells=next;solutions=[MazeBridgeCore.solve(cells,false),MazeBridgeCore.solve(cells,true)];stop();render();stats[0].textContent="Ready";stats[1].textContent="Ready";}
-  function generate(){prepare(MazeBridgeCore.generate());const value=MazeBridgeCore.save(cells);status.textContent="Saved automatically as maze:last · "+value.length+" bytes";}
-  function save(){if(!cells.length)return;const value=MazeBridgeCore.save(cells);status.textContent="SET maze:last → OK · "+value.length+" bytes";}
-  function load(){const loaded=MazeBridgeCore.load();if(!loaded){status.textContent=terminalStore["maze:last"]?"Stored maze data is invalid":"GET maze:last → (nil)";return;}prepare(loaded);status.textContent="GET maze:last → loaded "+loaded.length+" cells";}
-  function run(){stop();runButton.disabled=true;generateButton.disabled=true;const maximum=Math.max(...solutions.map(solution=>solution.explored.length));if(matchMedia("(prefers-reduced-motion: reduce)").matches){render(maximum,true);stats.forEach((stat,index)=>stat.textContent=solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps");stop();return;}let shown=0,last=performance.now();const frame=now=>{if(now-last>24){shown+=2;last=now;render(shown,shown>=maximum);stats.forEach((stat,index)=>stat.textContent=shown>=maximum?solutions[index].explored.length+" explored · "+(solutions[index].path.length-1)+" steps":Math.min(shown,solutions[index].explored.length)+" explored");}if(shown<maximum)timer=requestAnimationFrame(frame);else stop();};timer=requestAnimationFrame(frame);}
-  generateButton.addEventListener("click",generate);saveButton?.addEventListener("click",save);loadButton?.addEventListener("click",load);runButton.addEventListener("click",run);generate();
-})();
 
 
 // Portfolio motion effects: one-time reveals and desktop writing-card spotlight.

@@ -1,5 +1,5 @@
 const assert = require("node:assert/strict");
-const { SafeCPU6502, parseProgram, FLAGS } = require("./cpu-demo.js");
+const { SafeCPU6502, parseProgram, FLAGS } = require("../cpu-demo.js");
 
 const cpu = new SafeCPU6502(parseProgram("A9 05 69 03 8D 00 02"));
 cpu.run();
