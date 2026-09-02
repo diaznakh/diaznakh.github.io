@@ -48,6 +48,12 @@ assert.ok(!styles.includes('@import "tailwindcss"'), "Remove the unresolved Tail
 for (const jsonPath of ["data/linkedin-posts.json", "data/currently-building.json"]) {
   JSON.parse(read(path.join(root, jsonPath)));
 }
+const currentBuild = JSON.parse(read(path.join(root, "data/currently-building.json")));
+const currentBuildDate = Date.parse(`${currentBuild.updatedISO}T00:00:00Z`);
+assert.ok(Number.isFinite(currentBuildDate), "Currently Building needs a valid updatedISO date");
+const currentBuildAgeDays = (Date.now() - currentBuildDate) / 86_400_000;
+assert.ok(currentBuildAgeDays >= -1, "Currently Building cannot be dated in the future");
+assert.ok(currentBuildAgeDays <= 45, "Currently Building is over 45 days old; update or archive it");
 const posts = JSON.parse(read(path.join(root, "data/linkedin-posts.json")));
 assert.equal(new Set(posts.map((post) => post.url)).size, posts.length, "LinkedIn tracker contains duplicate URLs");
 
