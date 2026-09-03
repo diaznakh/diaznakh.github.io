@@ -161,13 +161,17 @@ if (orbit && orbitLinks.length === 2) {
   let orbitVisible = true;
   let pageVisible = !document.hidden;
   let particles = [];
-  const particleContext = particleCanvas?.getContext("2d", { alpha: true });
+  let particleContext = null;
   const ORBIT_FRAME_INTERVAL = 1000 / 45;
 
   function resizeParticleCanvas() {
-    if (!particleCanvas || !particleContext || !arena || arena.mobile) {
+    if (!particleCanvas || !arena || arena.mobile) {
       particles = [];
       return;
+    }
+    if (!particleContext) {
+      particleContext = particleCanvas.getContext("2d", { alpha: true });
+      if (!particleContext) return;
     }
     const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
     const width = Math.max(1, Math.round(arena.width * ratio));
@@ -294,6 +298,8 @@ if (orbit && orbitLinks.length === 2) {
 
   function spawnOrbitParticles(event) {
     if (!particleCanvas || !arena || arena.mobile || reducedOrbitMotion.matches) return;
+    resizeParticleCanvas();
+    if (!particleContext) return;
     const rect = particleCanvas.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
     const originX = ((event.clientX - rect.left) / rect.width) * arena.width;
@@ -512,7 +518,7 @@ if (orbit && orbitLinks.length === 2) {
       contentTop: kicker ? kicker.bottom - orbitRect.top + 14 : EDGE_GAP,
       contentBottom: footer ? footer.top - orbitRect.top - 18 : orbitRect.height - EDGE_GAP
     };
-    resizeParticleCanvas();
+    if (particleContext) resizeParticleCanvas();
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
     obstacles = collectTextObstacles(orbitRect);
 
