@@ -151,17 +151,17 @@ if (orbit && orbitLinks.length === 2) {
 
   let bodies = null;
   let obstacles = [];
+  let arena = null;
   let previousTime = performance.now();
   let orbitFrame = 0;
   let orbitVisible = true;
   let pageVisible = !document.hidden;
   const ORBIT_FRAME_INTERVAL = 1000 / 45;
 
-  function collectTextObstacles() {
+  function collectTextObstacles(orbitRect) {
     if (!isMobileOrbit()) return [];
     const heading = orbit.parentElement?.querySelector("h1");
     if (!heading) return [];
-    const orbitRect = orbit.getBoundingClientRect();
     const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
     const rects = [];
     let node = walker.nextNode();
@@ -187,27 +187,27 @@ if (orbit && orbitLinks.length === 2) {
   }
 
   function bodyBounds(body) {
-    const rect = orbit.getBoundingClientRect();
-    if (isMobileOrbit()) {
-      const kicker = orbit.parentElement?.querySelector(".hero-kicker")?.getBoundingClientRect();
-      const footer = orbit.parentElement?.querySelector(".hero-footer")?.getBoundingClientRect();
-      const minY = (kicker ? kicker.bottom - rect.top + 14 : EDGE_GAP) + body.radius;
-      const maxY = (footer ? footer.top - rect.top - 18 : rect.height - EDGE_GAP) - body.radius;
+    if (!arena) {
+      return { minX: body.radius, maxX: body.radius, minY: body.radius, maxY: body.radius, size: body.radius * 2 };
+    }
+    if (arena.mobile) {
+      const minY = arena.contentTop + body.radius;
+      const maxY = arena.contentBottom - body.radius;
       return {
         minX: body.radius + EDGE_GAP,
-        maxX: rect.width - body.radius - EDGE_GAP,
+        maxX: arena.width - body.radius - EDGE_GAP,
         minY,
         maxY: Math.max(minY + 1, maxY),
-        size: rect.width
+        size: arena.width
       };
     }
 
     return {
-      minX: Math.max(body.radius + EDGE_GAP, -rect.left + body.radius + EDGE_GAP),
-      maxX: Math.min(rect.width - body.radius - EDGE_GAP, window.innerWidth - rect.left - body.radius - EDGE_GAP),
+      minX: Math.max(body.radius + EDGE_GAP, -arena.left + body.radius + EDGE_GAP),
+      maxX: Math.min(arena.width - body.radius - EDGE_GAP, arena.viewportWidth - arena.left - body.radius - EDGE_GAP),
       minY: body.radius + EDGE_GAP,
-      maxY: rect.height - body.radius - EDGE_GAP,
-      size: rect.width
+      maxY: arena.height - body.radius - EDGE_GAP,
+      size: arena.width
     };
   }
 
@@ -325,16 +325,30 @@ if (orbit && orbitLinks.length === 2) {
   }
 
   function initializeOrbit() {
-    const size = orbit.getBoundingClientRect().width;
+    const orbitRect = orbit.getBoundingClientRect();
+    const mobile = isMobileOrbit();
+    const kicker = mobile ? orbit.parentElement?.querySelector(".hero-kicker")?.getBoundingClientRect() : null;
+    const footer = mobile ? orbit.parentElement?.querySelector(".hero-footer")?.getBoundingClientRect() : null;
+    const size = orbitRect.width;
     if (!size) {
       bodies = null;
+      arena = null;
       return;
     }
 
+    arena = {
+      mobile,
+      width: orbitRect.width,
+      height: orbitRect.height,
+      left: orbitRect.left,
+      viewportWidth: window.innerWidth,
+      contentTop: kicker ? kicker.bottom - orbitRect.top + 14 : EDGE_GAP,
+      contentBottom: footer ? footer.top - orbitRect.top - 18 : orbitRect.height - EDGE_GAP
+    };
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
-    obstacles = collectTextObstacles();
+    obstacles = collectTextObstacles(orbitRect);
 
-    if (isMobileOrbit()) {
+    if (mobile) {
       const speed = activeOrbitSpeed();
       const makeBody = (radius, other) => {
         const shell = { x: size / 2, y: size / 2, vx: 0, vy: 0, radius };
