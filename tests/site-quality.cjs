@@ -53,6 +53,12 @@ for (const file of htmlFiles) {
 
 const styles = read(path.join(root, "styles.css"));
 assert.ok(!styles.includes('@import "tailwindcss"'), "Remove the unresolved Tailwind import");
+const home = read(path.join(root, "index.html"));
+const homeScript = read(path.join(root, "script.js"));
+assert.match(home, /<canvas class="orbit-particles" aria-hidden="true"><\/canvas>/, "Homepage is missing the orbit particle canvas");
+assert.match(homeScript, /const MAX_ORBIT_PARTICLES = 24;/, "Orbit particles must keep their bounded object cap");
+assert.match(styles, /@media \(max-width:560px\)[\s\S]*?\.orbit-particles \{ display:none; pointer-events:none; \}/, "Orbit particles must stay disabled on mobile");
+assert.match(styles, /@media \(prefers-reduced-motion:reduce\)[\s\S]*?\.orbit-particles \{ pointer-events:none;/, "Orbit particles must respect reduced-motion preferences");
 
 for (const jsonPath of ["data/linkedin-posts.json", "data/currently-building.json"]) {
   JSON.parse(read(path.join(root, jsonPath)));
