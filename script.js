@@ -113,13 +113,10 @@ if (nowCard) {
 
 const orbit = document.querySelector(".hero-orbit");
 const orbitLinks = [...document.querySelectorAll(".hero-orbit .moving-link")];
-const particleCanvas = document.querySelector(".orbit-particles");
 const ORBIT_SPEED = 38;
 const MOBILE_ORBIT_SPEED = 24;
 const EDGE_GAP = 12;
 const COLLISION_GAP = 3;
-const MAX_ORBIT_PARTICLES = 24;
-const PARTICLES_PER_CLICK = 4;
 
 function isMobileOrbit() {
   return window.innerWidth <= 560;
@@ -141,7 +138,6 @@ function keepOrbitSpeed(body) {
 }
 
 if (orbit && orbitLinks.length === 2) {
-  const reducedOrbitMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   orbitLinks.forEach((link) => {
     link.addEventListener("click", (event) => {
       if (!isTouchNavigation()) return;
@@ -160,176 +156,7 @@ if (orbit && orbitLinks.length === 2) {
   let orbitFrame = 0;
   let orbitVisible = true;
   let pageVisible = !document.hidden;
-  let particles = [];
-  let particleContext = null;
   const ORBIT_FRAME_INTERVAL = 1000 / 45;
-
-  function resizeParticleCanvas() {
-    if (!particleCanvas || !arena || arena.mobile) {
-      particles = [];
-      return;
-    }
-    if (!particleContext) {
-      particleContext = particleCanvas.getContext("2d", { alpha: true });
-      if (!particleContext) return;
-    }
-    const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-    const width = Math.max(1, Math.round(arena.width * ratio));
-    const height = Math.max(1, Math.round(arena.height * ratio));
-    if (particleCanvas.width !== width || particleCanvas.height !== height) {
-      particleCanvas.width = width;
-      particleCanvas.height = height;
-      particleContext.setTransform(ratio, 0, 0, ratio, 0, 0);
-      particles = [];
-    }
-  }
-
-  function keepParticleInOrbit(particle, restitution = 0.82) {
-    if (!arena) return;
-    const centerX = arena.width / 2;
-    const centerY = arena.height / 2;
-    const limit = Math.min(arena.width, arena.height) / 2 - particle.radius - 2;
-    const dx = particle.x - centerX;
-    const dy = particle.y - centerY;
-    const distance = Math.hypot(dx, dy);
-    if (distance <= limit) return;
-    const nx = dx / (distance || 1);
-    const ny = dy / (distance || 1);
-    particle.x = centerX + nx * limit;
-    particle.y = centerY + ny * limit;
-    const outwardSpeed = particle.vx * nx + particle.vy * ny;
-    if (outwardSpeed > 0) {
-      particle.vx -= (1 + restitution) * outwardSpeed * nx;
-      particle.vy -= (1 + restitution) * outwardSpeed * ny;
-    }
-  }
-
-  function resolveParticleBodyCollision(particle, body) {
-    const dx = particle.x - body.x;
-    const dy = particle.y - body.y;
-    const distance = Math.hypot(dx, dy) || 0.001;
-    const minimum = particle.radius + body.radius + 1;
-    if (distance >= minimum) return;
-    const nx = dx / distance;
-    const ny = dy / distance;
-    particle.x = body.x + nx * minimum;
-    particle.y = body.y + ny * minimum;
-    let relativeX = particle.vx - body.vx;
-    let relativeY = particle.vy - body.vy;
-    const impactSpeed = relativeX * nx + relativeY * ny;
-    if (impactSpeed < 0) {
-      relativeX -= 1.9 * impactSpeed * nx;
-      relativeY -= 1.9 * impactSpeed * ny;
-      particle.vx = relativeX + body.vx;
-      particle.vy = relativeY + body.vy;
-    }
-  }
-
-  function resolveParticlePair(first, second) {
-    let dx = second.x - first.x;
-    let dy = second.y - first.y;
-    let distance = Math.hypot(dx, dy);
-    const minimum = first.radius + second.radius;
-    if (distance >= minimum) return;
-    if (!distance) {
-      dx = 0.001;
-      dy = 0;
-      distance = 0.001;
-    }
-    const nx = dx / distance;
-    const ny = dy / distance;
-    const overlap = minimum - distance;
-    const firstMass = first.radius * first.radius;
-    const secondMass = second.radius * second.radius;
-    const totalMass = firstMass + secondMass;
-    first.x -= nx * overlap * (secondMass / totalMass);
-    first.y -= ny * overlap * (secondMass / totalMass);
-    second.x += nx * overlap * (firstMass / totalMass);
-    second.y += ny * overlap * (firstMass / totalMass);
-
-    const relativeSpeed = (second.vx - first.vx) * nx + (second.vy - first.vy) * ny;
-    if (relativeSpeed >= 0) return;
-    const impulse = -(1.86 * relativeSpeed) / (1 / firstMass + 1 / secondMass);
-    first.vx -= (impulse / firstMass) * nx;
-    first.vy -= (impulse / firstMass) * ny;
-    second.vx += (impulse / secondMass) * nx;
-    second.vy += (impulse / secondMass) * ny;
-  }
-
-  function updateParticles(delta, time) {
-    if (!particles.length || !arena || arena.mobile) return;
-    const step = Math.min(delta, 0.04);
-    particles = particles.filter((particle) => time - particle.createdAt < particle.lifetime);
-    particles.forEach((particle) => {
-      particle.vy += 165 * step;
-      particle.vx *= 0.999;
-      particle.vy *= 0.999;
-      const speed = Math.hypot(particle.vx, particle.vy);
-      if (speed > 520) {
-        particle.vx = (particle.vx / speed) * 520;
-        particle.vy = (particle.vy / speed) * 520;
-      }
-      particle.x += particle.vx * step;
-      particle.y += particle.vy * step;
-      keepParticleInOrbit(particle);
-      bodies.forEach((body) => resolveParticleBodyCollision(particle, body));
-      keepParticleInOrbit(particle);
-    });
-    for (let first = 0; first < particles.length; first += 1) {
-      for (let second = first + 1; second < particles.length; second += 1) {
-        resolveParticlePair(particles[first], particles[second]);
-      }
-    }
-    particles.forEach((particle) => keepParticleInOrbit(particle));
-  }
-
-  function renderParticles(time = performance.now()) {
-    if (!particleContext || !arena || arena.mobile) return;
-    particleContext.clearRect(0, 0, arena.width, arena.height);
-    particles.forEach((particle) => {
-      const remaining = particle.lifetime - (time - particle.createdAt);
-      const opacity = Math.max(0, Math.min(0.88, remaining / 2200));
-      particleContext.beginPath();
-      particleContext.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-      particleContext.fillStyle = `rgba(241, 240, 233, ${opacity})`;
-      particleContext.fill();
-    });
-  }
-
-  function spawnOrbitParticles(event) {
-    if (!particleCanvas || !arena || arena.mobile || reducedOrbitMotion.matches) return;
-    resizeParticleCanvas();
-    if (!particleContext) return;
-    const rect = particleCanvas.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const originX = ((event.clientX - rect.left) / rect.width) * arena.width;
-    const originY = ((event.clientY - rect.top) / rect.height) * arena.height;
-    const centerX = arena.width / 2;
-    const centerY = arena.height / 2;
-    if (Math.hypot(originX - centerX, originY - centerY) > Math.min(arena.width, arena.height) / 2 - 8) return;
-
-    const now = performance.now();
-    for (let index = 0; index < PARTICLES_PER_CLICK; index += 1) {
-      const radius = 2.5 + Math.random() * 2.5;
-      const particle = {
-        x: originX + (Math.random() - 0.5) * 18,
-        y: originY + (Math.random() - 0.5) * 10,
-        vx: (Math.random() - 0.5) * 70,
-        vy: 10 + Math.random() * 42,
-        radius,
-        createdAt: now,
-        lifetime: 9000 + Math.random() * 3500
-      };
-      keepParticleInOrbit(particle, 0);
-      particles.push(particle);
-    }
-    if (particles.length > MAX_ORBIT_PARTICLES) {
-      particles.splice(0, particles.length - MAX_ORBIT_PARTICLES);
-    }
-    startOrbit();
-  }
-
-  particleCanvas?.addEventListener("pointerdown", spawnOrbitParticles);
 
   function collectTextObstacles(orbitRect) {
     if (!isMobileOrbit()) return [];
@@ -518,7 +345,6 @@ if (orbit && orbitLinks.length === 2) {
       contentTop: kicker ? kicker.bottom - orbitRect.top + 14 : EDGE_GAP,
       contentBottom: footer ? footer.top - orbitRect.top - 18 : orbitRect.height - EDGE_GAP
     };
-    if (particleContext) resizeParticleCanvas();
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
     obstacles = collectTextObstacles(orbitRect);
 
@@ -595,11 +421,10 @@ if (orbit && orbitLinks.length === 2) {
     });
     resolveOrbitCollision(bodies[0], bodies[1]);
     renderOrbit();
-    updateParticles(delta, time);
-    renderParticles(time);
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
 
+  const reducedOrbitMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   function stopOrbit() {
     if (!orbitFrame) return;
     cancelAnimationFrame(orbitFrame);
@@ -626,15 +451,6 @@ if (orbit && orbitLinks.length === 2) {
     pageVisible = !document.hidden;
     if (pageVisible) startOrbit();
     else stopOrbit();
-  });
-  reducedOrbitMotion.addEventListener?.("change", () => {
-    if (reducedOrbitMotion.matches) {
-      particles = [];
-      renderParticles();
-      stopOrbit();
-    } else {
-      startOrbit();
-    }
   });
   startOrbit();
 }
