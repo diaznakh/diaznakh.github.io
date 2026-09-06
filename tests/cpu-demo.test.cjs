@@ -1,5 +1,5 @@
 const assert = require("node:assert/strict");
-const { SafeCPU6502, parseProgram, FLAGS } = require("../cpu-demo.js");
+const { SafeCPU6502, parseProgram, FLAGS, EXAMPLES } = require("../cpu-demo.js");
 
 const cpu = new SafeCPU6502(parseProgram("A9 05 69 03 8D 00 02"));
 cpu.run();
@@ -17,4 +17,27 @@ assert.throws(() => parseProgram(Array(65).fill("EA").join(" ")), /64 bytes/);
 assert.throws(() => new SafeCPU6502(parseProgram("A9 01 8D 00 80")).run(), /restricted/);
 assert.throws(() => new SafeCPU6502(parseProgram("FF")).run(), /Unsupported demo opcode/);
 
-console.log("CPU demo safety tests passed.");
+for (const [name, example] of Object.entries(EXAMPLES)) {
+  const guided = new SafeCPU6502(parseProgram(example.bytes));
+  for (const explanation of example.steps) {
+    assert.equal(guided.halted, false, name + " has an explanation for every instruction");
+    assert.ok(explanation.length > 0);
+    guided.step();
+  }
+  assert.equal(guided.halted, true);
+  assert.equal(guided.steps, example.steps.length);
+  if (name === "flags") {
+    assert.equal(guided.A, 0);
+    assert.equal(guided.getFlag(FLAGS.C), true);
+    assert.equal(guided.getFlag(FLAGS.Z), true);
+    assert.equal(guided.getFlag(FLAGS.N), false);
+  } else {
+    assert.equal(guided.A, 8);
+    assert.equal(guided.memory[0x0200], name === "store" ? 8 : 0);
+  }
+  guided.load(parseProgram(example.bytes));
+  assert.equal(guided.steps, 0);
+  assert.equal(guided.A, 0);
+  assert.equal(guided.memory[0x0200], 0);
+}
+console.log("CPU demo safety and guided examples passed.");

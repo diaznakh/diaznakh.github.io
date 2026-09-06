@@ -213,7 +213,7 @@ if (orbit && orbitLinks.length === 2) {
 
   function constrainBody(body) {
     const limit = bodyBounds(body);
-    if (!isMobileOrbit()) {
+    if (!arena.mobile) {
       const center = limit.size / 2;
       const maxRadius = center - body.radius - EDGE_GAP;
       const dx = body.x - center;
@@ -319,8 +319,8 @@ if (orbit && orbitLinks.length === 2) {
   function renderOrbit() {
     if (!bodies) return;
     bodies.forEach((body, index) => {
-      orbitLinks[index].style.left = `${body.x}px`;
-      orbitLinks[index].style.top = `${body.y}px`;
+      // Move the painted layer without invalidating the page layout each frame.
+      orbitLinks[index].style.translate = `${body.x}px ${body.y}px`;
     });
   }
 
@@ -347,6 +347,10 @@ if (orbit && orbitLinks.length === 2) {
     };
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
     obstacles = collectTextObstacles(orbitRect);
+    orbitLinks.forEach((link) => {
+      link.style.left = "0px";
+      link.style.top = "0px";
+    });
 
     if (mobile) {
       const speed = activeOrbitSpeed();
@@ -416,7 +420,7 @@ if (orbit && orbitLinks.length === 2) {
     });
     resolveOrbitCollision(bodies[0], bodies[1]);
     bodies.forEach((body) => {
-      if (isMobileOrbit()) resolveTextCollisions(body);
+      if (arena.mobile) resolveTextCollisions(body);
       constrainBody(body);
     });
     resolveOrbitCollision(bodies[0], bodies[1]);
@@ -451,6 +455,10 @@ if (orbit && orbitLinks.length === 2) {
     pageVisible = !document.hidden;
     if (pageVisible) startOrbit();
     else stopOrbit();
+  });
+  reducedOrbitMotion.addEventListener("change", () => {
+    if (reducedOrbitMotion.matches) stopOrbit();
+    else startOrbit();
   });
   startOrbit();
 }

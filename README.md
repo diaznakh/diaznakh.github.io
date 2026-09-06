@@ -9,6 +9,7 @@ Static engineering portfolio deployed through GitHub Pages.
 - `blog/` — individual technical articles
 - `writing/` — complete writing archive
 - `data/linkedin-posts.json` — manually maintained LinkedIn tracker
+- `data/blog-posts.json` — shared blog metadata; run `node scripts/build-writing.cjs` after editing to refresh the homepage, archive, RSS, and sitemap
 - `data/currently-building.json` — source for the homepage “Currently Building” card
 - `data/resume.json` — résumé path and review date used by freshness checks
 
@@ -25,6 +26,7 @@ Static engineering portfolio deployed through GitHub Pages.
 Run the same checks used by GitHub Actions:
 
 ```sh
+node scripts/build-writing.cjs --check
 node tests/site-quality.cjs
 node --test tests/*.test.cjs
 ```

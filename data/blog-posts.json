@@ -1,0 +1,29 @@
+[
+  {
+    "title": "What The Imitation Game Taught Me About System Design",
+    "path": "blog/imitation-game-system-design.html",
+    "date": "2026-08-28",
+    "updated": "2026-08-28",
+    "category": "Systems",
+    "minutes": 8,
+    "summary": "How a repeated phrase turns an impossible search into a constrained problem—and what that teaches us about invariants, protocols, observability, debugging, and security."
+  },
+  {
+    "title": "Connecting My Maze Visualizer to Redis",
+    "path": "blog/maze-redis-integration.html",
+    "date": "2026-08-24",
+    "updated": "2026-08-24",
+    "category": "Systems",
+    "minutes": 7,
+    "summary": "How two separate C++ projects became one useful system through serialization, POSIX sockets, RESP, validation, and persistent storage."
+  },
+  {
+    "title": "Why Dijkstra Beat A* in My Tiny Maze",
+    "path": "blog/astar-vs-dijkstra.html",
+    "date": "2026-08-23",
+    "updated": "2026-08-24",
+    "category": "Algorithms",
+    "minutes": 5,
+    "summary": "A practical look at why the theoretically smarter algorithm can lose on a small grid—and what profiling taught me about heuristics, overhead, and hardware reality."
+  }
+]

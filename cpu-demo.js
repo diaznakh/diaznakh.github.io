@@ -7,6 +7,23 @@
   const MAX_PROGRAM_BYTES = 64;
   const MAX_STEPS = 64;
   const FLAGS = { C: 1, Z: 2, I: 4, D: 8, B: 16, U: 32, V: 64, N: 128 };
+  const EXAMPLES = {
+    add: {
+      bytes: "A9 05 69 03",
+      steps: ["Load 5 into A, the accumulator.", "Add 3 to A. The result is 8 ($08)."],
+      expected: "Expected: A = $08 (8). Memory at $0200 stays $00."
+    },
+    flags: {
+      bytes: "A9 FF 18 69 01",
+      steps: ["Load 255 ($FF) into A. The negative flag turns on because bit 7 is set.", "Clear the carry flag so the next addition starts with no carry.", "Add 1. An 8-bit register wraps to $00; carry and zero turn on, and negative turns off."],
+      expected: "Expected: A = $00, carry = 1, zero = 1, negative = 0."
+    },
+    store: {
+      bytes: "A9 05 69 03 8D 00 02",
+      steps: ["Load 5 into A, the accumulator.", "Add 3. A now holds 8 ($08).", "Store A at memory address $0200. The memory output now shows $08 too."],
+      expected: "Expected: A = $08 and memory at $0200 = $08."
+    }
+  };
 
   function hex(value, width) {
     return "$" + (value >>> 0).toString(16).toUpperCase().padStart(width, "0");
@@ -171,6 +188,11 @@
     const input = root.querySelector("[data-cpu-program]");
     const status = root.querySelector("[data-cpu-status]");
     const trace = root.querySelector("[data-cpu-trace]");
+    const guide = root.querySelector("[data-cpu-guide]");
+    const expected = root.querySelector("[data-cpu-expected]");
+    const exampleButtons = [...root.querySelectorAll("[data-cpu-example]")];
+    const flagFields = [...root.querySelectorAll("[data-cpu-flag]")];
+    let selectedExample = EXAMPLES.store;
     const fields = Object.fromEntries(Array.from(root.querySelectorAll("[data-register]"), (node) => [node.dataset.register, node]));
     let cpu = null;
 
@@ -181,8 +203,20 @@
       fields.cycles.textContent = String(cpu.cycles); fields.output.textContent = hex(cpu.memory[0x0200], 2);
       status.textContent = cpu.message;
       trace.textContent = cpu.trace.length ? cpu.trace.join("\n") : "No instructions executed yet.";
+      flagFields.forEach((field) => {
+        const on = cpu.getFlag(FLAGS[field.dataset.cpuFlag]);
+        field.textContent = on ? "1" : "0";
+        field.dataset.active = String(on);
+      });
+      if (guide && selectedExample) {
+        guide.textContent = cpu.steps === 0
+          ? "Choose Step once to follow each instruction. Next: " + selectedExample.steps[0]
+          : "Step " + cpu.steps + ": " + selectedExample.steps[cpu.steps - 1] +
+            (cpu.halted ? " Program complete. Reset to try again." : " Next: " + selectedExample.steps[cpu.steps]);
+      }
     }
     function reset() {
+      cpu = null;
       try { cpu = new SafeCPU6502(parseProgram(input.value)); render(); }
       catch (error) { status.textContent = error instanceof Error ? error.message : "Invalid program."; }
     }
@@ -201,7 +235,23 @@
     root.querySelector("[data-cpu-reset]").addEventListener("click", reset);
     root.querySelector("[data-cpu-step]").addEventListener("click", () => act("step"));
     root.querySelector("[data-cpu-run]").addEventListener("click", () => act("run"));
-    input.addEventListener("input", () => { cpu = null; status.textContent = "Program changed. Reset before running."; });
+    exampleButtons.forEach((button) => button.addEventListener("click", () => {
+      selectedExample = EXAMPLES[button.dataset.cpuExample];
+      if (!selectedExample) return;
+      input.value = selectedExample.bytes;
+      exampleButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+      if (expected) expected.textContent = selectedExample.expected;
+      reset();
+    }));
+    input.addEventListener("input", () => {
+      cpu = null;
+      selectedExample = null;
+      exampleButtons.forEach((button) => button.setAttribute("aria-pressed", "false"));
+      if (guide) guide.textContent = "Custom program. Step through it and inspect the registers, flags, and trace.";
+      if (expected) expected.textContent = "Reset loads your edited bytes and clears the previous CPU state.";
+      status.textContent = "Program changed. Reset before running.";
+    });
+    if (expected) expected.textContent = selectedExample.expected;
     reset();
   }
 
@@ -209,5 +259,5 @@
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initDemo, { once: true });
     else initDemo();
   }
-  if (typeof module !== "undefined" && module.exports) module.exports = { SafeCPU6502, parseProgram, FLAGS };
+  if (typeof module !== "undefined" && module.exports) module.exports = { SafeCPU6502, parseProgram, FLAGS, EXAMPLES };
 })();

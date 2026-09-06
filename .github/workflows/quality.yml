@@ -18,7 +18,9 @@ jobs:
         with:
           node-version: 22
       - name: Validate website files
-        run: node tests/site-quality.cjs
+        run: |
+          node scripts/build-writing.cjs --check
+          node tests/site-quality.cjs
       - name: Run JavaScript tests
         run: node --test tests/*.test.cjs
       - name: Validate JSON
@@ -71,3 +73,15 @@ jobs:
             http://127.0.0.1:4173/blog/maze-redis-integration.html
           configPath: ./lighthouserc.json
           uploadArtifacts: true
+      - name: Report performance measurements
+        if: always()
+        run: |
+          node - <<'JS'
+          const fs = require('node:fs');
+          if (!fs.existsSync('.lighthouseci')) process.exit(0);
+          for (const file of fs.readdirSync('.lighthouseci').filter(name => /^lhr.*\.json$/.test(name))) {
+            const report = JSON.parse(fs.readFileSync('.lighthouseci/' + file));
+            const audits = report.audits;
+            console.log(JSON.stringify({url: report.finalUrl, scores: Object.fromEntries(Object.entries(report.categories).map(([key, value]) => [key, value.score])), metrics: audits.metrics.details.items, mainThread: audits['mainthread-work-breakdown']?.details?.items, longTasks: audits['long-tasks']?.details?.items}, null, 2));
+          }
+          JS

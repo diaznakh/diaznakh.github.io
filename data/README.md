@@ -1,3 +1,24 @@
+# Publishing blogs
+
+`blog-posts.json` is the source for blog titles, dates, reading times, categories,
+summaries, and article paths. Add the article HTML under `blog/`, add one entry
+here, then run this command from the repository root:
+
+```sh
+node scripts/build-writing.cjs
+```
+
+Commit the metadata and generated files together. The command updates the homepage
+carousel (including its counter), writing archive, RSS feed, and blog sitemap
+entries. Do not edit their generated regions separately. Existing article bodies
+and interactive demos stay in their own HTML files.
+
+Use `YYYY-MM-DD` for `date` and `updated`; reading time `minutes` is a number.
+Dates displayed in the listings are derived automatically. RSS publication times
+use midnight in India. Keep `date` stable when revising an article and change
+`updated` instead. The builder rejects duplicate URLs, invalid dates, and missing
+articles; CI rejects generated files that are out of date.
+
 # Updating LinkedIn posts
 
 Edit `linkedin-posts.json` whenever you publish a new LinkedIn post.
