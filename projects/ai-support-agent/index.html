@@ -27,7 +27,7 @@
     <p class="project-case-number">Project / 04</p>
     <h1>AI Customer Support Agent</h1>
     <p class="project-case-lede">An offline support agent built from real AmazonHelp conversations. It predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and decides whether a message can be handled automatically or should be escalated.</p>
-    <div class="project-case-actions"><a href="https://github.com/diaznakh/Hiver-AiChatBot" target="_blank" rel="noreferrer">View repository ↗</a><a href="../../#contact">Discuss the project →</a></div>
+    <div class="project-case-actions"><a href="#current-status">Current status ↓</a><a href="../../#contact">Discuss the project →</a></div>
 
     <section class="case-architecture" aria-labelledby="architecture-title">
       <p class="eyebrow">Architecture / Decision path</p><h2 id="architecture-title">From customer message to a reviewable decision.</h2>
@@ -57,19 +57,11 @@
       </div>
     </section>
 
-    <section class="case-results">
+    <section class="case-results" id="current-status">
       <div><p class="eyebrow">Implemented scale</p><dl><div><dt>01</dt><dd>8 support intents</dd></div><div><dt>02</dt><dd>5,600 redacted cases</dd></div><div><dt>03</dt><dd>3 evaluated systems</dd></div></dl></div>
       <div><p class="eyebrow">Current boundary</p><ul><li>The prototype and automated evaluation workflow are implemented.</li><li>The 200-example golden set still requires personal human labelling.</li><li>Final metrics and judge-human agreement will be published only after that review is complete.</li></ul></div>
     </section>
 
-    <section class="case-evidence"><p class="eyebrow">Development evidence</p><h2>Inspect the architecture and decisions.</h2>
-      <ul class="case-evidence-list">
-        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/README.md" target="_blank" rel="noreferrer">Runbook and current status</a></li>
-        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/HLD.md" target="_blank" rel="noreferrer">High-level design</a></li>
-        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/LLD.md" target="_blank" rel="noreferrer">Low-level design</a></li>
-        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/DECISIONS.md" target="_blank" rel="noreferrer">Engineering decision log</a></li>
-      </ul>
-    </section>
 
     <section class="case-next"><p class="eyebrow">Next checkpoint</p><h2>Complete the human-labelled golden set, rate the blinded outputs, run the official evaluation, and replace draft claims with measured results.</h2><div><span>Python</span><span>Naive Bayes</span><span>BM25</span><span>Guardrails</span><span>Evaluation</span></div></section>
   </article>
