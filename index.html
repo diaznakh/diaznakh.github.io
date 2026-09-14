@@ -67,6 +67,9 @@
         <a class="project-card blue" data-reveal data-reveal-delay="110" href="projects/maze-solver/">
           <span class="project-number">03</span><div class="project-copy"><span class="project-status">Actively refining</span><h3>A* vs Dijkstra Maze Visualizer</h3><p>A grid-based visualizer that models maze cells as a graph, finds optimal paths with Dijkstra and A*, and compares nodes explored, path length, and execution time across mazes.</p><dl class="project-outcomes" aria-label="Maze Solver outcomes"><div><dt>01</dt><dd>152-cell grid</dd></div><div><dt>02</dt><dd>2 algorithms</dd></div><div><dt>03</dt><dd>Nodes + CPU µs</dd></div></dl><ol class="project-flow" aria-label="Maze architecture"><li>Generate</li><li>Bitmask grid</li><li>A* + Dijkstra</li><li>Metrics</li><li>RESP store</li></ol><ul aria-label="Maze technologies"><li>C++</li><li>A*</li><li>Dijkstra</li><li>Graph Algorithms</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
+        <a class="project-card coral" data-reveal data-reveal-delay="165" href="projects/ai-support-agent/">
+          <span class="project-number">04</span><div class="project-copy"><span class="project-status">Under development</span><h3>AI Customer Support Agent</h3><p>An offline support agent built from real AmazonHelp conversations. It predicts one of eight intents, grounds reply guidance in similar historical cases, and uses deterministic guardrails to choose AUTO_HANDLE or ESCALATE.</p><dl class="project-outcomes" aria-label="AI Customer Support Agent outcomes"><div><dt>01</dt><dd>8 support intents</dd></div><div><dt>02</dt><dd>5,600 redacted cases</dd></div><div><dt>03</dt><dd>3-system evaluation</dd></div></dl><ol class="project-flow" aria-label="AI support agent architecture"><li>Message</li><li>Intent</li><li>Retrieve</li><li>Draft</li><li>Route</li></ol><ul aria-label="AI support agent technologies"><li>Python</li><li>Naive Bayes</li><li>BM25</li><li>Evaluation</li></ul></div><span class="project-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
       <aside class="recruiter-cta" data-reveal aria-label="Recruiter links">
         <div><p class="eyebrow">Recruiter snapshot</p><h3>Available for software engineering internships and entry-level roles.</h3></div>
@@ -77,11 +80,11 @@
 
 
     <section class="section now-section" id="now">
-      <div class="section-heading" data-reveal><p class="eyebrow">Now / Currently building</p><h2>Making processor state visible.</h2></div>
+      <div class="section-heading" data-reveal><p class="eyebrow">Now / Currently building</p><h2>Making support decisions explainable.</h2></div>
       <article class="now-card" data-reveal data-currently-building>
-        <div class="now-card-head"><div><span class="project-status" data-now-status>Building</span><h3 data-now-title>6502 Developer Console</h3></div><time datetime="2026-09-02" data-now-updated>Updated 2 Sep 2026</time></div>
-        <p class="now-summary" data-now-summary>I’m turning my MOS 6502 CPU core into an interactive console for loading programs, stepping instructions, and inspecting registers and memory.</p>
-        <div class="now-card-grid"><div><p class="eyebrow">Working now</p><ul data-now-list><li>Step and run instructions with visible CPU state</li><li>Parse and load machine-code text files</li><li>Keep the CPU, memory bus, and interface separated</li></ul></div><div><p class="eyebrow">Next checkpoint</p><p data-now-next>Connect the ncurses console, add bounded file loading, and run a small 6502 assembly program end to end.</p><a href="projects/6502-emulator/" data-now-link>Open case study ↗</a></div></div>
+        <div class="now-card-head"><div><span class="project-status" data-now-status>Under development</span><h3 data-now-title>AI Customer Support Agent</h3></div><time datetime="2026-09-14" data-now-updated>Updated 14 Sep 2026</time></div>
+        <p class="now-summary" data-now-summary>I’m building an offline support agent that predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and routes risky messages to a human.</p>
+        <div class="now-card-grid"><div><p class="eyebrow">Working now</p><ul data-now-list><li>Classify messages across eight data-derived support intents</li><li>Ground reply guidance in 5,600 redacted AmazonHelp cases</li><li>Compare three systems with deterministic safety guardrails</li></ul></div><div><p class="eyebrow">Next checkpoint</p><p data-now-next>Complete the 200-example human-labelled evaluation set, rate the blinded replies, and publish the final measured results.</p><a href="projects/ai-support-agent/" data-now-link>Open case study ↗</a></div></div>
       </article>
     </section>
 

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests">
+  <title>AI Customer Support Agent | Zaid Khan</title>
+  <meta name="description" content="An under-development offline customer-support agent that classifies intent, retrieves similar AmazonHelp cases, drafts grounded guidance, and applies deterministic routing guardrails.">
+  <link rel="canonical" href="https://diaznakh.github.io/projects/ai-support-agent/">
+  <meta property="og:title" content="AI Customer Support Agent | Zaid Khan">
+  <meta property="og:description" content="Intent classification, evidence retrieval, grounded reply guidance, safety routing, and a reproducible evaluation harness.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://diaznakh.github.io/projects/ai-support-agent/">
+  <meta property="og:image" content="https://diaznakh.github.io/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Customer Support Agent | Zaid Khan">
+  <meta name="twitter:description" content="An under-development, offline support agent with grounded retrieval, deterministic guardrails, and evaluation tooling.">
+  <meta name="twitter:image" content="https://diaznakh.github.io/assets/og.png">
+  <link rel="icon" type="image/png" href="../../assets/favicon.png">
+  <link rel="stylesheet" href="../../styles.css?v=20260906-guides">
+</head>
+<body>
+<main class="project-page">
+  <header class="article-header"><a class="wordmark" href="../../" aria-label="Zaid Khan — home">ZK<span>.</span></a><a href="../../#work">← Selected work</a></header>
+  <article class="project-shell">
+    <div class="project-case-meta"><span>AI / Support systems</span><span class="project-case-status">Under development</span></div>
+    <p class="project-case-number">Project / 04</p>
+    <h1>AI Customer Support Agent</h1>
+    <p class="project-case-lede">An offline support agent built from real AmazonHelp conversations. It predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and decides whether a message can be handled automatically or should be escalated.</p>
+    <div class="project-case-actions"><a href="https://github.com/diaznakh/Hiver-AiChatBot" target="_blank" rel="noreferrer">View repository ↗</a><a href="../../#contact">Discuss the project →</a></div>
+
+    <section class="case-architecture" aria-labelledby="architecture-title">
+      <p class="eyebrow">Architecture / Decision path</p><h2 id="architecture-title">From customer message to a reviewable decision.</h2>
+      <ol><li><span>01</span><strong>Customer message</strong></li><li><span>02</span><strong>Intent classifier</strong></li><li><span>03</span><strong>BM25 retrieval</strong></li><li><span>04</span><strong>Reply guidance</strong></li><li><span>05</span><strong>Route guardrails</strong></li></ol>
+    </section>
+
+    <div class="case-story-grid">
+      <section><p class="eyebrow">01 / Problem</p><h2>Support needs evidence and boundaries</h2><p>A useful support assistant must do more than generate fluent text. It needs to identify the request, ground its guidance in relevant history, and escalate when evidence or confidence is insufficient.</p></section>
+      <section><p class="eyebrow">02 / Dataset</p><h2>Built around real conversations</h2><p>The pipeline audits 2.8 million Customer Support on Twitter records and isolates 154,976 direct customer-to-AmazonHelp pairs. The repository includes a redacted 5,600-case subset for local retrieval and training.</p></section>
+    </div>
+
+    <section class="case-detail-section"><p class="eyebrow">03 / Implementation</p><h2>What is working now</h2>
+      <ul class="case-implementation">
+        <li><span>01</span><p>Eight data-derived intents covering delivery, returns, orders, payments, accounts, digital services, product issues, and unclear requests</p></li>
+        <li><span>02</span><p>Naive Bayes intent classification and a local Okapi BM25 retrieval index</p></li>
+        <li><span>03</span><p>Historical-response-conditioned reply guidance with an AUTO_HANDLE or ESCALATE decision and reason</p></li>
+        <li><span>04</span><p>Deterministic confidence, evidence, and safety guardrails that do not depend on an LLM judge</p></li>
+        <li><span>05</span><p>CLI, local demo UI, automated tests, reproducible pipelines, and B0/B1/B2 evaluation tooling</p></li>
+      </ul>
+    </section>
+
+    <section class="case-detail-section"><p class="eyebrow">04 / Decisions</p><h2>Engineering choices</h2>
+      <div class="case-decisions">
+        <article><span>01</span><h3>Run offline first</h3><p>The core prototype needs no API key or package installation, making its baseline behavior reproducible and easy to inspect.</p></article>
+        <article><span>02</span><h3>Protect the test boundary</h3><p>Conversation roots are split chronologically, duplicates are removed across partitions, and retrieval uses training data only.</p></article>
+        <article><span>03</span><h3>Keep humans in the loop</h3><p>The project refuses to present machine suggestions as human ground truth. Uncertain or risky requests are routed for review.</p></article>
+      </div>
+    </section>
+
+    <section class="case-results">
+      <div><p class="eyebrow">Implemented scale</p><dl><div><dt>01</dt><dd>8 support intents</dd></div><div><dt>02</dt><dd>5,600 redacted cases</dd></div><div><dt>03</dt><dd>3 evaluated systems</dd></div></dl></div>
+      <div><p class="eyebrow">Current boundary</p><ul><li>The prototype and automated evaluation workflow are implemented.</li><li>The 200-example golden set still requires personal human labelling.</li><li>Final metrics and judge-human agreement will be published only after that review is complete.</li></ul></div>
+    </section>
+
+    <section class="case-evidence"><p class="eyebrow">Development evidence</p><h2>Inspect the architecture and decisions.</h2>
+      <ul class="case-evidence-list">
+        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/README.md" target="_blank" rel="noreferrer">Runbook and current status</a></li>
+        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/HLD.md" target="_blank" rel="noreferrer">High-level design</a></li>
+        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/LLD.md" target="_blank" rel="noreferrer">Low-level design</a></li>
+        <li><a href="https://github.com/diaznakh/Hiver-AiChatBot/blob/main/DECISIONS.md" target="_blank" rel="noreferrer">Engineering decision log</a></li>
+      </ul>
+    </section>
+
+    <section class="case-next"><p class="eyebrow">Next checkpoint</p><h2>Complete the human-labelled golden set, rate the blinded outputs, run the official evaluation, and replace draft claims with measured results.</h2><div><span>Python</span><span>Naive Bayes</span><span>BM25</span><span>Guardrails</span><span>Evaluation</span></div></section>
+  </article>
+  <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../../#work">Back to selected work ↑</a></footer>
+</main>
+</body>
+</html>

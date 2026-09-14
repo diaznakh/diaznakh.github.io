@@ -1,14 +1,14 @@
 {
-  "title": "6502 Developer Console",
-  "status": "Building",
-  "summary": "I’m turning my MOS 6502 CPU core into an interactive console for loading programs, stepping instructions, and inspecting registers and memory.",
+  "title": "AI Customer Support Agent",
+  "status": "Under development",
+  "summary": "I’m building an offline support agent that predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and routes risky messages to a human.",
   "completed": [
-    "Step and run instructions with visible CPU state",
-    "Parse and load machine-code text files",
-    "Keep the CPU, memory bus, and interface separated"
+    "Classify messages across eight data-derived support intents",
+    "Ground reply guidance in 5,600 redacted AmazonHelp cases",
+    "Compare three systems with deterministic safety guardrails"
   ],
-  "next": "Connect the ncurses console, add bounded file loading, and run a small 6502 assembly program end to end.",
-  "updated": "2 Sep 2026",
-  "updatedISO": "2026-09-02",
-  "href": "/projects/6502-emulator/"
+  "next": "Complete the 200-example human-labelled evaluation set, rate the blinded replies, and publish the final measured results.",
+  "updated": "14 Sep 2026",
+  "updatedISO": "2026-09-14",
+  "href": "/projects/ai-support-agent/"
 }
