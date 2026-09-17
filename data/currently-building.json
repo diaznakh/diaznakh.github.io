@@ -1,14 +1,14 @@
 {
   "title": "AI Customer Support Agent",
-  "status": "Under development",
-  "summary": "I’m building an offline support agent that predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and routes risky messages to a human.",
+  "status": "Complete",
+  "summary": "I completed and evaluated an offline support agent that predicts intent, retrieves historical evidence, drafts grounded guidance, and routes risky requests to a human.",
   "completed": [
-    "Classify messages across eight data-derived support intents",
-    "Ground reply guidance in 5,600 redacted AmazonHelp cases",
-    "Compare three systems with deterministic safety guardrails"
+    "Validated all 200 human-labelled examples",
+    "Evaluated B0, B1, and B2 on 150 held-out cases",
+    "Completed 60 blinded human and 60 judge ratings"
   ],
-  "next": "Complete the 200-example human-labelled evaluation set, rate the blinded replies, and publish the final measured results.",
-  "updated": "14 Sep 2026",
-  "updatedISO": "2026-09-14",
+  "next": "B2 reached 95.95% escalation recall, but all six automatically handled cases were unsafe under the route labels. Automatic handling remains disabled.",
+  "updated": "17 Sep 2026",
+  "updatedISO": "2026-09-17",
   "href": "/projects/ai-support-agent/"
 }

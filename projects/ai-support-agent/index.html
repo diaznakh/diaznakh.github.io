@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests">
   <title>AI Customer Support Agent | Zaid Khan</title>
-  <meta name="description" content="An under-development offline customer-support agent that classifies intent, retrieves similar AmazonHelp cases, drafts grounded guidance, and applies deterministic routing guardrails.">
+  <meta name="description" content="A completed and evaluated offline customer-support agent that classifies intent, retrieves similar AmazonHelp cases, drafts grounded guidance, and applies deterministic routing guardrails.">
   <link rel="canonical" href="https://diaznakh.github.io/projects/ai-support-agent/">
   <meta property="og:title" content="AI Customer Support Agent | Zaid Khan">
   <meta property="og:description" content="Intent classification, evidence retrieval, grounded reply guidance, safety routing, and a reproducible evaluation harness.">
@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://diaznakh.github.io/assets/og.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI Customer Support Agent | Zaid Khan">
-  <meta name="twitter:description" content="An under-development, offline support agent with grounded retrieval, deterministic guardrails, and evaluation tooling.">
+  <meta name="twitter:description" content="A completed offline support agent with grounded retrieval, deterministic guardrails, and measured evaluation results.">
   <meta name="twitter:image" content="https://diaznakh.github.io/assets/og.png">
   <link rel="icon" type="image/png" href="../../assets/favicon.png">
   <link rel="stylesheet" href="../../styles.css?v=20260906-guides">
@@ -23,11 +23,11 @@
 <main class="project-page">
   <header class="article-header"><a class="wordmark" href="../../" aria-label="Zaid Khan — home">ZK<span>.</span></a><a href="../../#work">← Selected work</a></header>
   <article class="project-shell">
-    <div class="project-case-meta"><span>AI / Support systems</span><span class="project-case-status">Under development</span></div>
+    <div class="project-case-meta"><span>AI / Support systems</span><span class="project-case-status">Complete</span></div>
     <p class="project-case-number">Project / 04</p>
     <h1>AI Customer Support Agent</h1>
-    <p class="project-case-lede">An offline support agent built from real AmazonHelp conversations. It predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and decides whether a message can be handled automatically or should be escalated.</p>
-    <div class="project-case-actions"><a href="#current-status">Current status ↓</a><a href="../../#contact">Discuss the project →</a></div>
+    <p class="project-case-lede">A completed offline support agent built from real AmazonHelp conversations. It predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and applies deterministic guardrails before deciding whether to escalate.</p>
+    <div class="project-case-actions"><a href="#current-status">Evaluation verdict ↓</a><a href="../../#contact">Discuss the project →</a></div>
 
     <section class="case-architecture" aria-labelledby="architecture-title">
       <p class="eyebrow">Architecture / Decision path</p><h2 id="architecture-title">From customer message to a reviewable decision.</h2>
@@ -58,12 +58,12 @@
     </section>
 
     <section class="case-results" id="current-status">
-      <div><p class="eyebrow">Implemented scale</p><dl><div><dt>01</dt><dd>8 support intents</dd></div><div><dt>02</dt><dd>5,600 redacted cases</dd></div><div><dt>03</dt><dd>3 evaluated systems</dd></div></dl></div>
-      <div><p class="eyebrow">Current boundary</p><ul><li>The prototype and automated evaluation workflow are implemented.</li><li>The 200-example golden set still requires personal human labelling.</li><li>Final metrics and judge-human agreement will be published only after that review is complete.</li></ul></div>
+      <div><p class="eyebrow">Measured results / B2</p><dl><div><dt>01</dt><dd>53.33% intent accuracy</dd></div><div><dt>02</dt><dd>95.95% escalation recall</dd></div><div><dt>03</dt><dd>4.0% auto coverage</dd></div></dl></div>
+      <div><p class="eyebrow">Final verdict</p><ul><li>All 200 labels passed validation and the 150-case held-out evaluation completed.</li><li>All six B2 automatic decisions were unsafe under the route labels, so automatic handling remains disabled.</li><li>Human reviewers passed 20/20 B2 replies; the judge passed 3/20, exposing meaningful evaluator disagreement.</li></ul></div>
     </section>
 
 
-    <section class="case-next"><p class="eyebrow">Next checkpoint</p><h2>Complete the human-labelled golden set, rate the blinded outputs, run the official evaluation, and replace draft claims with measured results.</h2><div><span>Python</span><span>Naive Bayes</span><span>BM25</span><span>Guardrails</span><span>Evaluation</span></div></section>
+    <section class="case-next"><p class="eyebrow">Future iteration</p><h2>Improve retrieval and routing on the observed failures, add current policy evidence, and run a larger shadow evaluation before enabling automatic handling.</h2><div><span>Python</span><span>Naive Bayes</span><span>BM25</span><span>Guardrails</span><span>Evaluation</span></div></section>
   </article>
   <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../../#work">Back to selected work ↑</a></footer>
 </main>
