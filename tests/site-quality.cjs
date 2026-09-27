@@ -54,6 +54,12 @@ for (const file of htmlFiles) {
 const styles = read(path.join(root, "styles.css"));
 assert.ok(!styles.includes('@import "tailwindcss"'), "Remove the unresolved Tailwind import");
 
+for (const project of ["6502-emulator", "ai-support-agent", "maze-solver", "redis-server"]) {
+  const source = read(path.join(root, "projects", project, "index.html"));
+  const previews = [...source.matchAll(/<figure\s+class="[^"]*\bcase-preview\b[^\"]*"/g)];
+  assert.equal(previews.length, 1, `${project} should display exactly one case preview`);
+}
+
 for (const jsonPath of ["data/linkedin-posts.json", "data/currently-building.json"]) {
   JSON.parse(read(path.join(root, jsonPath)));
 }
