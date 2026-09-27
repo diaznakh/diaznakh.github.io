@@ -1,5 +1,10 @@
 const tracker = document.querySelector("#linkedin-posts");
 
+const mobileNav = document.querySelector(".mobile-nav");
+mobileNav?.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => { mobileNav.open = false; });
+});
+
 function isSafeLinkedInPost(post) {
   if (!post || typeof post !== "object" || typeof post.url !== "string") return false;
   try {
