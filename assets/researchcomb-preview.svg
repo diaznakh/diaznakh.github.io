@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#121512"/>
+  <rect x="48" y="48" width="1104" height="534" rx="12" fill="none" stroke="#c9ff4a" stroke-opacity=".4"/>
+  <text x="82" y="105" fill="#c9ff4a" font-family="monospace" font-size="18" letter-spacing="3">RESEARCHCOMB / RESEARCH WORKFLOWS</text>
+  <text x="82" y="235" fill="#f1f0e9" font-family="Arial,Helvetica,sans-serif" font-size="72" letter-spacing="-3">Find the paper.</text>
+  <text x="82" y="325" fill="#c9ff4a" font-family="Georgia,serif" font-style="italic" font-size="72">Follow the evidence.</text>
+  <g font-family="monospace" font-size="17" fill="#c8cac2"><text x="82" y="435">DISCOVER</text><text x="310" y="435">COMPARE</text><text x="540" y="435">WRITE</text><text x="750" y="435">CHECK</text><text x="963" y="435">REPRODUCE</text></g>
+  <path d="M82 467h1036" stroke="#c9ff4a" stroke-opacity=".4"/>
+  <g fill="#c9ff4a"><circle cx="128" cy="467" r="5"/><circle cx="352" cy="467" r="5"/><circle cx="566" cy="467" r="5"/><circle cx="777" cy="467" r="5"/><circle cx="1010" cy="467" r="5"/></g>
+  <text x="82" y="535" fill="#a6a79f" font-family="monospace" font-size="18" letter-spacing="2">11 WORKFLOWS / SHARED EVIDENCE RECORD / CODEX + ANTIGRAVITY</text>
+</svg>
