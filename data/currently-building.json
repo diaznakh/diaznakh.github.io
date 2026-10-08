@@ -1,14 +1,14 @@
 {
-  "title": "AI Customer Support Agent",
-  "status": "Complete",
-  "summary": "I completed and evaluated an offline support agent that predicts intent, retrieves historical evidence, drafts grounded guidance, and routes risky requests to a human.",
+  "title": "ResearchComb",
+  "status": "Open source · Maintained",
+  "summary": "I built an open-source research skill bundle for Codex and Antigravity, with eleven workflows for literature discovery, evidence checking, manuscript writing, and reproducibility.",
   "completed": [
-    "Validated all 200 human-labelled examples",
-    "Evaluated B0, B1, and B2 on 150 held-out cases",
-    "Completed 60 blinded human and 60 judge ratings"
+    "Recorded 11 / 11 representative Codex workflow cases passing",
+    "Verified twelve discovered skills and four routed requests",
+    "Recorded 4 / 4 local checker tests passing"
   ],
-  "next": "B2 reached 95.95% escalation recall, but all six automatically handled cases were unsafe under the route labels. Automatic handling remains disabled.",
-  "updated": "17 Sep 2026",
-  "updatedISO": "2026-09-17",
-  "href": "/projects/ai-support-agent/"
+  "next": "Coverage is one representative case per workflow; seven use synthetic fixtures. Antigravity installation was checked, but its behavioral tests remain unverified. Passing tests do not guarantee research accuracy.",
+  "updated": "8 Oct 2026",
+  "updatedISO": "2026-10-08",
+  "href": "/projects/researchcomb/"
 }
