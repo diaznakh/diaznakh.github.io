@@ -1,14 +1,14 @@
 {
   "title": "ResearchComb",
-  "status": "Open source · Maintained",
-  "summary": "I built an open-source research skill bundle for Codex and Antigravity, with eleven workflows for literature discovery, evidence checking, manuscript writing, and reproducibility.",
+  "status": "Open source · v0.5.22",
+  "summary": "I built an open-source research skill bundle for Codex and Antigravity with twelve research workflows and an update command, including a complete topic-to-paper workflow with shared evidence records.",
   "completed": [
-    "Recorded 11 / 11 representative Codex workflow cases passing",
-    "Verified twelve discovered skills and four routed requests",
-    "Recorded 4 / 4 local checker tests passing"
+    "Added comb-paper for discovery, drafting, critique, and citation checks in one request",
+    "Added scholarly search guidance, citation trails, and local completion and safe-fetch helpers",
+    "Recorded a supplied-source comb-paper test: 567 body words within the requested 400–600 range"
   ],
-  "next": "Coverage is one representative case per workflow; seven use synthetic fixtures. Antigravity installation was checked, but its behavioral tests remain unverified. Passing tests do not guarantee research accuracy.",
-  "updated": "8 Oct 2026",
-  "updatedISO": "2026-10-08",
+  "next": "The new paper test used synthetic excerpts, not live search. Local checks cannot prove browsing coverage or citation support; inspect the host’s tool history. Antigravity behavioral tests remain unverified.",
+  "updated": "9 Oct 2026",
+  "updatedISO": "2026-10-09",
   "href": "/projects/researchcomb/"
 }
