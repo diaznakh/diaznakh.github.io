@@ -499,6 +499,8 @@ if (orbit && orbitLinks.length === 2) {
 (() => {
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
   if(reducedMotion.matches)return;
+  // Late boot: hiding already-painted cards would flash and block the main thread.
+  if(document.readyState==="complete")return;
 
   const revealTargets=Array.from(document.querySelectorAll("[data-reveal]"));
   document.documentElement.classList.add("motion-ready");
