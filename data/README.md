@@ -45,7 +45,8 @@ Important:
 
 # Keeping “Currently Building” current
 
-Edit `currently-building.json` whenever the active milestone changes. Update both
-`updated` (the label visitors see) and `updatedISO` (`YYYY-MM-DD`). The automated
-quality check rejects a future date and flags the card after 45 days, preventing
-an abandoned-looking status from remaining on the portfolio unnoticed.
+The homepage no longer renders a separate Latest card (ResearchComb already has
+a selected-work entry). `currently-building.json` is still validated by the
+quality check, so keep `updated` and `updatedISO` (`YYYY-MM-DD`) current if the
+file remains in the repo. The check rejects a future date and flags the file
+after 45 days.

@@ -332,12 +332,16 @@ if (orbit && orbitLinks.length === 2) {
   function initializeOrbit() {
     const orbitRect = orbit.getBoundingClientRect();
     const mobile = isMobileOrbit();
+    const measureKey = `${Math.round(orbitRect.width)}x${Math.round(orbitRect.height)}:${mobile}`;
+    if (bodies && measureKey === lastMeasureKey) return;
+    lastMeasureKey = measureKey;
     const kicker = mobile ? orbit.parentElement?.querySelector(".hero-kicker")?.getBoundingClientRect() : null;
     const footer = mobile ? orbit.parentElement?.querySelector(".hero-footer")?.getBoundingClientRect() : null;
     const size = orbitRect.width;
     if (!size) {
       bodies = null;
       arena = null;
+      lastMeasureKey = "";
       return;
     }
 
@@ -445,16 +449,36 @@ if (orbit && orbitLinks.length === 2) {
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
 
-  initializeOrbit();
-  const orbitResizeObserver = new ResizeObserver(initializeOrbit);
-  orbitResizeObserver.observe(orbit);
+  let pendingInit = 0;
+  let orbitReady = false;
+  let lastMeasureKey = "";
+
+  function scheduleInitializeOrbit() {
+    if (pendingInit) return;
+    pendingInit = requestAnimationFrame(() => {
+      pendingInit = 0;
+      initializeOrbit();
+      startOrbit();
+    });
+  }
 
   const orbitVisibilityObserver = new IntersectionObserver(([entry]) => {
     orbitVisible = entry.isIntersecting;
-    if (orbitVisible) startOrbit();
-    else stopOrbit();
+    if (orbitVisible) {
+      orbitReady = true;
+      scheduleInitializeOrbit();
+    } else {
+      stopOrbit();
+    }
   });
   orbitVisibilityObserver.observe(orbit);
+
+  const orbitResizeObserver = new ResizeObserver(() => {
+    if (!orbitReady || !orbitVisible) return;
+    lastMeasureKey = "";
+    scheduleInitializeOrbit();
+  });
+  orbitResizeObserver.observe(orbit);
 
   document.addEventListener("visibilitychange", () => {
     pageVisible = !document.hidden;
@@ -465,7 +489,6 @@ if (orbit && orbitLinks.length === 2) {
     if (reducedOrbitMotion.matches) stopOrbit();
     else startOrbit();
   });
-  startOrbit();
 }
 
 
