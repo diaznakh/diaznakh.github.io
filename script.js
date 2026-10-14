@@ -357,40 +357,24 @@ if (orbit && orbitLinks.length === 2) {
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
     obstacles = collectTextObstacles(orbitRect);
     orbitLinks.forEach((link) => {
-      link.style.left = "0px";
-      link.style.top = "0px";
+      if (link.style.left !== "0px") {
+        link.style.left = "0px";
+        link.style.top = "0px";
+      }
     });
 
     if (mobile) {
       const speed = activeOrbitSpeed();
-      const makeBody = (radius, other) => {
+      const makeBody = (radius, side) => {
         const shell = { x: size / 2, y: size / 2, vx: 0, vy: 0, radius };
         const limit = bodyBounds(shell);
-        let x = limit.maxX;
-        let y = limit.minY;
-
-        for (let attempt = 0; attempt < 240; attempt += 1) {
-          const candidateX = limit.minX + Math.random() * (limit.maxX - limit.minX);
-          const candidateY = limit.minY + Math.random() * (limit.maxY - limit.minY);
-          const clearsText = obstacles.every((rect) => {
-            const nearestX = Math.max(rect.left, Math.min(candidateX, rect.right));
-            const nearestY = Math.max(rect.top, Math.min(candidateY, rect.bottom));
-            return Math.hypot(candidateX - nearestX, candidateY - nearestY) >= radius + 4;
-          });
-          const clearsOther = !other || Math.hypot(candidateX - other.x, candidateY - other.y) >= radius + other.radius + COLLISION_GAP;
-          if (clearsText && clearsOther) {
-            x = candidateX;
-            y = candidateY;
-            break;
-          }
-        }
-
-        const angle = Math.random() * Math.PI * 2;
+        const x = side < 0 ? limit.minX : limit.maxX;
+        const y = side < 0 ? limit.minY : limit.maxY;
+        const angle = side < 0 ? -Math.PI / 4 : (3 * Math.PI) / 4;
         return { x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, radius };
       };
 
-      const first = makeBody(radii[0]);
-      bodies = [first, makeBody(radii[1], first)];
+      bodies = [makeBody(radii[0], -1), makeBody(radii[1], 1)];
       bodies.forEach((body) => {
         resolveTextCollisions(body);
         constrainBody(body);
@@ -473,9 +457,14 @@ if (orbit && orbitLinks.length === 2) {
   });
   orbitVisibilityObserver.observe(orbit);
 
-  const orbitResizeObserver = new ResizeObserver(() => {
+  let lastResizeKey = "";
+  const orbitResizeObserver = new ResizeObserver((entries) => {
     if (!orbitReady || !orbitVisible) return;
-    lastMeasureKey = "";
+    const box = entries[0]?.contentRect;
+    if (!box) return;
+    const nextKey = `${Math.round(box.width)}x${Math.round(box.height)}`;
+    if (nextKey === lastResizeKey) return;
+    lastResizeKey = nextKey;
     scheduleInitializeOrbit();
   });
   orbitResizeObserver.observe(orbit);
