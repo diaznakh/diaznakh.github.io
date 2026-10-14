@@ -446,16 +446,24 @@ if (orbit && orbitLinks.length === 2) {
     });
   }
 
+  let orbitArmed = false;
+  function armOrbit() {
+    if (orbitArmed) return;
+    orbitArmed = true;
+    orbitReady = true;
+    orbitVisibilityObserver.observe(orbit);
+    orbitResizeObserver.observe(orbit);
+    if (orbitVisible) scheduleInitializeOrbit();
+  }
+
   const orbitVisibilityObserver = new IntersectionObserver(([entry]) => {
     orbitVisible = entry.isIntersecting;
     if (orbitVisible) {
-      orbitReady = true;
-      scheduleInitializeOrbit();
+      if (orbitArmed) scheduleInitializeOrbit();
     } else {
       stopOrbit();
     }
   });
-  orbitVisibilityObserver.observe(orbit);
 
   let lastResizeKey = "";
   const orbitResizeObserver = new ResizeObserver((entries) => {
@@ -467,7 +475,13 @@ if (orbit && orbitLinks.length === 2) {
     lastResizeKey = nextKey;
     scheduleInitializeOrbit();
   });
-  orbitResizeObserver.observe(orbit);
+
+  // CSS positions hold until the first input. A 45fps physics loop becomes
+  // 150ms+ long tasks under Lighthouse 4x CPU throttle.
+  ["pointerdown", "pointermove", "keydown", "scroll"].forEach((type) => {
+    window.addEventListener(type, armOrbit, { once: true, passive: true });
+  });
+  setTimeout(armOrbit, 8000);
 
   document.addEventListener("visibilitychange", () => {
     pageVisible = !document.hidden;
