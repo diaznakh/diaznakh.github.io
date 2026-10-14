@@ -23,38 +23,39 @@
   <meta name="twitter:description" content="C++ systems, backend development, emulation, networking, algorithms, and technical field notes.">
   <meta name="twitter:image" content="https://diaznakh.github.io/assets/og.png">
   <meta name="twitter:image:alt" content="Zaid Khan — Software Engineer">
-  <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon.png">
-  <link rel="apple-touch-icon" href="assets/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
   <link rel="alternate" type="application/rss+xml" title="Zaid Khan — Technical Field Notes" href="rss.xml">
-  <link rel="stylesheet" href="styles.css?v=20260906-guides">
-  <script src="script.js?v=20260906-perf2" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261014-fade">
+  <script src="boot.js?v=20261014" defer></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Zaid Khan","url":"https://diaznakh.github.io/","image":"https://diaznakh.github.io/assets/zaid-khan-portrait-2903-v2.webp","jobTitle":"Software Engineer","alumniOf":{"@type":"CollegeOrUniversity","name":"National Institute of Technology Srinagar"},"sameAs":["https://github.com/diaznakh","https://www.linkedin.com/in/zaid-khan-0873591ba/"],"knowsAbout":["C++","Systems programming","Backend development","Computer architecture","Algorithms"]}</script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <main id="main-content">
     <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="Zaid Khan — home">ZK<span>.</span></a>
-      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#now">Latest</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
-      <details class="mobile-nav"><summary>Menu</summary><nav class="mobile-menu" aria-label="Mobile navigation"><a href="#work">Work</a><a href="#now">Latest</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav></details>
+      <a class="wordmark" href="#top" aria-label="ZK. Home">ZK<span>.</span></a>
+      <nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+      <details class="mobile-nav"><summary>Menu</summary><nav class="mobile-menu" aria-label="Mobile navigation"><a href="#work">Work</a><a href="#writing">Writing</a><a href="#about">About</a><a href="#contact">Contact</a></nav></details>
       <a class="availability" href="https://github.com/diaznakh" target="_blank" rel="noreferrer"><span aria-hidden="true"></span> GitHub</a>
     </header>
 
     <section class="hero" id="top">
-      <div class="hero-kicker reveal"><span>Software Engineer</span><span>Open to relocation</span></div>
+      <div class="hero-kicker reveal"><span>Software Engineer</span></div>
       <h1 class="reveal reveal-delay-1">I build software<br><em>close to the metal.</em></h1>
       <div class="hero-footer reveal reveal-delay-2">
         <p>I’m Zaid Khan—a developer focused on C++, systems programming, algorithms, and learning how computers work by building them from scratch.</p>
         <div class="hero-actions"><a class="resume-button" href="assets/zaid-khan-resume.pdf" download>Download résumé <span aria-hidden="true">↓</span></a><a class="text-button" href="https://github.com/diaznakh" target="_blank" rel="noreferrer">View GitHub <span aria-hidden="true">↗</span></a></div>
       </div>
       <div class="hero-orbit" aria-label="Quick navigation">
-        <a class="round-link moving-link" style="left:68%;top:67%" href="#work" aria-label="Explore selected work"><span>Explore work</span><b aria-hidden="true">↓</b></a>
-        <a class="round-link moving-link writing-link" style="left:30%;top:41%" href="#writing" aria-label="Read writing"><span>Read writing</span><b aria-hidden="true">↓</b></a>
+        <a class="round-link moving-link" style="left:68%;top:67%" href="#work"><span>Explore work</span><b aria-hidden="true">↓</b></a>
+        <a class="round-link moving-link writing-link" style="left:30%;top:41%" href="#writing"><span>Read writing</span><b aria-hidden="true">↓</b></a>
       </div>
-      <div class="hero-code" aria-hidden="true"><span>01</span><span>CPU · MEMORY · SOCKET · GRAPH</span><span>REMOTE / RELOCATE</span></div>
+      <div class="hero-code" aria-hidden="true"><span>01</span><span>CPU · MEMORY · SOCKET · GRAPH</span></div>
     </section>
 
-    <aside class="recruiter-strip" aria-label="Current availability"><span>Open to internships + entry-level roles</span><span>C / C++</span><span>Systems + backend</span><span>Open to relocation</span></aside>
+    <aside class="recruiter-strip" aria-label="Current availability"><span>Open to internships + entry-level roles</span><span>B.Tech, NIT Srinagar, class of 2027</span><span>C / C++</span><span>Open to relocation</span></aside>
 
     <section class="section work" id="work">
       <div class="section-heading" data-reveal><p class="eyebrow">Selected work / 2024–26</p><h2>Projects built to understand the system.</h2></div>
@@ -69,27 +70,16 @@
           <span class="project-number">03</span><div class="project-copy"><div class="project-title-block"><span class="project-status">Actively refining</span><h3>A* vs Dijkstra Maze Visualizer</h3></div><div class="project-summary"><p>I ran both pathfinders on the same generated maze and compared their search work and timing.</p><p class="project-proof">152-cell grid · Explored nodes and path length · Redis storage</p><span class="project-open">Explore case study ↗</span></div></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
         <a class="project-card coral" data-reveal data-reveal-delay="165" href="projects/ai-support-agent/">
-          <span class="project-number">04</span><div class="project-copy"><div class="project-title-block"><span class="project-status">Complete</span><h3>AI Customer Support Agent</h3></div><div class="project-summary"><p>I built an offline retrieval and routing pipeline, then evaluated when it should hand requests to a human.</p><p class="project-proof">150 held-out cases · 95.95% escalation recall · All 6 automatic decisions unsafe; automatic handling disabled</p><span class="project-open">Explore case study ↗</span></div></div><span class="project-arrow" aria-hidden="true">↗</span>
+          <span class="project-number">04</span><div class="project-copy"><div class="project-title-block"><span class="project-status">Complete</span><h3>AI Customer Support Agent</h3></div><div class="project-summary"><p>I built an offline retrieval and routing pipeline, then evaluated when it should hand requests to a human.</p><p class="project-proof">95.95% escalation recall on 150 held-out cases · Deterministic safety guardrails</p><span class="project-open">Explore case study ↗</span></div></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
         <a class="project-card lime" data-reveal data-reveal-delay="220" href="projects/researchcomb/">
-          <span class="project-number">05</span><div class="project-copy"><div class="project-title-block"><span class="project-status">Open source · v0.5.22</span><h3>ResearchComb</h3></div><div class="project-summary"><p>I built a research skill bundle for Codex and Antigravity that takes a topic through discovery, drafting, critique, and citation checks with a shared evidence record.</p><p class="project-proof">v0.5.22 · 12 research workflows + update command · Local completion checks</p><span class="project-open">Explore case study ↗</span></div></div><span class="project-arrow" aria-hidden="true">↗</span>
+          <span class="project-number">05</span><div class="project-copy"><div class="project-title-block"><span class="project-status">Open source · v0.5.23</span><h3>ResearchComb</h3></div><div class="project-summary"><p>ResearchComb is an open-source skill pack for AI coding assistants—OpenAI Codex and Google Antigravity. It takes a research topic from literature search through drafting, critique, and citation checks, keeping a shared evidence record so claims stay tied to sources.</p><p class="project-proof">v0.5.23 · 12 research workflows + update command · MIT licensed</p><span class="project-open">Explore case study ↗</span></div></div><span class="project-arrow" aria-hidden="true">↗</span>
         </a>
       </div>
       <aside class="recruiter-cta" data-reveal aria-label="Recruiter links">
         <div><p class="eyebrow">Recruiter snapshot</p><h3>Available for software engineering internships and entry-level roles.</h3></div>
         <div class="recruiter-actions"><a href="assets/zaid-khan-resume.pdf" target="_blank" rel="noreferrer">View résumé ↗</a><a href="assets/zaid-khan-resume.pdf" download>Download ↓</a><a href="https://github.com/diaznakh" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="mailto:diaznakh@gmail.com">Email ↗</a></div>
       </aside>
-    </section>
-
-
-
-    <section class="section now-section" id="now">
-      <div class="section-heading" data-reveal><p class="eyebrow">Latest project / Developer tools</p><h2>Find the paper. Follow the evidence.</h2></div>
-      <article class="now-card" data-reveal data-currently-building>
-        <div class="now-card-head"><div><span class="project-status" data-now-status>Open source · v0.5.22</span><h3 data-now-title>ResearchComb</h3></div><time datetime="2026-10-09" data-now-updated>Updated 9 Oct 2026</time></div>
-        <p class="now-summary" data-now-summary>I built an open-source research skill bundle for Codex and Antigravity with twelve research workflows and an update command, including a complete topic-to-paper workflow with shared evidence records.</p>
-        <div class="now-card-grid"><div><p class="eyebrow">Completed</p><ul data-now-list><li>Added comb-paper for discovery, drafting, critique, and citation checks in one request</li><li>Added scholarly search guidance, citation trails, and local completion and safe-fetch helpers</li><li>Recorded a supplied-source comb-paper test: 567 body words within the requested 400–600 range</li></ul></div><div><p class="eyebrow">Coverage and limits</p><p data-now-next>The new paper test used synthetic excerpts, not live search. Local checks cannot prove browsing coverage or citation support; inspect the host’s tool history. Antigravity behavioral tests remain unverified.</p><a href="projects/researchcomb/" data-now-link>Open case study ↗</a></div></div>
-      </article>
     </section>
 
     <section class="section writing" id="writing">
@@ -131,9 +121,9 @@
     <section class="section experience" id="experience">
       <div class="section-heading" data-reveal><p class="eyebrow">Leadership / Community</p><h2>Building teams and experiences beyond the codebase.</h2></div>
       <div class="experience-list">
-        <article data-reveal><span>2022</span><div><p class="eyebrow">Event host</p><h3>TEDx NIT Srinagar</h3><p>Hosted the event on stage, helping connect speakers, ideas, and the audience through clear live communication.</p></div></article>
-        <article data-reveal data-reveal-delay="55"><span>2026</span><div><p class="eyebrow">Organizer</p><h3>Cursor Hackathon Kashmir</h3><p>Helped organize a two-day national hackathon with more than 600 attendees, coordinating people, logistics, communication, and delivery under a fixed deadline.</p></div></article>
-        <article data-reveal data-reveal-delay="110"><span>2024</span><div><p class="eyebrow">Team lead</p><h3>Techvaganza</h3><p>Led a 29-member team across three months of planning and execution, translating a large event into clear responsibilities and measurable checkpoints.</p></div></article>
+        <article data-reveal><span>2026</span><div><p class="eyebrow">Lead Organiser</p><h3>Cursor Hackathon Kashmir</h3><p>Led the planning and execution of a two-day national hackathon in Kashmir with more than 600 attendees, coordinating people, logistics, communication, and delivery under a fixed deadline.</p></div></article>
+        <article data-reveal data-reveal-delay="55"><span>2024</span><div><p class="eyebrow">Team lead</p><h3>Techvaganza</h3><p>Led a 29-member team across three months of planning and execution, translating a large event into clear responsibilities and measurable checkpoints.</p></div></article>
+        <article data-reveal data-reveal-delay="110"><span>2022</span><div><p class="eyebrow">Event host</p><h3>TEDx NIT Srinagar</h3><p>Hosted the event on stage, helping connect speakers, ideas, and the audience through clear live communication.</p></div></article>
       </div>
     </section>
 
@@ -141,7 +131,7 @@
       <div class="about-intro" data-reveal><p class="eyebrow">About / Approach</p><h2>Chemical engineering taught me to think in systems. Code gave me a way to <em>build them.</em></h2></div>
       <div class="about-grid" data-reveal>
         <div class="about-copy"><p>I’m an engineering student at NIT Srinagar moving deliberately into software. My best learning happens below the surface: tracing an instruction, opening a socket, profiling an algorithm, or finding the exact abstraction that makes a backend easier to reason about.</p><p>Outside code, I’ve led teams and organized a two-day national hackathon in Kashmir with more than 600 attendees—experience that sharpened how I communicate, coordinate, and ship under pressure.</p></div>
-        <div class="education-card"><span>Education</span><strong>National Institute of Technology Srinagar</strong><p>B.Tech · Chemical Engineering</p><small>Engineering fundamentals + self-directed computer science</small></div>
+        <div class="education-card"><span>Education</span><strong>National Institute of Technology Srinagar</strong><p>B.Tech, NIT Srinagar, class of 2027 · Chemical Engineering</p><small>Engineering fundamentals + self-directed computer science</small></div>
         <figure class="about-portrait"><img src="assets/zaid-khan-portrait-2903-v2.webp" alt="Portrait of Zaid Khan" width="941" height="1672" loading="lazy" decoding="async"><figcaption><span>Portrait / 2026</span><span>Zaid Khan</span></figcaption></figure>
       </div>
       <div class="capability-grid">
@@ -153,7 +143,7 @@
 
     <section class="stack-strip" aria-label="Technical toolkit" data-reveal><span>Toolkit</span><p>C · C++ · Python · Redis · MySQL · Linux · Git · STL</p></section>
     <section class="contact" id="contact" data-reveal><p class="eyebrow">Contact / Let’s talk</p><h2>Have an interesting<br>problem? <em>Let’s build.</em></h2><div class="contact-links"><a href="mailto:diaznakh@gmail.com">diaznakh@gmail.com ↗</a><a href="https://github.com/diaznakh" target="_blank" rel="noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/zaid-khan-0873591ba/" target="_blank" rel="noreferrer">LinkedIn ↗</a></div></section>
-    <footer><a class="wordmark" href="#top" aria-label="Back to top">ZK<span>.</span></a><p>Designed and built with intent.</p><a href="#top">Back to top ↑</a></footer>
+    <footer><a class="wordmark" href="#top" aria-label="ZK. Back to top">ZK<span>.</span></a><p>Designed and built with intent.</p><a href="#top">Back to top ↑</a></footer>
   </main>
 </body>
 </html>

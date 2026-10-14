@@ -10,7 +10,7 @@ Static engineering portfolio deployed through GitHub Pages.
 - `writing/` — complete writing archive
 - `data/linkedin-posts.json` — manually maintained LinkedIn tracker
 - `data/blog-posts.json` — shared blog metadata; run `node scripts/build-writing.cjs` after editing to refresh the homepage, archive, RSS, and sitemap
-- `data/currently-building.json` — source for the homepage “Currently Building” card
+- `data/currently-building.json` — retained for freshness checks (the homepage Latest section was removed so ResearchComb is not shown twice)
 - `data/resume.json` — résumé path and review date used by freshness checks
 
 ## Scripts

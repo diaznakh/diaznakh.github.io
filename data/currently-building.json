@@ -1,14 +1,14 @@
 {
   "title": "ResearchComb",
-  "status": "Open source · v0.5.22",
-  "summary": "I built an open-source research skill bundle for Codex and Antigravity with twelve research workflows and an update command, including a complete topic-to-paper workflow with shared evidence records.",
+  "status": "Open source · v0.5.23",
+  "summary": "ResearchComb is an open-source skill pack for AI coding assistants (OpenAI Codex and Google Antigravity), with twelve research workflows plus an update command and a shared evidence record.",
   "completed": [
     "Added comb-paper for discovery, drafting, critique, and citation checks in one request",
     "Added scholarly search guidance, citation trails, and local completion and safe-fetch helpers",
     "Recorded a supplied-source comb-paper test: 567 body words within the requested 400–600 range"
   ],
   "next": "The new paper test used synthetic excerpts, not live search. Local checks cannot prove browsing coverage or citation support; inspect the host’s tool history. Antigravity behavioral tests remain unverified.",
-  "updated": "9 Oct 2026",
-  "updatedISO": "2026-10-09",
+  "updated": "14 Oct 2026",
+  "updatedISO": "2026-10-14",
   "href": "/projects/researchcomb/"
 }

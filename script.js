@@ -332,12 +332,16 @@ if (orbit && orbitLinks.length === 2) {
   function initializeOrbit() {
     const orbitRect = orbit.getBoundingClientRect();
     const mobile = isMobileOrbit();
+    const measureKey = `${Math.round(orbitRect.width)}x${Math.round(orbitRect.height)}:${mobile}`;
+    if (bodies && measureKey === lastMeasureKey) return;
+    lastMeasureKey = measureKey;
     const kicker = mobile ? orbit.parentElement?.querySelector(".hero-kicker")?.getBoundingClientRect() : null;
     const footer = mobile ? orbit.parentElement?.querySelector(".hero-footer")?.getBoundingClientRect() : null;
     const size = orbitRect.width;
     if (!size) {
       bodies = null;
       arena = null;
+      lastMeasureKey = "";
       return;
     }
 
@@ -353,40 +357,24 @@ if (orbit && orbitLinks.length === 2) {
     const radii = orbitLinks.map((link) => link.offsetWidth / 2);
     obstacles = collectTextObstacles(orbitRect);
     orbitLinks.forEach((link) => {
-      link.style.left = "0px";
-      link.style.top = "0px";
+      if (link.style.left !== "0px") {
+        link.style.left = "0px";
+        link.style.top = "0px";
+      }
     });
 
     if (mobile) {
       const speed = activeOrbitSpeed();
-      const makeBody = (radius, other) => {
+      const makeBody = (radius, side) => {
         const shell = { x: size / 2, y: size / 2, vx: 0, vy: 0, radius };
         const limit = bodyBounds(shell);
-        let x = limit.maxX;
-        let y = limit.minY;
-
-        for (let attempt = 0; attempt < 240; attempt += 1) {
-          const candidateX = limit.minX + Math.random() * (limit.maxX - limit.minX);
-          const candidateY = limit.minY + Math.random() * (limit.maxY - limit.minY);
-          const clearsText = obstacles.every((rect) => {
-            const nearestX = Math.max(rect.left, Math.min(candidateX, rect.right));
-            const nearestY = Math.max(rect.top, Math.min(candidateY, rect.bottom));
-            return Math.hypot(candidateX - nearestX, candidateY - nearestY) >= radius + 4;
-          });
-          const clearsOther = !other || Math.hypot(candidateX - other.x, candidateY - other.y) >= radius + other.radius + COLLISION_GAP;
-          if (clearsText && clearsOther) {
-            x = candidateX;
-            y = candidateY;
-            break;
-          }
-        }
-
-        const angle = Math.random() * Math.PI * 2;
+        const x = side < 0 ? limit.minX : limit.maxX;
+        const y = side < 0 ? limit.minY : limit.maxY;
+        const angle = side < 0 ? -Math.PI / 4 : (3 * Math.PI) / 4;
         return { x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, radius };
       };
 
-      const first = makeBody(radii[0]);
-      bodies = [first, makeBody(radii[1], first)];
+      bodies = [makeBody(radii[0], -1), makeBody(radii[1], 1)];
       bodies.forEach((body) => {
         resolveTextCollisions(body);
         constrainBody(body);
@@ -445,16 +433,55 @@ if (orbit && orbitLinks.length === 2) {
     orbitFrame = requestAnimationFrame(animateOrbit);
   }
 
-  initializeOrbit();
-  const orbitResizeObserver = new ResizeObserver(initializeOrbit);
-  orbitResizeObserver.observe(orbit);
+  let pendingInit = 0;
+  let orbitReady = false;
+  let lastMeasureKey = "";
+
+  function scheduleInitializeOrbit() {
+    if (pendingInit) return;
+    pendingInit = requestAnimationFrame(() => {
+      pendingInit = 0;
+      initializeOrbit();
+      startOrbit();
+    });
+  }
+
+  let orbitArmed = false;
+  function armOrbit() {
+    if (orbitArmed) return;
+    orbitArmed = true;
+    orbitReady = true;
+    orbitVisibilityObserver.observe(orbit);
+    orbitResizeObserver.observe(orbit);
+    if (orbitVisible) scheduleInitializeOrbit();
+  }
 
   const orbitVisibilityObserver = new IntersectionObserver(([entry]) => {
     orbitVisible = entry.isIntersecting;
-    if (orbitVisible) startOrbit();
-    else stopOrbit();
+    if (orbitVisible) {
+      if (orbitArmed) scheduleInitializeOrbit();
+    } else {
+      stopOrbit();
+    }
   });
-  orbitVisibilityObserver.observe(orbit);
+
+  let lastResizeKey = "";
+  const orbitResizeObserver = new ResizeObserver((entries) => {
+    if (!orbitReady || !orbitVisible) return;
+    const box = entries[0]?.contentRect;
+    if (!box) return;
+    const nextKey = `${Math.round(box.width)}x${Math.round(box.height)}`;
+    if (nextKey === lastResizeKey) return;
+    lastResizeKey = nextKey;
+    scheduleInitializeOrbit();
+  });
+
+  // CSS positions hold until the first input. A 45fps physics loop becomes
+  // 150ms+ long tasks under Lighthouse 4x CPU throttle.
+  ["pointerdown", "pointermove", "keydown", "scroll"].forEach((type) => {
+    window.addEventListener(type, armOrbit, { once: true, passive: true });
+  });
+  setTimeout(armOrbit, 8000);
 
   document.addEventListener("visibilitychange", () => {
     pageVisible = !document.hidden;
@@ -465,7 +492,6 @@ if (orbit && orbitLinks.length === 2) {
     if (reducedOrbitMotion.matches) stopOrbit();
     else startOrbit();
   });
-  startOrbit();
 }
 
 
@@ -473,6 +499,8 @@ if (orbit && orbitLinks.length === 2) {
 (() => {
   const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
   if(reducedMotion.matches)return;
+  // Late boot: hiding already-painted cards would flash and block the main thread.
+  if(document.readyState==="complete")return;
 
   const revealTargets=Array.from(document.querySelectorAll("[data-reveal]"));
   document.documentElement.classList.add("motion-ready");
