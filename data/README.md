@@ -1,8 +1,11 @@
 # Publishing blogs
 
 `blog-posts.json` is the source for blog titles, dates, reading times, categories,
-summaries, and article paths. Add the article HTML under `blog/`, add one entry
-here, then run this command from the repository root:
+summaries, and article paths. Local articles use `path` and `minutes`. External
+LinkedIn posts use `url` instead of `path`; they appear on the writing page and
+in RSS, but not in the homepage carousel or sitemap. Add the article HTML under
+`blog/` for local posts, add one entry here, then run this command from the
+repository root:
 
 ```sh
 node scripts/build-writing.cjs
