@@ -1,5 +1,7 @@
 ^https://lnkd\.in/
 ^https://www\.linkedin\.com/
+https://www.linkedin.com/posts/diaznakh_github-diaznakhresearchcomb-activity-7513998248806715392-v-l6
+https://lnkd.in/p/gv_eJaHJ
 ^mailto:
 # Work and About are new in this PR; production 404s until GitHub Pages deploys them.
 ^https://diaznakh\.github\.io/work/?$

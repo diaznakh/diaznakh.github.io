@@ -25,6 +25,11 @@ function localTarget(from, href) {
 
 for (const file of htmlFiles) {
   const source = read(file);
+  if (source.includes('aria-label="ZK. Home"')) {
+    assert.match(source, /class="wordmark-mark"/, `${file} home wordmark is missing the SVG mark`);
+    assert.equal([...source.matchAll(/class="wordmark-dot/g)].length, 21, `${file} home wordmark should use 21 dots`);
+    assert.match(source, /aria-label="ZK\. Home"/, `${file} home link is missing its accessible name`);
+  }
   assert.match(source, /^<!doctype html>/i, `${file} is missing a doctype`);
   assert.match(source, /<html\s+lang="en">/i, `${file} is missing a language`);
   assert.match(source, /<meta\s+name="viewport"/i, `${file} is missing a viewport meta tag`);
