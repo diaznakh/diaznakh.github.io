@@ -1,0 +1,38 @@
+# Zaid Khan
+
+> Static engineering portfolio of Zaid Khan, a B.Tech 2027 student at the National Institute of Technology Srinagar. He writes about and builds C++, systems programming, emulation, networking, and algorithms, and is open to software engineering internships and entry-level SDE / systems roles.
+
+The site is static HTML, CSS, and vanilla JavaScript, hosted on GitHub Pages. Project pages are problem-first case studies. Writing, RSS, and the sitemap are generated from `data/blog-posts.json`.
+
+## Pages
+
+- [Home](https://diaznakh.github.io/): Overview, selected work, writing, and contact
+- [Work](https://diaznakh.github.io/work/): Featured case studies and a dated archive of smaller public repositories
+- [Writing](https://diaznakh.github.io/writing/): Technical field notes
+- [About](https://diaznakh.github.io/about/): Timeline, current focus, and education
+- [Résumé (PDF)](https://diaznakh.github.io/assets/zaid-khan-resume.pdf)
+
+## Selected work
+
+- [6502 Microprocessor Emulator](https://diaznakh.github.io/projects/6502-emulator/)
+- [Mini Redis Server](https://diaznakh.github.io/projects/redis-server/)
+- [A* vs Dijkstra Maze Visualizer](https://diaznakh.github.io/projects/maze-solver/)
+- [AI Customer Support Agent](https://diaznakh.github.io/projects/ai-support-agent/)
+- [ResearchComb](https://diaznakh.github.io/projects/researchcomb/)
+
+## Writing
+
+- [What The Imitation Game Taught Me About System Design](https://diaznakh.github.io/blog/imitation-game-system-design.html)
+- [Connecting My Maze Visualizer to Redis](https://diaznakh.github.io/blog/maze-redis-integration.html)
+- [Why Dijkstra Beat A* in My Tiny Maze](https://diaznakh.github.io/blog/astar-vs-dijkstra.html)
+
+## Feeds
+
+- [RSS](https://diaznakh.github.io/rss.xml)
+- [Sitemap](https://diaznakh.github.io/sitemap.xml)
+
+## Contact
+
+- Email: [diaznakh@gmail.com](mailto:diaznakh@gmail.com?subject=Internship%20opportunity)
+- GitHub: [github.com/diaznakh](https://github.com/diaznakh)
+- LinkedIn: [linkedin.com/in/zaid-khan-0873591ba](https://www.linkedin.com/in/zaid-khan-0873591ba/)

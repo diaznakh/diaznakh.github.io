@@ -22,15 +22,28 @@
   <meta name="twitter:image" content="https://diaznakh.github.io/assets/og.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../assets/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png"><link rel="stylesheet" href="../../styles.css?v=20261014-fade">
+  <link rel="apple-touch-icon" sizes="180x180" href="../../assets/apple-touch-icon.png"><link rel="stylesheet" href="../../styles.css?v=20261020-hero">
 </head>
 <body>
 <main class="project-page">
-  <header class="article-header"><a class="wordmark" href="../../" aria-label="ZK. Home">ZK<span>.</span></a><a href="../../#work">← Selected work</a></header>
+  <header class="article-header"><a class="wordmark" href="../../" aria-label="ZK. Home">ZK<span>.</span></a><nav aria-label="Primary navigation"><a href="../../work/" aria-current="page">Work</a><a href="../../writing/">Writing</a><a href="../../about/">About</a></nav></header>
   <article class="project-shell">
     <div class="project-case-meta"><span>AI / Support systems</span><span class="project-case-status">Complete</span></div>
     <p class="project-case-number">Project / 04</p>
     <h1>AI Customer Support Agent</h1>
+    <section class="case-problem">
+      <p class="eyebrow">Problem / Why I built it</p>
+      <h2>Support needs evidence and boundaries</h2>
+      <p>A useful support assistant must do more than generate fluent text. It needs to identify the request, ground its guidance in relevant history, and escalate when evidence or confidence is insufficient.</p>
+    </section>
+    <dl class="case-facts">
+      <div><dt>Role</dt><dd>Author</dd></div>
+      <div><dt>Dates</dt><dd>2026</dd></div>
+      <div><dt>Stack</dt><dd>Python · Naive Bayes · BM25 · evaluation</dd></div>
+      <div><dt>Status</dt><dd>Complete</dd></div>
+      <div><dt>Verified</dt><dd>95.95% escalation recall on 150 held-out cases</dd></div>
+      <div><dt>Repository</dt><dd><a href="https://github.com/diaznakh/Hiver-AiChatBot" target="_blank" rel="noreferrer">View repository ↗</a></dd></div>
+    </dl>
     <p class="project-case-lede">A completed offline support agent built from real AmazonHelp conversations. It predicts customer intent, retrieves relevant historical cases, drafts grounded guidance, and applies deterministic guardrails before deciding whether to escalate.</p>
     <div class="project-case-actions"><a href="https://github.com/diaznakh/Hiver-AiChatBot" target="_blank" rel="noreferrer">View repository ↗</a><a href="#current-status">Evaluation verdict ↓</a></div>
 
@@ -41,7 +54,6 @@
     </section>
 
     <div class="case-story-grid">
-      <section><p class="eyebrow">01 / Problem</p><h2>Support needs evidence and boundaries</h2><p>A useful support assistant must do more than generate fluent text. It needs to identify the request, ground its guidance in relevant history, and escalate when evidence or confidence is insufficient.</p></section>
       <section><p class="eyebrow">02 / Dataset</p><h2>Built around real conversations</h2><p>The pipeline audits 2.8 million Customer Support on Twitter records and isolates 154,976 direct customer-to-AmazonHelp pairs. The repository includes a redacted 5,600-case subset for local retrieval and training.</p></section>
     </div>
 
@@ -70,8 +82,23 @@
 
 
     <section class="case-next"><p class="eyebrow">Future iteration</p><h2>Improve retrieval and routing on the observed failures, add current policy evidence, and run a larger shadow evaluation before enabling automatic handling.</h2><div><span>Python</span><span>Naive Bayes</span><span>BM25</span><span>Guardrails</span><span>Evaluation</span></div></section>
+    <section class="case-learned">
+      <p class="eyebrow">What I learned</p>
+      <h2>Measure the route before trusting the reply.</h2>
+      <ul>
+        <li>All 200 labels passed validation and the 150-case held-out evaluation completed.</li>
+        <li>All six B2 automatic decisions were unsafe under the route labels, so automatic handling remains disabled.</li>
+        <li>Human reviewers passed 20/20 B2 replies; the judge passed 3/20, exposing meaningful evaluator disagreement.</li>
+      </ul>
+    </section>
   </article>
-  <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../../#work">Back to selected work ↑</a></footer>
+  <aside class="contact-prompt" aria-label="Contact">
+    <p class="eyebrow">Contact / Let’s talk</p>
+    <h2>Have an internship or role in mind?</h2>
+    <p>Email me with a prefilled subject so the thread is easy to find.</p>
+    <a href="mailto:diaznakh@gmail.com?subject=Internship%20opportunity">Email — Internship opportunity ↗</a>
+  </aside>
+  <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../../work/">Back to selected work ↑</a></footer>
 </main>
 </body>
 </html>

@@ -89,6 +89,25 @@ for (const file of htmlFiles.filter((file) => file.includes(`${path.sep}blog${pa
   assert.ok(sitemap.includes(`https://diaznakh.github.io/${publicPath}`), `Sitemap is missing ${publicPath}`);
 }
 assert.ok(sitemap.includes("https://diaznakh.github.io/writing/"), "Sitemap is missing the writing archive");
+assert.ok(sitemap.includes("https://diaznakh.github.io/work/"), "Sitemap is missing the work page");
+assert.ok(sitemap.includes("https://diaznakh.github.io/about/"), "Sitemap is missing the about page");
+assert.ok(fs.existsSync(path.join(root, "llms.txt")), "llms.txt is missing from the site root");
+
+const toolkit = read(path.join(root, "index.html")).match(/<section class="stack-strip"[^>]*>[\s\S]*?<p>([^<]*)<\/p>/);
+assert.equal(toolkit?.[1], "C · C++ · Python · Redis · MySQL · Linux · Git · STL", "Homepage toolkit must stay unchanged");
+
+const htmlCorpus = htmlFiles.map(read).join("\n");
+for (const banned of ["KAS-OS", "Sound-Change", "Task-Management-REST-API", "KYAN-Website"]) {
+  assert.ok(!htmlCorpus.includes(banned), `${banned} must not appear on the site`);
+}
+
+for (const project of ["6502-emulator", "ai-support-agent", "maze-solver", "redis-server", "researchcomb"]) {
+  const source = read(path.join(root, "projects", project, "index.html"));
+  assert.match(source, /class="case-problem"/, `${project} should open with the problem`);
+  assert.match(source, /class="case-facts"/, `${project} should include a facts box`);
+  assert.match(source, /class="case-learned"/, `${project} should end with what I learned`);
+  assert.match(source, /mailto:diaznakh@gmail.com\?subject=Internship%20opportunity/, `${project} should include a prefilled contact mailto`);
+}
 
 const budgets = {
   ".js": 45 * 1024,

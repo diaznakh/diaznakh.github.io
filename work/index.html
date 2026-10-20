@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self'; script-src 'none'; connect-src 'self'; upgrade-insecure-requests">
+  <title>Work | Zaid Khan</title>
+  <meta name="description" content="Selected systems, emulation, networking, and algorithm projects by Zaid Khan, plus a dated archive of smaller public repositories.">
+  <link rel="canonical" href="https://diaznakh.github.io/work/">
+  <meta property="og:title" content="Work | Zaid Khan">
+  <meta property="og:description" content="Selected systems, emulation, networking, and algorithm projects by Zaid Khan, plus a dated archive of smaller public repositories.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diaznakh.github.io/work/">
+  <meta property="og:site_name" content="Zaid Khan">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://diaznakh.github.io/assets/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Zaid Khan — Software Engineer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Work | Zaid Khan">
+  <meta name="twitter:description" content="Selected systems projects and a public-repo archive by Zaid Khan.">
+  <meta name="twitter:image" content="https://diaznakh.github.io/assets/og.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../styles.css?v=20261020-hero">
+</head>
+<body class="work-index">
+  <a class="skip-link" href="#work-list">Skip to projects</a>
+  <header class="article-header">
+    <a class="wordmark" href="../" aria-label="ZK. Home">ZK<span>.</span></a>
+    <nav aria-label="Primary navigation"><a href="./" aria-current="page">Work</a><a href="../writing/">Writing</a><a href="../about/">About</a></nav>
+  </header>
+  <main class="work-shell">
+    <p class="eyebrow">Selected work / 2024–26</p>
+    <h1>Projects built to understand the <em>system.</em></h1>
+    <p class="lede">Five case studies, each starting from the problem I was trying to see clearly. Dates follow the résumé and public GitHub history.</p>
+    <div class="project-list" id="work-list">
+      <a class="project-card lime" href="../projects/6502-emulator/">
+        <span class="project-number">01</span>
+        <div class="project-copy">
+          <div class="project-title-block">
+            <p class="project-meta-line"><span>2025–2026</span><span>Complete core</span></p>
+            <h2>6502 Microprocessor Emulator</h2>
+          </div>
+          <div class="project-summary">
+            <p>I completed the execution path of an unfinished C++ CPU core and verified instruction behaviour.</p>
+            <p class="project-proof">13 CPU tests · Cycle-aware execution · IRQ, NMI and BCD</p>
+            <span class="project-open">Explore case study ↗</span>
+          </div>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="project-card amber" href="../projects/redis-server/">
+        <span class="project-number">02</span>
+        <div class="project-copy">
+          <div class="project-title-block">
+            <p class="project-meta-line"><span>2025–2026</span><span>Maintained</span></p>
+            <h2>Mini Redis Server</h2>
+          </div>
+          <div class="project-summary">
+            <p>I built a small Redis-compatible server to explore TCP, RESP parsing, concurrent requests and persistence.</p>
+            <p class="project-proof">6 supported commands · 4 separated layers · Disk persistence</p>
+            <span class="project-open">Explore case study ↗</span>
+          </div>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="project-card blue" href="../projects/maze-solver/">
+        <span class="project-number">03</span>
+        <div class="project-copy">
+          <div class="project-title-block">
+            <p class="project-meta-line"><span>2026</span><span>Actively refining</span></p>
+            <h2>A* vs Dijkstra Maze Visualizer</h2>
+          </div>
+          <div class="project-summary">
+            <p>I ran both pathfinders on the same generated maze and compared their search work and timing.</p>
+            <p class="project-proof">152-cell grid · Explored nodes and path length · Redis storage</p>
+            <span class="project-open">Explore case study ↗</span>
+          </div>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="project-card coral" href="../projects/ai-support-agent/">
+        <span class="project-number">04</span>
+        <div class="project-copy">
+          <div class="project-title-block">
+            <p class="project-meta-line"><span>2026</span><span>Complete</span></p>
+            <h2>AI Customer Support Agent</h2>
+          </div>
+          <div class="project-summary">
+            <p>I built an offline retrieval and routing pipeline, then evaluated when it should hand requests to a human.</p>
+            <p class="project-proof">95.95% escalation recall on 150 held-out cases · Deterministic safety guardrails</p>
+            <span class="project-open">Explore case study ↗</span>
+          </div>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="project-card lime" href="../projects/researchcomb/">
+        <span class="project-number">05</span>
+        <div class="project-copy">
+          <div class="project-title-block">
+            <p class="project-meta-line"><span>2026</span><span>Open source · v0.5.23</span></p>
+            <h2>ResearchComb</h2>
+          </div>
+          <div class="project-summary">
+            <p>ResearchComb is an open-source skill pack for AI coding assistants—OpenAI Codex and Google Antigravity. It takes a research topic from literature search through drafting, critique, and citation checks, keeping a shared evidence record so claims stay tied to sources.</p>
+            <p class="project-proof">v0.5.23 · 12 research workflows + update command · MIT licensed</p>
+            <span class="project-open">Explore case study ↗</span>
+          </div>
+        </div>
+        <span class="project-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+    <section class="work-archive" aria-labelledby="archive-title">
+      <p class="eyebrow">Archive / Public repos</p>
+      <h2 id="archive-title">Smaller public work, by creation date.</h2>
+      <ul>
+        <li><time datetime="2025-07-19">Jul 2025</time><a href="https://github.com/diaznakh/NES-Emu" target="_blank" rel="noreferrer">NES-Emu — NES emulator in C++ with PPU and mappers</a></li>
+        <li><time datetime="2024-02-27">Feb 2024</time><a href="https://github.com/diaznakh/DSA-Sheet-Striver" target="_blank" rel="noreferrer">DSA-Sheet-Striver — solutions to Striver’s SDE sheet</a></li>
+        <li><time datetime="2023-10-24">Oct 2023</time><a href="https://github.com/diaznakh/code-forces-problems" target="_blank" rel="noreferrer">code-forces-problems — Codeforces problems in C</a></li>
+        <li><time datetime="2023-10-21">Oct 2023</time><a href="https://github.com/diaznakh/ragged-or-jagged-array" target="_blank" rel="noreferrer">ragged-or-jagged-array — C program on ragged or jagged arrays</a></li>
+        <li><time datetime="2023-10-18">Oct 2023</time><a href="https://github.com/diaznakh/Polynomial-Engine" target="_blank" rel="noreferrer">Polynomial-Engine — add, subtract, and multiply polynomials of degree n</a></li>
+        <li><time datetime="2023-10-17">Oct 2023</time><a href="https://github.com/diaznakh/tic-tac-toe" target="_blank" rel="noreferrer">tic-tac-toe — terminal tic-tac-toe in C</a></li>
+      </ul>
+    </section>
+  </main>
+  <aside class="contact-prompt" aria-label="Contact">
+    <p class="eyebrow">Contact / Let’s talk</p>
+    <h2>Have an internship or role in mind?</h2>
+    <p>Email me with a prefilled subject so the thread is easy to find.</p>
+    <a href="mailto:diaznakh@gmail.com?subject=Internship%20opportunity">Email — Internship opportunity ↗</a>
+  </aside>
+  <footer><a class="wordmark" href="../">ZK<span>.</span></a><p>Selected work</p><a href="../assets/zaid-khan-resume.pdf">Résumé ↗</a></footer>
+</body>
+</html>

@@ -43,6 +43,13 @@ function renderWriting(posts) {
             <p>${escape(post.summary)}</p>
             <a href="${post.path}" aria-label="Read ${escape(post.title)}">Read article <span aria-hidden="true">↗</span></a>
           </article>`).join("\n");
+  const newest = posts[0];
+  const featured = newest ? `      <article class="featured-post">
+        <div class="post-meta"><span>${escape(newest.category)}</span><time datetime="${newest.date}">${displayDate(newest.date)}</time><span>${newest.minutes} min read</span></div>
+        <h2>${escape(newest.title)}</h2>
+        <p>${escape(newest.summary)}</p>
+        <a href="../${newest.path}" aria-label="Read ${escape(newest.title)}">Read article <span aria-hidden="true">↗</span></a>
+      </article>` : "";
   const archive = posts.map((post) => `      <article>
         <time datetime="${post.date}">${displayDate(post.date)}<br>${post.minutes} min</time>
         <div><h2>${escape(post.title)}</h2><p>${escape(post.summary)}</p></div>
@@ -69,7 +76,7 @@ ${items}
 </rss>
 `;
   const sitemap = posts.map((post) => `  <url><loc>${origin}${post.path}</loc><lastmod>${post.updated}</lastmod><priority>0.7</priority></url>`).join("\n");
-  return { cards, archive, rss, sitemap };
+  return { cards, featured, archive, rss, sitemap };
 }
 
 function build(check = false) {
@@ -82,7 +89,11 @@ function build(check = false) {
     (_, start, end) => start + (posts.length ? "01" : "00") + " / " + String(posts.length).padStart(2, "0") + end);
   const outputs = {
     "index.html": home,
-    "writing/index.html": replaceRegion(read("writing/index.html"), "blog-archive", rendered.archive),
+    "writing/index.html": replaceRegion(
+      replaceRegion(read("writing/index.html"), "blog-featured", rendered.featured),
+      "blog-archive",
+      rendered.archive
+    ),
     "rss.xml": rendered.rss,
     "sitemap.xml": replaceRegion(read("sitemap.xml"), "blog-sitemap", rendered.sitemap)
   };

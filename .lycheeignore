@@ -1,3 +1,6 @@
 ^https://lnkd\.in/
 ^https://www\.linkedin\.com/
 ^mailto:
+# Work and About are new in this PR; production 404s until GitHub Pages deploys them.
+^https://diaznakh\.github\.io/work/?$
+^https://diaznakh\.github\.io/about/?$

@@ -5,11 +5,14 @@ Static engineering portfolio deployed through GitHub Pages.
 ## Content
 
 - `index.html` — landing page and project overview
+- `work/` — featured case studies and a dated public-repo archive
+- `about/` — timeline, current focus, and education
 - `projects/` — detailed engineering case studies
 - `blog/` — individual technical articles
 - `writing/` — complete writing archive
+- `llms.txt` — machine-readable site description and key links
 - `data/linkedin-posts.json` — manually maintained LinkedIn tracker
-- `data/blog-posts.json` — shared blog metadata; run `node scripts/build-writing.cjs` after editing to refresh the homepage, archive, RSS, and sitemap
+- `data/blog-posts.json` — shared blog metadata; run `node scripts/build-writing.cjs` after editing to refresh the homepage, writing featured post and archive, RSS, and sitemap
 - `data/currently-building.json` — retained for freshness checks (the homepage Latest section was removed so ResearchComb is not shown twice)
 - `data/resume.json` — résumé path and review date used by freshness checks
 

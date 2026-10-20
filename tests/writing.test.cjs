@@ -8,6 +8,9 @@ const rendered = renderWriting(sorted);
 for (const name of ["cards", "archive", "rss", "sitemap"]) {
   for (const post of sorted) assert.ok(rendered[name].includes(post.path), name + " must include every article");
 }
+assert.match(rendered.featured, /CPU &lt;flags&gt; &amp; &quot;state&quot;/);
+assert.ok(rendered.featured.includes(sorted[0].path));
+assert.ok(!posts.some((post) => post.path !== sorted[0].path && rendered.featured.includes(post.path)));
 assert.match(rendered.cards, /CPU &lt;flags&gt; &amp; &quot;state&quot;/);
 assert.match(rendered.rss, /Sat, 05 Sep 2026 18:30:00 GMT/);
 assert.throws(() => validatePosts([...posts, posts[0]]), /Duplicate/);
