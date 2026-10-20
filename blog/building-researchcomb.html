@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; img-src 'self' data:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; upgrade-insecure-requests">
+  <title>Building ResearchComb to Keep Claims Tied to Sources | Zaid Khan</title>
+  <meta name="description" content="Why I built ResearchComb, how its research workflows keep claims tied to sources inside Codex and Antigravity, and how to install the current v0.5.23 bundle.">
+  <link rel="canonical" href="https://diaznakh.github.io/blog/building-researchcomb.html">
+  <meta property="og:title" content="Building ResearchComb to Keep Claims Tied to Sources | Zaid Khan">
+  <meta property="og:description" content="An open-source skill pack for Codex and Antigravity: literature search, drafting, critique, citation checks, and a shared evidence record.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://diaznakh.github.io/blog/building-researchcomb.html">
+  <meta property="og:site_name" content="Zaid Khan">
+  <meta property="article:published_time" content="2026-10-20T00:00:00+05:30">
+  <meta property="article:author" content="Zaid Khan">
+  <meta property="og:image" content="https://diaznakh.github.io/assets/og-project-researchcomb.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Building ResearchComb to Keep Claims Tied to Sources — Zaid Khan">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Building ResearchComb to Keep Claims Tied to Sources | Zaid Khan">
+  <meta name="twitter:description" content="Literature search, drafting, critique, citation checks, and a shared evidence record inside Codex and Antigravity.">
+  <meta name="twitter:image" content="https://diaznakh.github.io/assets/og-project-researchcomb.png">
+  <meta name="twitter:image:alt" content="Building ResearchComb to Keep Claims Tied to Sources — Zaid Khan">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../styles.css?v=20261020-mark">
+  <script src="../article.js?v=20260902-upgrade1" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Building ResearchComb to Keep Claims Tied to Sources","description":"Why I built ResearchComb, how its research workflows keep claims tied to sources inside Codex and Antigravity, and how to install the current v0.5.23 bundle.","datePublished":"2026-10-20","dateModified":"2026-10-20","mainEntityOfPage":"https://diaznakh.github.io/blog/building-researchcomb.html","author":{"@type":"Person","name":"Zaid Khan","url":"https://diaznakh.github.io/"}}</script>
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
+  <main class="article-page">
+    <header class="article-header">
+      <a class="wordmark" href="../" aria-label="ZK. Home"><svg class="wordmark-mark" viewBox="0 0 52 32" width="46" height="28" aria-hidden="true" focusable="false"><circle class="wordmark-dot" cx="4" cy="4" r="2.05" style="--dot-delay:8ms;--dot-s:1.55;--dot-x:-11px;--dot-y:9px"/><circle class="wordmark-dot" cx="10" cy="4" r="2.05" style="--dot-delay:36ms;--dot-s:1.8;--dot-x:-6px;--dot-y:-10px"/><circle class="wordmark-dot" cx="16" cy="4" r="2.05" style="--dot-delay:14ms;--dot-s:1.4;--dot-x:12px;--dot-y:-7px"/><circle class="wordmark-dot" cx="22" cy="4" r="2.05" style="--dot-delay:58ms;--dot-s:1.9;--dot-x:8px;--dot-y:11px"/><circle class="wordmark-dot" cx="20" cy="10" r="2.05" style="--dot-delay:22ms;--dot-s:1.65;--dot-x:14px;--dot-y:5px"/><circle class="wordmark-dot" cx="14" cy="16" r="2.05" style="--dot-delay:70ms;--dot-s:1.35;--dot-x:-9px;--dot-y:13px"/><circle class="wordmark-dot" cx="8" cy="22" r="2.05" style="--dot-delay:44ms;--dot-s:1.75;--dot-x:-13px;--dot-y:-6px"/><circle class="wordmark-dot" cx="4" cy="28" r="2.05" style="--dot-delay:18ms;--dot-s:1.5;--dot-x:-8px;--dot-y:12px"/><circle class="wordmark-dot" cx="10" cy="28" r="2.05" style="--dot-delay:82ms;--dot-s:1.85;--dot-x:7px;--dot-y:8px"/><circle class="wordmark-dot" cx="16" cy="28" r="2.05" style="--dot-delay:28ms;--dot-s:1.45;--dot-x:-5px;--dot-y:-12px"/><circle class="wordmark-dot" cx="22" cy="28" r="2.05" style="--dot-delay:64ms;--dot-s:1.7;--dot-x:11px;--dot-y:-4px"/><circle class="wordmark-dot" cx="30" cy="4" r="2.05" style="--dot-delay:40ms;--dot-s:1.6;--dot-x:6px;--dot-y:-11px"/><circle class="wordmark-dot" cx="30" cy="10" r="2.05" style="--dot-delay:12ms;--dot-s:1.3;--dot-x:-14px;--dot-y:4px"/><circle class="wordmark-dot" cx="30" cy="16" r="2.05" style="--dot-delay:76ms;--dot-s:1.95;--dot-x:9px;--dot-y:10px"/><circle class="wordmark-dot" cx="30" cy="22" r="2.05" style="--dot-delay:32ms;--dot-s:1.5;--dot-x:-7px;--dot-y:-9px"/><circle class="wordmark-dot" cx="30" cy="28" r="2.05" style="--dot-delay:54ms;--dot-s:1.72;--dot-x:13px;--dot-y:6px"/><circle class="wordmark-dot" cx="36" cy="10" r="2.05" style="--dot-delay:6ms;--dot-s:1.42;--dot-x:10px;--dot-y:-8px"/><circle class="wordmark-dot" cx="42" cy="4" r="2.05" style="--dot-delay:90ms;--dot-s:1.88;--dot-x:15px;--dot-y:7px"/><circle class="wordmark-dot" cx="36" cy="22" r="2.05" style="--dot-delay:48ms;--dot-s:1.38;--dot-x:-10px;--dot-y:9px"/><circle class="wordmark-dot" cx="42" cy="28" r="2.05" style="--dot-delay:24ms;--dot-s:1.62;--dot-x:8px;--dot-y:-13px"/><circle class="wordmark-dot accent" cx="48" cy="28" r="2.05" style="--dot-delay:100ms;--dot-s:2.05;--dot-x:12px;--dot-y:4px"/></svg></a>
+      <nav aria-label="Primary navigation"><a href="../work/">Work</a><a href="../writing/" aria-current="page">Writing</a><a href="../about/">About</a></nav>
+    </header>
+
+    <article class="article-shell">
+      <div class="article-meta"><span>Systems</span><time datetime="2026-10-20">20 October 2026</time><span>9 min read</span></div>
+      <h1>Building ResearchComb to Keep Claims Tied to <em>Sources</em></h1>
+      <p class="article-lede">A working link identifies a source. It does not establish whether that source supports the claim sitting next to it. I built ResearchComb so a research task inside an AI chat can carry that distinction all the way through search, drafting, critique, and citation checks.</p>
+
+      <h2>The problem I kept hitting</h2>
+      <p>When discovery, comparison, drafting, and review happen in separate steps, context falls off the table. That is worse in a chat with an AI assistant, because the model can produce a fluent paragraph with a DOI attached and still be wrong about what the paper actually says.</p>
+      <p>I wrote about this when I <a href="https://www.linkedin.com/posts/diaznakh_github-diaznakhresearchcomb-activity-7513998248806715392-v-l6" target="_blank" rel="noreferrer">shared ResearchComb on LinkedIn</a>: the toolkit is meant to run directly inside Codex or Antigravity, using the host’s existing tools. There is no ResearchComb server, separate app, or API key. The goal is to make research easier to inspect—connect claims to sources, record access limitations, and flag unsupported conclusions.</p>
+      <p>The current public bundle is <strong>v0.5.23</strong>, MIT licensed. You can read the <a href="../projects/researchcomb/">case study</a> or the <a href="https://github.com/diaznakh/ResearchComb" target="_blank" rel="noreferrer">repository</a>. This note is the longer version of why the pieces are shaped the way they are.</p>
+
+      <div class="article-callout"><span>The core idea</span><strong>Keep bibliographic identity, link access, and claim support as separate records, and reuse source and claim IDs across every stage of the task.</strong></div>
+
+      <h2>How the workflows fit together</h2>
+      <p>Codex and Antigravity already browse, read files, and run commands. ResearchComb adds portable skill folders they can load: a general <code>researchcomb</code> router, twelve focused research workflows, and a separate <code>comb-update</code> command that checks GitHub only when asked.</p>
+      <p>The focused workflows cover surveys, investigations, source summaries, comparisons, paper-to-code audits, implementation plans, manuscripts, critiques, citation checks, experiment loops, reproductions, and a one-request topic-to-paper path called <code>comb-paper</code>. I do not ask the model to invent a pipeline each time. I ask it to load the skill that already names the stages.</p>
+      <p><code>comb-paper</code> is the long path in one request: find and assess sources, read and compare evidence, draft to a requested length, then critique and verify. It keeps one <a href="https://github.com/diaznakh/ResearchComb/blob/main/skills/researchcomb/references/evidence-record.md" target="_blank" rel="noreferrer">shared evidence record</a> throughout. For open-ended live research it attempts the scholarly sources in the shared guide and follows citation trails; five papers is only the discovery floor. It skips live search when you supply a closed corpus. Experiments need authorization. If the evidence is not enough, the draft is labelled partial.</p>
+      <p>Claims in the record can be <strong>supported</strong>, <strong>qualified</strong>, <strong>contradicted</strong>, <strong>unsupported</strong>, or <strong>unverified</strong>. A substantial task can save <code>evidence.json</code>; a narrow lookup can stay as a compact table in context. That is the same separation the case study starts from: identity is not support.</p>
+
+      <h2>A citation check is the smallest version of the idea</h2>
+      <p>The repository includes a recorded citation fixture. A draft uses a real DOI to claim that FeNi and NiPt are equally selective for producing propylene. In that test, <code>comb-check</code> finds the DOI belongs to Gomez et al. (2018) while the draft names another paper’s author and year, and that under the studied conditions FeNi favors propylene while NiPt favors dry reforming. A resolving DOI identified a source; checking the source decided the claim.</p>
+      <p>That fixture is a regression outcome, not a promise that every live paper will be fully readable. Several publisher pages in the recorded runs were inaccessible and stayed labelled as abstract or excerpt evidence.</p>
+
+      <h2>Install it in Codex or Antigravity</h2>
+      <p>The README’s current install prompt pins version <code>v0.5.23</code> at commit <code>c43d1dcaef4d930c463fe51ab31ae60a1999fc73</code>. Paste this into Codex or Antigravity with GitHub and local file access:</p>
+      <pre class="article-code"><code>Install ResearchComb version v0.5.23 at commit
+c43d1dcaef4d930c463fe51ab31ae60a1999fc73 from
+https://github.com/diaznakh/ResearchComb for my account.
+Check out that exact commit before copying or installing.
+Use your native plugin installer if it accepts this
+GitHub repository; otherwise copy every complete skill
+folder under skills/, including supporting files, into
+your user skills directory. Confirm researchcomb and all
+thirteen comb-* commands are available. Do not execute
+repository code during installation.</code></pre>
+      <p>The host may ask for its normal approval to fetch GitHub or write to its skills directory. A bare link may only open the repository; the instruction above is what requests installation.</p>
+      <p>If you prefer the Codex CLI, the same pin looks like this:</p>
+      <pre class="article-code"><code>codex plugin marketplace add https://github.com/diaznakh/ResearchComb.git --ref c43d1dcaef4d930c463fe51ab31ae60a1999fc73
+codex plugin add researchcomb@researchcomb</code></pre>
+      <p>Start a new chat after installation. If plugins are unavailable in your Codex surface, the README says to ask <code>$skill-installer</code> to install every complete folder under <code>skills/</code> from that commit.</p>
+      <p>For Antigravity, copy every complete folder under <code>skills/</code> into <code>~/.gemini/config/skills/</code> for all workspaces, or into the workspace <code>.agents/skills/</code> directory for one project. Check <strong>Customizations → Installed → Skills &amp; Rules</strong> for <code>researchcomb</code> and the thirteen <code>comb-*</code> skills.</p>
+      <p>Then give it a task. In Codex, type <code>$</code> and select a skill. In Antigravity, use a <code>/comb-*</code> slash command. Plain-language requests such as “Use comb-check to…” work in either host:</p>
+      <pre class="article-code"><code>Use comb-paper to draft a 3,000–3,500-word sourced
+literature review on when retrieval-augmented generation
+improves factual accuracy. Search and compare primary
+studies, synthesize findings, check citations, and save
+paper.md with evidence.json and checks.md for me to revise.</code></pre>
+      <p><code>comb-update</code> compares the installed version against the public repository when you ask. Research workflows do not add a GitHub lookup to each task. There are no GitHub Releases on the repo as of this writing; the version lives in <code>plugin.json</code> and <code>skills/researchcomb/VERSION</code>.</p>
+
+      <h2>Design decisions I would not give up</h2>
+      <p>The first was to stay inside the host. ResearchComb is an instruction-based skill bundle. It has no bundled server or API client and requires no ResearchComb account. Your AI host’s normal access and usage limits still apply. That constraint forced the interesting work into records and checks instead of a private backend.</p>
+      <p>The second was to keep the projects as folders the host can copy. Each workflow is a skill with supporting files. Source and claim IDs are meant to survive a handoff from survey to manuscript to critique. If those IDs reset every stage, the evidence record is just another generated file.</p>
+      <p>The third was to put completion checks next to the prose, not in place of judgment. For open-ended live searches and manuscripts with a requested word range, the skills tell the host to run a local completion checker. It flags missing broad-source attempts, too few distinct papers, empty or duplicate records, and drafts outside the requested length. A local safe fetcher can check DNS addresses and redirects before retrieving links. Both scripts use Python’s standard library. The checker cannot prove that a browser call happened or that a citation supports a claim. For those judgments you still inspect the host tool log and run <code>comb-check</code>.</p>
+      <p>Live-search tests made that limit concrete. Instruction-only skills cannot enforce tool calls or stop a host from misreporting them. When complete coverage matters, the tool history is part of the evidence.</p>
+
+      <h2>What the recorded runs actually cover</h2>
+      <p>I am not going to treat passing tests as a user count or a quality guarantee. The public case study and README record native Codex runs on 8–9 October 2026. Earlier focused workflow cases passed 11 / 11. The one-request <code>comb-paper</code> case produced 567 measured body words inside a requested 400–600 range, preserved source IDs, and used two supplied synthetic excerpts—it did not browse or run experiments. An earlier long manuscript case produced 6,201 measured body words. An experiment kept an improvement and rejected a regression within its two-trial budget. A reproduction case correctly reported a mismatched claimed result as not reproduced.</p>
+      <p>Eight research cases use synthetic fixtures. Antigravity skill installation was checked; its behavioral tests remain unverified. Passing tests do not guarantee research accuracy.</p>
+
+      <h2>What I am not promising next</h2>
+      <p>The repository does not publish a roadmap. The remaining limits are already documented: inaccessible sources stay recorded, experiments need an authorized local environment, recurring monitoring needs the host’s scheduler, and ResearchComb does not provision cloud compute. Outputs can still be wrong. Check sources, citations, calculations, code, and conclusions before relying on them.</p>
+      <p>If you try it, I welcome feedback, issues, and contributions on the GitHub repository—the same invitation I put on the launch post.</p>
+
+      <div class="article-end">
+        <p>This note expands the LinkedIn launch post and the ResearchComb case study. The install commands and workflow names are from the v0.5.23 README.</p>
+        <a href="https://www.linkedin.com/posts/diaznakh_github-diaznakhresearchcomb-activity-7513998248806715392-v-l6" target="_blank" rel="noreferrer">Read the LinkedIn launch post ↗</a>
+      </div>
+    </article>
+
+    <nav class="article-nav" aria-label="Article navigation"><a href="../writing/"><span>All writing</span><strong>Browse every field note</strong></a><a href="imitation-game-system-design.html"><span>Previous article</span><strong>What The Imitation Game Taught Me About System Design →</strong></a></nav>
+    <aside class="contact-prompt" aria-label="Contact">
+      <p class="eyebrow">Contact / Let’s talk</p>
+      <h2>Have an internship or role in mind?</h2>
+      <p>Email me with a prefilled subject so the thread is easy to find.</p>
+      <a href="mailto:diaznakh@gmail.com?subject=Internship%20opportunity">Email — Internship opportunity ↗</a>
+    </aside>
+    <footer class="article-footer"><p>© 2026 Zaid Khan</p><a href="../">Back to portfolio ↑</a></footer>
+  </main>
+</body>
+</html>

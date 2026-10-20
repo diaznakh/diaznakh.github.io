@@ -72,6 +72,7 @@ jobs:
             http://127.0.0.1:4173/
             http://127.0.0.1:4173/projects/6502-emulator/
             http://127.0.0.1:4173/blog/maze-redis-integration.html
+            http://127.0.0.1:4173/blog/building-researchcomb.html
           configPath: ./lighthouserc.json
           uploadArtifacts: true
       - name: Report performance measurements

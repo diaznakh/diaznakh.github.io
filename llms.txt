@@ -22,6 +22,7 @@ The site is static HTML, CSS, and vanilla JavaScript, hosted on GitHub Pages. Pr
 
 ## Writing
 
+- [Building ResearchComb to Keep Claims Tied to Sources](https://diaznakh.github.io/blog/building-researchcomb.html)
 - [ResearchComb Open-Source Research Toolkit for Codex and Antigravity](https://www.linkedin.com/posts/diaznakh_github-diaznakhresearchcomb-activity-7513998248806715392-v-l6) (LinkedIn)
 - [What The Imitation Game Taught Me About System Design](https://diaznakh.github.io/blog/imitation-game-system-design.html)
 - [Connecting My Maze Visualizer to Redis](https://diaznakh.github.io/blog/maze-redis-integration.html)

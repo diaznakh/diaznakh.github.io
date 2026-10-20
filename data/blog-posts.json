@@ -1,5 +1,14 @@
 [
   {
+    "title": "Building ResearchComb to Keep Claims Tied to Sources",
+    "path": "blog/building-researchcomb.html",
+    "date": "2026-10-20",
+    "updated": "2026-10-20",
+    "category": "Systems",
+    "minutes": 9,
+    "summary": "Why I built ResearchComb, how its workflows keep claims tied to sources inside Codex and Antigravity, and how to install the current v0.5.23 bundle."
+  },
+  {
     "title": "ResearchComb Open-Source Research Toolkit for Codex and Antigravity",
     "url": "https://www.linkedin.com/posts/diaznakh_github-diaznakhresearchcomb-activity-7513998248806715392-v-l6",
     "date": "2026-10-08",
