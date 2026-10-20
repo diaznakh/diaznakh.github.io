@@ -9,9 +9,10 @@ node scripts/build-writing.cjs
 ```
 
 Commit the metadata and generated files together. The command updates the homepage
-carousel (including its counter), writing archive, RSS feed, and blog sitemap
-entries. Do not edit their generated regions separately. Existing article bodies
-and interactive demos stay in their own HTML files.
+carousel (including its counter), the writing page’s featured post and archive,
+RSS feed, and blog sitemap entries. Do not edit their generated regions
+separately. Existing article bodies and interactive demos stay in their own HTML
+files.
 
 Use `YYYY-MM-DD` for `date` and `updated`; reading time `minutes` is a number.
 Dates displayed in the listings are derived automatically. RSS publication times
