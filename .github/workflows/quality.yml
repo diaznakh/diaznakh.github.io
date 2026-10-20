@@ -28,6 +28,7 @@ jobs:
           python -m json.tool data/linkedin-posts.json >/dev/null
           python -m json.tool data/currently-building.json >/dev/null
           python -m json.tool data/resume.json >/dev/null
+          python -m json.tool data/blog-posts.json >/dev/null
           python -m json.tool lighthouserc.json >/dev/null
       - name: Validate XML
         run: |
